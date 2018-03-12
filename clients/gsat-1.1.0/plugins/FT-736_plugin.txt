@@ -1,0 +1,34 @@
+How to setup FT-736 plugin for gsat.
+-------------------------------------
+
+  You can set the 3 parameters in gsat preferences -> Radio Control ->
+Plugin Config. : CAT I/F port, Up/Down band, Up/Down mode.
+  Each parameter is separated by colon(":").
+
+1.CAT I/F device
+
+  You can specify the CAT I/F device with key word "D"+device name.
+If no parameter was given, /dev/ttyS0 will be selected.
+
+  example) D/dev/ttyR2
+
+2. Up/Down band
+
+  You must set Up/Down band with key word "S"+options. The options is 2 letters,
+consist from an abbreviation of Up/Down frequency. The first letter means
+UPlink, the second letter means Downlink.
+  In this time, we can use only 'U' and 'V'. 'U' means 435MHz, 'V ' means 145MHz.
+If no parameter was given,  '435MHz uplink/145MHz downlink' will be selected.
+
+  example) SUV
+
+3. Up/Down modes
+
+  You must set Up/Down mode from 'SSB', 'FM', 'CW'. If no parameter was given,
+'CW' will be selected.
+
+  example) QCW
+
+
+73's
+de Hiroshi Iwamoto JH4XSY jh4xsy@jarl.com

@@ -1,0 +1,10 @@
+#!/bin/sh
+# Script to manually compile PREDICT
+#
+if [ -a predict.h ]; then
+	echo -n "Building PREDICT version `cat .version`... "
+	cc -Wall -O3 -s -fomit-frame-pointer predict.c -lm -lncurses -pthread -o predict
+	echo "Done!"
+else
+	./configure
+fi

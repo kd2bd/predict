@@ -1,0 +1,11 @@
+101111
+play /usr/share/xfce/sounds/alert01.wav >/dev/null 2>&1 &
+play /usr/share/xfce/sounds/ping01.wav >/dev/null 2>&1 &
+None
+D/dev/ttyS0:S19200
+None
+
+None
+D/dev/ttyS0:S19200
+None
+test

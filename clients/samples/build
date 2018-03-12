@@ -1,0 +1,3 @@
+cc -Wall -O3 -s demo.c -o demo
+cc -Wall -O3 -s demo-i.c -o demo-i
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+# Script to compile moontracker
+#
+echo -n "Compiling moontracker... "
+cc -Wall -O3 -s -fomit-frame-pointer -lm moontracker.c -o moontracker
+echo "Done!"
+

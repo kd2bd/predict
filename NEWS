@@ -1,0 +1,144 @@
+PREDICT 2.2.0 Release
+=====================
+The major revisions in PREDICT 2.2.0 include the use of
+SGP4/SDP4 orbital models for improved tracking accuracy,
+as well as a re-written Single Satellite Tracking Mode
+to provide more useful real-time satellite communications
+data.
+
+
+New Orbital Models
+==================
+The simplified orbital model used in previous versions
+of PREDICT provided very accurate and dependable results
+for the majority of users, but was not quite good enough
+for more demanding applications at NASA.
+
+In July 2002, a test was performed on the accuracy of the
+orbital model used in PREDICT.  The test was performed by
+a software engineer working at Edwards Airforce Base in
+California, and involved comparing data provided by PREDICT's
+Calc() and PreCalc() functions to that of a radar system
+used to track the International Space Station.  Ranging
+data from the radar was taken every 50 milliseconds for
+the duration of the pass.
+
+The error in azimuth was found to be almost zero at AOS, and
+increased to 0.3 degrees over the duration of the pass.  The
+elevation was about 0.2 degrees lower than that measured by
+radar for the entire pass.  The calculated range was approximately
+7000 meters low at AOS, and approximately 7000 meters high at
+LOS with a crossover at TCA.
+
+
+New Single Satellite Tracking Mode
+==================================
+The Single Satellite Tracking Mode has been completely revised
+in PREDICT version 2.2.0.  PREDICT now supports a database of
+satellite transponder data so that the program can provide
+path loss and Doppler-corrected uplink and downlink frequency
+information in real-time.  For satellites containing linear
+transponders, uplink and downlink frequencies may be adjusted
+by pressing the '<' and '>' keys to tune down across the
+transponder in 1 kHz steps, or the ',' and '.' keys (unshifted
+'<' and '>') to tune in 100 Hz steps.  Switching between
+transponders may be accomplished by pressing the SPACE bar.
+
+Eclipse depth, an angle representing how deep a satellite is
+in solar eclipse, is also provided.  Eclipse depth is positive
+when the spacecraft is in eclipse, and negative when it is in
+sunlight.  Spacecraft antenna squint angle is provided if
+ALAT/ALON (spacecraft attitude coordinates) parameters are
+included in the transponder database file.
+
+
+Transponder Database
+====================
+When PREDICT version 2.2.0 is initially run, a default transponder
+database file (predict.db) is copied into the user's $HOME/.predict
+directory.  At present, the database provides for many new features,
+som of which have not been completely implemented by PREDICT in
+this early release of the 2.2.x run.  The most glaring omission
+is lack of a facility to edit or modify the database file.  For
+the time being, it may be edited by hand if care is excercised.
+
+The format for the database file is as follows.  Using NOAA-17
+as an example:
+
+NOAA-17			Name of satellite
+27453			Object number (must match predict.tle)
+No alat/alon		ALAT/ALON spacecraft attitude information
+APT Downlink		Description of transmitter/transponder
+0.0, 0.0		Uplink passband limits in MHz (0.0 = no uplink)
+137.620, 137.620	Corresponding downlink passband limits (single downlink)
+No weekly schedule	Days of the week this transponder is active
+No orbital schedule	Orbital phase when this transponder is active
+HRPT Downlink		Description of second transmitter/transponder
+0.0, 0.0		Uplink passband limits (low end limit, high end)
+1707.0, 1707.0		Corresponding downlink passband limits (single downlink)
+No weekly schedule	Days of the week this transponder is active
+No orbital schedule	Orbital phase when this transponder is active
+end			End of data for this satellite
+
+OSCAR-29 contains linear (inverting) as well as digital (Pacsat)
+transponders:
+
+OSCAR-29
+24278
+No alat/alon
+Mode JA Transponder
+145.900, 146.000
+435.900, 435.800
+No weekly schedule
+No orbital schedule
+Mode JD Channel A
+145.850, 145.850
+435.910, 435.910
+No weekly schedule
+No orbital schedule
+Mode JD Channel B
+145.870, 145.870
+435.910, 435.910
+No weekly schedule
+No orbital schedule
+Mode JD Channel C
+145.910, 145.910
+435.910, 435.910
+No weekly schedule
+No orbital schedule
+end
+
+Weekly and orbital schedules have not yet been implemented in
+PREDICT 2.2.0, so for the time being, entries for these parameters
+should begin with the word "No".  ALAT/ALON should be entered as
+30.0, 0.0 for alat=30.0 and alon=0.0.  See $HOME/.predict/predict.db
+for further examples.
+
+Entries in predict.db need not be in the same order as they appear
+in predict.tle.  Satellite names need not match either, but the
+object numbers in predict.db must be correct.  predict.db may contain
+more satellite entries than those appearing in predict.tle (normally 24).
+PREDICT reads the entire database file, and reads only the information
+that applies to the satellites in the predict.tle file in use at the
+time.  If no transponder data is available, or if a satellite contains
+no communication transponders, the Single Satellite tracking mode
+screen is modified accordingly.
+
+Future revisions of PREDICT will likely include a database editor
+as well as possible modifications to the format of the database.
+
+
+Other changes
+=============
+PREDICT now installs into a directory whose name includes the revision
+number (ie: predict-2.2.0).
+
+Despite the major revisions to the tracking code, all other program
+functions, with the exception of the Single Satellite Tracking Mode,
+should act as they did in earlier versions.
+
+
+--
+John, KD2BD
+October 12, 2002
+

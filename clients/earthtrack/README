@@ -1,0 +1,138 @@
+  ===========================================================================
+  Using PREDICT with "xearth" and "xplanet" to track your favorite satellites
+  ===========================================================================
+
+"earthtrack" is a socket-based application that polls PREDICT for live
+tracking data, and plots positions of satellites on world maps generated
+by "xearth" and "xplanet".
+
+The concept of using "xearth" as a graphical display for PREDICT was
+originally conceived by Wade Hampton who wrote an "xearth" interface
+as an integral part of PREDICT's main program code.  However, it was
+decided that a better approach would be to separate the "xearth" interface
+code from PREDICT by treating it as a socket-based client application.
+As a result, "earthtrack" was born.  The functionality of "earthtrack"
+has since been expanded to work with "xplanet" as well.
+
+"xearth" is available via the World Wide Web at:
+
+	http://www.cs.colorado.edu/~tuna/xearth/index.html
+
+"xplanet" is available via the World Wide Web at:
+
+	http://xplanet.sourceforge.net/
+
+Compile and install these applications as per their instructions.
+OpenGL and Mesa libraries are not required to run "xplanet" with
+"earthtrack" and PREDICT.
+
+Build "earthtrack" by executing the "build" script in this
+directory (type: ./build).  You need to be root so the executables
+can be linked to /usr/local/bin.  NOTE: "earthtrack" is linked to
+both "earthtrack" and "earthtrack2" in /usr/local/bin.  Executing
+"earthtrack" will invoke a display using "xearth", while executing
+"earthtrack2" will invoke a display using "xplanet", even though
+the same binary is executed in either case.
+
+"earthtrack" uses "xearth" to produce an orthographic image of the
+earth upon which satellite names are placed over their respective
+sub-satellite points.  The globe can be centered either over your
+groundstation location (default), or over the location any satellite
+being tracked by PREDICT.  The second method allows you to "fly with
+the satellite" as it circles the globe.  The map is updated every 20
+seconds.  By default, "earthtrack" connects to the PREDICT server
+running on "localhost".  These defaults may be overridden through
+several command-line switches.
+
+The -h switch allows a different PREDICT server name to be specified.
+The -x switch option allows additional command-line parameters to be
+passed to either xearth or xplanet through earthtrack.  (Note that
+the argument that follows the -x switch must be enclosed in "quotes".)
+The -u switch allows a different map update interval to be specified,
+and the -c switch allows the map to be centered on a specific satellite.
+
+For example:
+
+	earthtrack -c ISS -u 15 -h predictserver.org
+
+allows earthtrack to invoke "xearth" as a display, centering the map
+on the location of satellite "ISS", using host "predictserver.org"
+as the host running PREDICT in server mode.  The satellite name
+specified must be the same as PREDICT displays in Multi-Tracking
+mode.  If a space appears in the name, then the entire name must
+be enclosed in double quotes.
+
+"xplanet" uses highly detailed photo-realistic maps of the world
+available from a variety of sources to produce spectacular views
+of the earth, and offers many features not available with "xearth".
+Some of these additional features are invoked by "earthtrack2".
+For example, if an uppercase -C is used rather than a lowercase
+-c for the map center switch, such as in the following example:
+
+	earthtrack2 -C ISS
+
+The map is not only centered on the location of the ISS, but the
+map is also zoomed into an area slightly larger than the footprint
+of the satellite.  A range circle is also drawn on the map to
+indicate the actual footprint of the spacecraft at the current
+time.
+
+If a map centered on the groundstation location is desired, then
+footprint range circles for neighboring satellites are drawn on the
+map.  Range circles are drawn for satellites between 5 minutes prior
+to AOS through the point of LOS.  Such a display may be created simply
+by executing "earthtrack2" without any switches:
+
+	earthtrack2
+
+or with the -h switch to identify the remote host running PREDICT in
+server mode:
+
+	earthtrack2 -h predictserver.org 
+
+If the satellite being tracked is in sunlight, then the satellite
+name and range circle are displayed in white.  If the satellite
+is in darkness, then the color blue is used.  If the satellite
+is optically visible to the groundstation, then yellow is used.
+
+It is important to note that "xplanet" requires considerably more
+CPU power and RAM than does "xearth".  Therefore, it may take
+considerably longer than 20 seconds to update each map display
+when running "earthtrack2" on slower machines.  If this is the
+case, then "earthtrack2" executes no delay between "xplanet"
+map updates.  Run "earthtrack2" through "nice" to reduce its
+priority and associted CPU demand if desired.
+
+"earthtrack2" may also be used to generate graphics files for
+use in web server environments.  For example:
+
+	earthtrack2 -c ISS -x "-geometry 800x600 -output graphic.gif"
+
+will invoke "xplanet" to produce an 800x600 GIF image of the world
+centered on the sub-satellite point of the ISS with a name of
+"graphic.gif".  (NOTE: xplanet must be compiled with free-type
+font support to allow labels to be placed in the generated
+graphics files.)  This feature, along with capabilities
+demonstrated in the ~/predict/clients/samples directory,
+can be used to develop satellite tracking and orbital
+prediction content for a web server.
+
+"earthtrack" and "earthtrack2" exit when their connection to
+the PREDICT server is broken, such as would occur if PREDICT
+is terminated while "earthtrack" is still running.  Either
+application may be run as background processes by placing
+an ampersand (&) at the end of the command line.
+
+For more creative uses of PREDICT and earthtrack, see John
+Heaton, G1YYH's PREDICT and earthtrack modification web page
+at:
+
+	http://voyager.mcc.ac.uk/Predict/
+
+
+Happy Tracking!
+
+--
+73, de John, KD2BD
+July 2002
+

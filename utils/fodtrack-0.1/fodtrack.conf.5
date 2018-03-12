@@ -1,0 +1,27 @@
+.TH "fodtrack.conf" "5" "0.1" "Luc Langehegermann" "LX2GT Sat Tools"
+.SH "NAME"
+.LP 
+\fB/etc/fodtrack.conf\fR \- Configuration file for fodtrack rotor driver
+.SH "DESCRIPTION"
+.LP 
+The fodtrack program uses a configuration file called
+\fBfodtrack.conf\fR. This configuration file must be located in the /etc directory, and is used to configure the driver.
+.SH "PARAMETERS"
+.TP 
+\fBPARDEV=<device>\fR
+Parallel port device
+.TP 
+\fBMAXAZIMUTH=<angle>\fR
+Maximal angle the hozizontal rotor is able to turn.
+.TP 
+\fBELEVATIONCORRECTION=<angle>\fR
+Correction applied to the elevation angle
+.TP 
+\fBAZIMUTHCORRECTION=<angle>\fR
+Correction applied to the azimuth angle
+.SH "FILES"
+.LP 
+/etc/fodtrack.conf
+.SH "SEE ALSO"
+.LP 
+fodtrack(5)

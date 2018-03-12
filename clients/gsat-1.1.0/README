@@ -1,0 +1,69 @@
+WELCOME TO GSAT!
+
+gsat is a satellite tracking program. It is a graphical frontend to the predict orbital prediction program by John Magliacane KD2BD.
+
+To install, do the usual:
+
+	./configure
+	./make
+	./make install
+
+If this doesn't work, you can do:
+
+	./autogen.sh
+	./make
+	./make install
+
+Make sure to have predict installed and the predict service configured in the /etc/services.
+Define the host with the predict server by:
+
+	export PREDICTHOST=<hostname>
+
+
+where <hostname> is the host name of the server.
+Then execute gsat by typing:
+
+	gsat
+
+or by using -s option, like:
+
+	gsat -s hostname
+
+where hostname is the host name of the server.
+If no PREDICTHOST variable or no -s option are used, localhost is assumed.
+
+From gsat version 0.9.0, you have to use the connect button to make a connection to a predict server.
+
+
+
+ABOUT PLUGINS
+-------------
+
+gsat can do automatic doppler correction and rotor control via plugins. Plugins are placed in the /usr/local/lib/gsat/plugins directory by default. You can override this setting the GSATPLUGINSDIR environment variable. Plugin's name must begin by "radio_" for the radio plugins and "rotor_" for the rotor plugins. Once you have the plugins installed, you can select it in the preferences window, pass it a config string and activate it in the doppler section of the main window.
+There is a file called Plugin_API with the info to program a custom plugin. There are some examples in the plugins subdir.
+Please note that not all the plugins in the plugins directory of this package are in a working state. I'm working on some of them and it is possible that even some refuse to compile. I include them to show some examples of plugin programming.
+
+Working plugins:
+
+radio plugins
+-------------
+radio_FT736 : Yaesu FT-736 contributed by Hiroshi Iwamoto JH4XSY
+radio_ICR10 : Icom IC-R10 Receiver
+radio_PCR100: Icom PCR-100 Receiver (libpcr100 is needed to compile this)
+
+rotor plugins
+-------------
+rotor_pictrack: created from the pictrack code in predict. Not tested.
+
+the radio_print and rotor_print are test plugins that only print data to the shell.
+
+INSTALLING PLUGINS
+------------------
+
+Plugin installation is not yet automated. You will have to install the plugins after installing gsat. To install the plugins, change to the plugins directory, edit the Makefile and change the TARGETS line to contain only the plugins you want to install. Then do a make and make install and you are done.
+
+Happy tracking !!!
+
+Xavier Crehueras, EB3CZS
+eb3czs@qsl.net
+

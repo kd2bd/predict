@@ -1,0 +1,36 @@
+MoonTracker 1.0 by KD2BD
+========================
+MoonTracker is intended to support moonbounce (EME) communications by
+calculating the position of the Moon, and sending appropriate control
+signals to an AZ/EL antenna rotator.  Once invoked, MoonTracker spawns
+itself into the background, and continues to run until terminated by
+a kill signal.  If the Moon is not above the horizon when MoonTracker
+is invoked, MoonTracker goes to sleep until the predicted time of
+Moon rise.
+
+MoonTracker reads ground station location information from PREDICT's
+predict.qth file.  Much like PREDICT, MoonTracker recognizes several
+command-line options that specify the serial port to be used by the
+program.  Simply invoking MoonTracker without any arguments displays
+a list of recognized options:
+
+
+		--==[ MoonTracker v1.0 by KD2BD (c) 2002 ]==--
+
+			    ...Available options...
+
+	-a serial port (/dev/ttyS0) -- sends data as it changes
+	-a1 serial port (/dev/ttyS0) -- sends data at one-second intervals
+	-q alternate qth file (site.qth)
+
+
+Use the fodtrack utility to operate MoonTracker with a FODTRACK rotator
+control system.  MoonTracker may be safely terminated using the killall
+commmand (killall moontracker).
+
+Happy EMEing!
+
+
+73, de John, KD2BD
+March 2003
+

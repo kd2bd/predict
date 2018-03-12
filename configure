@@ -1,0 +1,77 @@
+#!/bin/bash
+#
+# Script to configure, compile, and install PREDICT.
+# Give an argument to this script if you wish to override
+# the default installation directory of /usr/local/bin.
+# ie: ./configure /usr/bin
+# Last updated 25-Nov-2010
+
+whoiam=`whoami`
+
+if [ $whoiam != "root" ]; then
+	echo "Sorry $whoiam.  You need to be 'root' to install PREDICT.  :-("
+else
+	oldterm=$TERM
+	export TERM=linux
+
+	rm -f gcctest
+
+	echo "int main()" > gcctest.c
+	echo "{" >> gcctest.c
+	echo "return 0;" >> gcctest.c
+	echo "}" >> gcctest.c
+
+	echo -n "Testing compiler... "
+
+	cc gcctest.c -o gcctest
+
+	if [ -a gcctest ]; then
+
+		rm -f gcctest
+
+		echo -ne "\nTesting pthreads library... "
+
+		cc gcctest.c -lpthread -o gcctest
+
+		if [ -a gcctest ]; then
+
+			rm -f gcctest
+
+			echo -ne "\nTesting ncurses library... "
+
+			cc gcctest.c -lncurses -o gcctest
+
+			if [ -a gcctest ]; then
+
+				rm -f gcctest
+
+				echo -ne "\nCompiling Installer... "
+
+				cc -Wall -s installer.c -lncurses -o installer
+
+				if [ -a installer ]; then
+					if [ $# == "0" ]; then
+						./installer
+					else
+						./installer $1
+					fi
+				else
+					echo -e "\n\n*** Error: Could not build installer.  :-(\n"
+				fi
+			else
+				echo -e "\n\n*** Error: Compiler test for ncurses library failed.  :-(\n"
+			fi
+		else
+			echo -e "\n\n*** Error: Compiler test for pthreads library failed.  :-(\n"
+
+		fi
+
+	else
+		echo -e "\n\n*** Error: Compiler test failed.  :-(\n\nAre you sure you have a functioning C Compiler (cc) installed?\n"
+		cc --version
+	fi
+
+	rm -f gcctest.c
+
+	export TERM=$oldterm
+fi

@@ -1,0 +1,688 @@
+.TH PREDICT 1 "12 March 2018" "KD2BD Software" "KD2BD Software"
+.SH NAME
+predict \- Track and predict passes of satellites in Earth orbit
+
+.SH SYNOPSIS
+predict [-u \fItle_update_source\fP] [-t \fItlefile\fP]
+[-q \fIqthfile\fP] [-a \fIserial_port\fP] [-a1 \fIserial_port\fP]
+[-n \fInetwork_port\fP]
+[-f \fIsat_name starting_date/time ending_date/time\fP]
+[-p \fIsat_name starting_date/time\fP]
+[-o \fIoutput_file\fP] [-s] [-east] [-west] [-north] [-south]
+
+.SH DESCRIPTION
+\fBPREDICT\fP is a multi-user satellite tracking and orbital prediction
+program written under the Linux operating system by John A. Magliacane,
+KD2BD. \fBPREDICT\fP is free software. You can redistribute it and/or
+modify it under the terms of the GNU General Public License as published
+by the Free Software Foundation, either version 2 of the License or any
+later version.
+
+\fBPREDICT\fP is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+for more details.
+
+.SH FIRST TIME USE
+\fBPREDICT\fP tracks and predicts passes of satellites based on the
+geographical location of the ground station, the current date and time
+as provided by the computer system's clock, and Keplerian orbital data
+for the satellites of interest to the ground station. First time users
+of \fBPREDICT\fP are provided default ground station location and orbital
+data information files. These files are managed by the program, and are
+normally located in a user's home directory under a hidden subdirectory
+named \fI.predict\fP. First time users will be prompted to supply
+\fBPREDICT\fP with their geographical location (the same as selecting
+option \fB[G]\fP from the program's main menu) the first time the
+program is run. Latitude is normally expressed in degrees north with
+latitudes south of the equator expressed in negative degrees. Longitude
+is normally expressed in degrees west with eastern longitudes expressed
+in negative degrees. This behavior can be modified by passing the
+\fI-east\fP or \fI-south\fP commmand line switches to \fBPREDICT\fP.
+
+Latitudes and longitudes may be either entered in decimal degrees, or
+in degrees, minutes, seconds (DMS) format.  Station altitude is entered
+as the number of meters the ground station is located above sea level.
+This parameter is not very critical.  If unsure, make a realistic guess
+or simply enter 0.
+
+Users of \fBPREDICT\fP need Keplerian orbital data for the satellites
+they wish to track that is preferably no older than one month. The default
+orbital data supplied with the program is liable to be quite old, and so
+must be brought up to date if accurate results are to be expected. This
+may be accomplished by selecting option \fB[E]\fP from \fBPREDICT's\fP
+main menu and manually entering Keplerian data for each satellite in
+the program's database, or by selecting option \fB[U]\fP and specifying
+a file containing recent 2-line Keplerian element data sets that
+correspond to the satellites in the program's database.  Keplerian
+orbital data is available from a variety of sources, including
+\fIhttp://www.celestrak.com/\fP, \fIhttp://www.space-track.org/\fP,
+and \fIhttp://www.amsat.org/\fP.
+
+.SH PROGRAM OPERATION
+The start-up screen of \fBPREDICT\fP lists the program's main functions.
+Several tracking and orbital prediction modes are available, as well as
+several utilities to manage the program's orbital database.
+
+.SH PREDICTING SATELLITE PASSES
+Orbital predictions are useful for determining in advance when a satellite
+is expected to come within range of a ground station. They can also be
+used to look back to previous passes to help to confirm or identify past
+observations.
+
+\fBPREDICT\fP includes two orbital prediction modes to predict any pass
+above a ground station (main menu option \fB[P]\fP), or list only those
+passes that might be visible to a ground station through optical means
+(main menu option \fB[V]\fP). In either mode, the user is asked to
+select a satellite of interest from a menu, and then asked to enter
+the date and time (in UTC) at which prediction calculations should
+start.
+
+The current date and time may be selected by default by entering nothing
+and hitting simply the ENTER key when prompted to enter the starting
+date and time.
+
+Otherwise, the starting date and time should be entered in the form:
+
+	\fIDDMonYY HH:MM:SS\fP
+
+Entering the time is optional.  If it is omitted, midnight (00:00:00)
+is assumed.  Once complete, orbital calculations are started and
+prediction information is displayed on the screen.
+
+The date and time in UTC, along with the satellite's elevation above
+ground, azimuth heading, modulo 256 orbital phase, sub-satellite point
+latitude and longitude, slant range between the ground station and
+the satellite, and the satellite's orbit number are all displayed.
+If spacecraft attitude parameters (ALAT, ALON) are included in
+\fBPREDICT's\fP transponder database file, then spacecraft antenna
+squint angles are displayed instead of orbit numbers in the orbital
+prediction output.
+
+An asterisk (*) displayed to the right of the orbit number or squint
+angle means the satellite is in sunlight at the date and time listed
+on the line. A plus symbol (+) means the satellite is in sunlight
+while the ground station is under the cover of darkness at the time
+and date listed.  Under good viewing conditions, large satellites
+such as the International Space Station (ISS), the US Space Shuttles,
+and Hubble Space Telescope, and the Upper Atmosphere Research Satellite
+(UARS) are visible to the naked eye. If no symbol appears to the right
+of each line, then the satellite is in the Earth's shadow at the time
+and date listed, and is not receiving any illumination from the sun.
+
+Pressing the \fBENTER\fP key, the '\fBY\fP' key, or the space bar
+advances the orbital predictions to a screen listing the next available
+passes.  Pressing the '\fBL\fP' key allows the currently displayed
+screen plus any subsequent screens to be logged to a text file in
+your current working directory. The name given to this file is the
+name of the satellite plus a ".txt" extension.  Any slashes or spaces
+appearing in the satellite name are replaced by the underscore (_)
+symbol. The logging feature may be toggled on and off at any time by
+pressing the '\fBL\fP' key. Exiting the orbital prediction mode by
+pressing '\fBN\fP' or hitting the \fBESC\fPape key will also close the
+log file. The log file will be appended with additional information
+if additional predictions are conducted for the same satellite with
+the logging feature turned on.
+
+Selecting \fB[V]\fP from \fBPREDICT's\fP main menu will permit
+a ground station to only predict passes for satellites that are
+potentially visible through optical means. Since all other passes are
+filtered out in this mode, and since some satellites may never arrive
+over a ground station when optical viewing conditions are possible,
+the program provides the option of breaking out of visual orbital
+prediction mode by pressing the \fB[ESC]\fPape key as calculations
+are made. A prompt is displayed at the bottom of the screen to alert
+the user of this option.
+
+In either orbital prediction mode, predictions will not be attempted
+for satellites that can never rise above the ground station's horizon,
+or for satellites in geostationary orbits. If a satellite is in range
+at the starting date and time specified, \fBPREDICT\fP will adjust the
+starting date back in time until the point of AOS so that the prediction
+screen displays the first pass in its entirety from start to finish.
+
+.SH SINGLE SATELLITE TRACKING MODE
+In addition to predicting satellite passes, \fBPREDICT\fP allows
+satellites to be tracked in real-time using \fBPREDICT's\fP
+Single Satellite Tracking Mode (main menu option \fB[T]\fP), or
+simultaneously as a group of 24 using the program's Multi-Satellite
+Tracking Mode (main menu option \fB[M]\fP).  The positions of the
+Sun and Moon are also displayed when tracking satellites in real-time.
+
+Selecting option \fB[T]\fP from \fBPREDICT's\fP main menu places the
+program in Single Satellite Tracking Mode. The user will be prompted
+to select the satellite of interest, after which a screen will appear
+and display tracking positions for the satellite selected.
+
+In Single Satellite Tracking Mode, a wealth of information related
+to tracking a spacecraft and communicating through its transponder
+is displayed.  The current date and time is displayed along with
+the satellite's sub-satellite point, its orbital altitude in both
+kilometers and statute miles, the slant range distance between the
+ground station and the satellite in both kilometers and statute
+miles, the current azimuth and elevation headings toward the
+satellite, the orbital velocity of the satellite in both kilometers
+per hour and statute miles per hour, the footprint of the satellite
+in both kilometers and statute miles, the modulo 256 orbital phase
+of the satellite, the eclipse depth, the spacecraft antenna squint
+angle, and orbital model in use, as well as the current orbit number
+are also displayed.  The date and time for the next AOS is also
+provided.
+
+Additionally, if the satellite is currently in range of the ground
+station, the amount of Doppler shift experienced on uplink and
+downlink frequencies, path loss, propagation delay, and echo times
+are also displayed.  The expected time of LOS is also provided. 
+
+Uplink and downlink frequencies are held in \fBPREDICT's\fP transponder
+database file \fIpredict.db\fP located under \fI$HOME/.predict\fP.
+A default file is provided with \fBPREDICT\fP.
+
+Transponders may be selected by pressing the SPACE BAR.  The passband
+of the transponder may be tuned in 1 kHz increments by pressing the
+\fB<\fP and \fB>\fP keys.  100 Hz tuning is possible using the
+\fB,\fP and \fB.\fP keys.  (These are simply the \fB<\fP and
+\fB>\fP keys without the SHIFT key.)
+
+If no transponder information is available, the data displayed on
+the tracking screen is abbreviated.
+
+The features available in the Single Satellite Tracking Mode make
+it possible to accurately determine the proper uplink frequency to
+yield a given downlink frequency, or vice versa.  For example, if
+one wishes to communicate with a station heard on 435.85200 MHz
+via FO-29, then 435.85200 MHz can be selected via the keyboard
+as an RX frequency using the tuning keys while tracking FO-29,
+and the corresponding ground station TX frequency will be displayed
+by \fBPREDICT\fP.
+
+Obviously, an accurate system clock and up-to-date orbital data
+are required for the best tuning accuracy.
+
+If a sound card is present on your machine and the Single Satellite
+Tracking Mode is invoked with an uppercase '\fBT\fP' rather than
+a lowercase '\fBt\fP', \fBPREDICT\fP will make periodic voice
+announcements stating the satellite's tracking coordinates
+in real-time. Announcements such as:
+
+\fI"This is PREDICT.  Satellite is at fifty six degrees azimuth and forty
+five degrees elevation, and is approaching.  Satellite is currently
+visible."\fP
+
+are made at intervals that are a function of how quickly the satellite is
+moving across the sky. Announcements can occur as frequently as every 50
+seconds for satellites in low earth orbits such as the International Space
+Station (370 km), or as infrequently as every 8 minutes for satellites in
+very high orbits, such as the AMC-6 geostationary satellite (35780 km). Voice
+announcements are performed as background processes so as not to interfere
+with tracking calculations as the announcements are made. Alarms and special
+announcements are made when the satellite being tracked enters into or out
+of eclipse. Regular announcements can be forced by pressing the '\fBT\fP'
+key in Single Satellite Tracking Mode.
+
+.SH MULTI-SATELLITE TRACKING MODE
+Selecting \fB[M]\fP from \fBPREDICT's\fP main menu places the program in a
+real-time multi-satellite tracking mode. In this mode, all 24 satellites in
+the program's database are tracked simultaneously along with the positions
+of the Sun and Moon. Tracking data for the satellites is displayed in
+two columns of 12 satellites each. The name, azimuth heading, elevation,
+sub-satellite point latitude (in degrees North) and longitude (in degrees
+West) positions are provided, along with the slant range distance between
+the satellite and the ground station (in kilometers).
+
+A letter displayed to the right of the slant range indicates the satellite's
+sunlight and eclipse conditions. If the satellite is experiencing an eclipse
+period, an \fBN\fP is displayed. If the satellite is in sunlight and the
+ground station is under the cover of darkness, a \fBV\fP is displayed to
+indicate the possibility that the satellite is visible under the current
+conditions. If the satellite is in sunlight while conditions at the ground
+station do not allow the satellite to be seen, a \fBD\fP is displayed.
+Satellites in range of the ground station are displayed in \fBBOLD\fP
+lettering. The AOS dates and times for the next three satellites predicted
+to come into range are displayed on the bottom of the screen between the
+tracking coordinates of the Sun and Moon.  Predictions are not made for
+satellites in geostationary orbits or for satellites so low in inclination
+and/or altitude that they can never rise above the horizon of the ground
+station.
+
+.SH SOLAR ILLUMINATION PREDICTIONS
+Selecting \fB[S]\fP from \fBPREDICT's\fP main menu will allow solar
+illumination predictions to be made.  These predictions indicate how
+much sunlight a particular satellite will receive in a 24 hour period.
+This information is especially valuable to spacecraft designers and
+satellite ground station controllers who must monitor spacecraft power
+budgets or thermal conditions on-board their spacecraft due to sunlight
+and eclipse periods.  It can even be used to predict the optimum times
+for astronauts to perform extra-vehicular activities in space. Solar
+illumination predictions may be logged to a file in the same manner
+that orbital predictions may be logged (by pressing \fBL\fP).
+
+.SH SOLAR AND LUNAR ORBITAL PREDICTIONS
+In addition to making orbital predictions of spacecraft, \fBPREDICT\fP
+can also predict transits of  the Sun and the Moon.  Lunar predictions
+are initiated by selecting \fB[L]\fP from \fBPREDICT\fP's Main Menu.
+Solar predictions are selected through Main Menu option \fB[O]\fP.
+
+When making solar and lunar orbital predictions, \fBPREDICT\fP provides
+azimuth and elevation headings, the right ascension, declination,
+Greenwich Hour Angle (GHA), radial velocity, and normalized distance
+(range) to the Sun or Moon.  Declination and Greenwich Hour Angle
+correspond to the latitude and longitude of the object's sub-satellite
+point above the Earth's surface.  The radial velocity corresponds to
+the speed and direction the object is traveling toward (+) or away
+(-) from the ground station, and is expressed in meters per second.
+When the radial distance of the Moon is close to zero, the amount of
+Doppler shift experienced in Moonbounce communications is minimal.
+The normalized distance corresponds to the object's actual distance
+to the ground station divided its average distance.  In practice,
+the normalized distance can range from about 0.945 to 1.055 for
+the Moon, and about 0.983 to 1.017 for the Sun.
+
+Note that the effects of atmospherics are ignored in determining
+the elevation angles for the Sun and Moon. Furthermore, the data
+provided by \fBPREDICT\fP corresponds to the object's center, and
+not the upper or lower limb, as is sometimes done when predicting
+the rising and setting times of these celestial objects.
+
+.SH OPERATION UNDER THE X-WINDOW SYSTEM
+\fBPREDICT\fP may be run under the X-Window System by invoking it through
+the \fIxpredict\fP script contained with this software. \fIxpredict\fP
+can invoke \fIrxvt\fP, \fIxterm\fP, \fIEterm\fP, \fIgnome-terminal\fP,
+or \fIkvt\fP, and display \fBPREDICT\fP in a virtual terminal window.
+\fIxpredict\fP should be edited for best results.  In many cases,
+holding down the SHIFT key while pressing the plus (+) and minus (-)
+keys allows \fBPREDICT's\fP window to be re-sized when started under
+\fIxpredict\fP.
+
+.SH COMMAND LINE ARGUMENTS
+By default, \fBPREDICT\fP reads ground station location and orbital
+data information from a pair of files located in the user's home directory
+under a hidden subdirectory named \fI.predict\fP. Ground station location
+information is held in a file named \fIpredict.qth\fP, while orbital data
+information for 24 satellites is held in a file named \fIpredict.tle\fP.
+
+If we wish to run \fBPREDICT\fP using data from alternate sources
+instead of these default files, the names of such files may be passed
+to \fBPREDICT\fP on the command line when the program is started. For
+example, if we wish to read the TLE file \fIvisual.tle\fP and the QTH
+file \fIbeach_house.qth\fP rather than the default files, we could start
+\fBPREDICT\fP and pass the names of these alternate files to the
+program in the following manner:
+
+	\fIpredict -t visual.tle -q beach_house.qth\fP
+
+or
+
+	\fIpredict -q beach_house.qth -t visual.tle\fP
+
+If the files specified are not located in the current working directory,
+then their relative or absolute paths should also be specified along
+with their names (\fIpredict -t /home/kd2bd/orbs/visual.tle\fP).
+
+It is also possible to specify only one alternate file while using the
+default for the other. For example,
+
+	\fIpredict -t visual.tle\fP
+
+reads QTH information from the default \fI~/.predict/predict.qth\fP
+location, and TLE information from \fIvisual.tle\fP, while
+
+	\fIpredict -q bobs.qth\fP
+
+reads QTH information from \fIbobs.qth\fP and TLE information from the
+default \fI~/.predict/predict.tle\fP location.
+
+.SH "QUIET" ORBITAL DATABASE UPDATES
+It is also possible to update \fBPREDICT's\fP satellite orbital database
+using another command line option that updates the database from a NASA
+two-line element data set. \fBPREDICT\fP then quietly exits without
+displaying anything to the screen, thereby eliminating the need for
+entering the program and selecting the appropriate menu options. This
+option is invoked using the \fI-u\fP command line switch as follows:
+
+	\fIpredict -u orbs248.tle\fP
+
+This example updates \fBPREDICT's\fP default orbital database with the
+Keplerian elements found in the file \fIorbs248.tle\fP. \fBPREDICT\fP
+may be updated from a list of files as well:
+
+	\fIpredict -u amateur.tle visual.tle weather.tle\fP
+
+If an alternate datafile requires updating, it may also be specified
+on the command line using the \fI-t\fP switch as follows:
+
+	\fIpredict -t oscar.tle -u amateur.tle\fP
+
+This example updates the \fIoscar.tle\fP orbital database with the
+two-line element data contained in \fIamateur.tle\fP.
+
+These options permit the automatic update of \fBPREDICT's\fP orbital
+data files using Keplerian orbital data obtained through automatic
+means such as FTP, HTTP, or pacsat satellite download.
+
+For example, the following script can be used to update \fBPREDICT's\fP
+orbital database via the Internet:
+
+   \fC#!/bin/sh
+   wget -q www.celestrak.com/NORAD/elements/amateur.txt -O amateur.txt
+   wget -q www.celestrak.com/NORAD/elements/visual.txt -O visual.txt
+   wget -q www.celestrak.com/NORAD/elements/weather.txt -O weather.txt
+   /usr/local/bin/predict -u amateur.txt visual.txt weather.txt\fR
+
+To truly automate the process of updating your orbital database, save the
+above commands to a file in your home directory (such as \fIkepupdate\fP),
+and add the following line to your crontab (type \fIcrontab -e\fP to edit
+your crontab):
+
+	\fI0 2 * * * kepupdate\fP
+
+and \fBPREDICT\fP will automatically update its database every day at
+2:00 AM.
+
+.SH AUTOMATIC ANTENNA TRACKING
+\fBPREDICT\fP is compatible with serial port antenna rotator interfaces
+conforming to the EasyComm 2 protocol standard.  This includes the
+PIC/TRACK interface developed by Vicenzo Mezzalira, IW3FOL
+<http://digilander.iol.it/iw3fol/pictrack.html>, TAPR's EasyTrak Jr.
+(currently under development), and Suding Associates Incorporated's
+Dish Controllers <http://www.ultimatecharger.com/Dish_Controllers.html>.
+The FODTRACK rotator interface is supported through the use of Luc
+Langehegermann's (LX1GT) \fBfodtrack\fP utility written for and
+included with \fBPREDICT\fP.
+
+Using any of these hardware interfaces, \fBPREDICT\fP can automatically
+control the position of AZ/EL antenna rotators, and keep antennas
+accurately pointed toward a satellite being tracked by \fBPREDICT\fP.
+In operation, tracking data from \fBPREDICT\fP is directed to the
+specified serial port using the \fI-a\fP command line option.  For
+example:
+
+	\fIpredict -a /dev/ttyS0\fP
+
+will send AZ/EL tracking data to the first serial port when the program
+is tracking a satellite in the Single Satellite Tracking Mode.  The data
+sent to the serial port is of the form: \fIAZ241.0 EL26.0\fP using
+9600 baud, 8-data bits, 1-stop bit, no parity, and no handshaking.  Data
+is sent to the interface if the azimuth or elevation headings change by
+one degree or more.  For interfaces requiring keepalive updates at
+least once per second whether the AZ/EL headings have changed or
+not (such as the ones by SAI), the \fI-a1\fP option
+may be used:
+
+	\fIpredict -a1 /dev/ttyS0\fP
+
+.SH ADDITIONAL OPTIONS
+The \fI-f\fP command-line option, when followed by a satellite name or
+object number and starting date/time, allows \fBPREDICT\fP to respond
+with satellite positional information.  This feature allows \fBPREDICT\fP
+to be invoked within other applications that need to determine the
+location of a satellite at a particular point in time, such as the
+location of where a CCD camera image was taken by a Pacsat satellite
+based on its timestamp.
+
+The information produced includes the date/time in Unix format (the
+number of seconds since midnight UTC on January 1, 1970), the date/time
+in ASCII (UTC), the elevation of the satellite in degrees, the azimuth
+heading of the satellite, the orbital phase (modulo 256), the latitude
+and longitude of the satellite's sub-satellite point at the time
+specified, the slant range to the satellite in kilometers with
+respect to the ground station's location, the orbit number, and
+the spacecraft's sunlight visibility information.
+
+The date/time must be specified in Unix format (number of seconds since
+midnight UTC on January 1, 1970).  If no starting or ending time is
+specified, the current date/time is assumed and a single line of output
+is produced.  If a starting and ending time are specified, a list of
+coordinates beginning at the starting time/date and ending with the
+ending time/date will be returned by the program with a one second
+resolution.  If the letter \fIm\fP is appended to the ending time/date,
+then the data returned by the program will have a one minute resolution.
+The \fI-o\fP option allows the program to write the calculated data to
+an output file rather than directing it to the standard output device
+if desired.
+
+The proper syntax for this option is as follows:
+
+	\fIpredict -f ISS 977446390 977446400 -o datafile\fP
+
+A list of coordinates starting at the current date/time and
+ending 10 seconds later may be produced by the following command:
+
+	\fIpredict -f ISS +10\fP
+
+If a list of coordinates specifying the position of the satellite
+every minute for the next 10 minutes is desired, the following
+command may be used:
+
+	\fIpredict -f ISS +10m\fP
+
+If a satellite name contains spaces, then the entire name must be
+enclosed by "quotes".
+
+The \fI-p\fP option allows orbital predictions for a single pass to
+be generated by \fBPREDICT\fP via the command-line.  For example:
+
+	\fIpredict -p OSCAR-11 1003536767\fP
+
+starts predictions for the OSCAR-11 satellite at a Unix time of
+1003536767 (Sat 20Oct01 00:12:47 UTC).  If the starting date/time
+is omitted, the current date/time is used.  If a pass is already
+in progress at the starting date/time specified, orbital predictions
+are moved back to the beginning of AOS of the current pass, and data
+for the entire pass from AOS to LOS is provided.
+
+When either the \fI-f\fP or \fI-p\fP options are used, \fBPREDICT\fP
+produces an output consisting of the date/time in Unix format, the
+date and time in ASCII (UTC), the elevation of the satellite in
+degrees, the azimuth of the satellite in degrees, the orbital phase
+(modulo 256), the latitude (N) and longitude (W) of the satellite's
+sub-satellite point, the slant range to the satellite (in kilometers),
+the orbit number, and the spacecraft's sunlight visibility information.
+For example:
+\fC
+1003611710 Sat 20Oct01 21:01:50   11    6  164   51   72   1389  16669 *
+\fR
+The output isn't annotated, but then again, it's meant to be read by
+other software.
+
+.SH SERVER MODE
+\fBPREDICT's\fP network socket interface allows the program to
+operate as a server capable of providing tracking data and other
+information to client applications using the UDP protocol.  It
+is even possible to have the \fBPREDICT\fP server and client
+applications running on separate machines provided the clients
+are connected to the server through a functioning network connection.
+
+The \fI-s\fP switch is used to start \fBPREDICT\fP in server mode:
+
+	\fIpredict -s\fP
+
+By default, \fBPREDICT\fP uses socket port 1210 for communicating with
+client applications.  Therefore, the following line needs to be added
+to the end your \fI/etc/services\fP file:
+
+	\fIpredict   1210/udp\fP
+
+The port number (1210) can be changed to something else if desired.
+There is no need to recompile the program if it is changed.  To
+run more than one instance of \fBPREDICT\fP in server mode on a
+single host, an alternate port must be specified when invoking
+the additional instances of \fBPREDICT\fP.  This can be
+accomplished by using the \fI-n\fP switch:
+
+	\fIpredict -n 1211 -t other_tle_file -s\fP
+
+When invoked in server mode, \fBPREDICT\fP immediately enters
+Multi-Satellite Tracking Mode, and makes live tracking data available
+to clients.  Clients may poll \fBPREDICT\fP for tracking data
+when the program is running in either the Multi-Satellite or Single
+Satellite Tracking Mode.  When in Multi-Satellite Tracking mode,
+tracking data for any of the 24 satellites in the program's database
+may be accessed by client applications.  When in Single-Satellite
+Tracking mode, only live tracking data for the single satellite
+being tracked may be accessed.  Either tracking mode may be ended
+at any time.  When this is done, \fBPREDICT\fP will return the
+last calculated satellite tracking data until the program is
+again put into a real-time tracking mode.  This allows the user
+to return to the main menu, and use other features of the program
+without sending potentially harmful data to client applications.
+
+The best way to write a client application is to use the demonstration
+program (demo.c) included in this distribution of \fBPREDICT\fP as
+a guide.  The sample program has comments to explain how each component
+operates.  It is useful to pipe the output of this program through
+\fIless\fP to easily browse through the data returned (\fIdemo | less\fP).
+
+In operation, a character array is filled with the command and arguments
+to be sent to \fBPREDICT\fP.  A socket connection is then opened, the
+request is sent, a response is received, and the socket connection
+is closed.  The command and arguments are in ASCII text format.
+
+Several excellent network client applications are included in this
+release of \fBPREDICT\fP, and may be found under the \fIpredict/clients\fP
+directory.
+
+.SH ADDING SATELLITES
+One of the most frequently asked questions is how satellites in
+\fBPREDICT's\fP orbital database may be added, modified, or replaced.
+As it turns out, there are several ways in which this can be done.
+Probably the easiest is to manually edit your
+\fI~/.predict/predict.tle\fP file, and replace an existing
+satellite's entry with 2-line Keplerian data for the new satellite.
+If this method is chosen, however, just make sure to include ONLY
+the two line data, and nothing else.
+
+Another way is to is select the Keyboard Edit option from the program's
+Main Menu, select a satellite you wish to replace.  Edit the name and
+object number (replacing the old information with the new information).
+Just hit ENTER, and accept all the other orbital parameters shown.  Get
+back to \fBPREDICT's\fP Main Menu.  Select Auto Update, and then enter
+the filename containing the 2-line element data for your favorite new
+satellite.  The new satellite data should be detected by \fBPREDICT\fP,
+and the orbital data for the old satellite will be overwritten by the
+new data.
+
+.SH NEAT TRICKS
+In addition to tracking and predicting passes of satellites, \fBPREDICT\fP
+may also be used to generate a NASA two-line Keplerian element data set
+from data entered via keyboard. For example, let's say you're listening
+to Space Shuttle audio re-broadcasts via WA3NAN and Keplerian elements
+for the Space Shuttle's orbit are given by the announcer. The orbital
+data provided by WA3NAN in verbal form may be manually entered into
+\fBPREDICT's\fP orbital database using option \fB[E]\fP of the program's
+main menu (Keyboard Edit of Orbital Database). The orbital data for the
+Space Shuttle in NASA two-line element form can then be found in your
+orbital database file, and may imported to any other satellite tracking
+program that accepts two-line element files or distributed to others
+electronically.
+
+It is also possible to run \fBPREDICT\fP as a background process and
+direct its display to an unused virtual console by using the following
+command:
+
+        \fIpredict < /dev/tty8 > /dev/tty8 &\fP
+
+Switching to virtual console number 8 (ALT-F8 in text mode) will
+allow \fBPREDICT\fP to be controlled and displayed even after you've
+logged out.  This is especially handy when running \fBPREDICT\fP in
+server mode on a remote machine.
+
+.SH GLOSSARY OF TERMS
+The following terms are frequently used in association with satellite
+communications and space technology:
+
+.SH AOS:
+Acquisition of Signal - the time at which a ground station first acquires
+radio signals from a satellite. \fBPREDICT\fP defines AOS as the time
+when the satellite being tracked comes within +/- 0.03 degrees of the
+local horizon, although it may have to rise higher than this before
+signals are first heard.
+.SH Apogee:
+Point in a satellite's orbit when the satellite is at its farthest
+distance from the earth's surface.
+.SH Anomalistic Period:
+A satellite orbital parameter specifying the time between successive
+perigees.
+.SH Ascending Node:
+Point in a satellite's orbit when its sub-satellite point crosses the
+equator moving south to north.
+.SH Azimuth:
+The compass direction measured clockwise from true north.  North = 0
+degrees, East = 90 degrees, South = 180 degrees, and West = 270 degrees.
+.SH Descending Node:
+Point in a satellite's orbit when its sub-satellite point crosses the
+equator moving north to south.
+.SH Doppler Shift:
+The motion of a satellite in its orbit around the earth, and in many cases
+the rotational motion of the earth itself, causes radio signals generated
+by satellites to be received on Earth at frequencies slightly different
+than those upon which they were transmitted. \fBPREDICT\fP calculates
+what effect these motions have upon the reception of satellites
+transmitting on the 146 MHz and 435 MHz Amateur Radio bands.
+.SH Elevation:
+The angle between the local horizon and the position of the satellite. A
+satellite that appears directly above a particular location is said to be
+located at an elevation of 90 degrees. A satellite located on the horizon
+of a particular location is said to be located at an elevation of 0 degrees.
+A satellite with an elevation of less than zero is positioned below the
+local horizon, and radio communication with a satellite in such a position
+is not possible under normal circumstances.
+.SH Footprint:
+Diameter of the Earth's surface visible from a satellite.  The higher
+the satellite's orbital altitude, the greater the footprint, and the
+wider the satellite's communications coverage.
+.SH LOS:
+Loss of Signal - the time at which a ground station loses radio contact
+with a satellite. \fBPREDICT\fP defines LOS as the time when the satellite
+being tracked comes within +/- 0.03 degrees of the local horizon.
+.SH Orbital Phase:
+An orbital "clock" that describes a satellite's orbital position with
+respect to perigee. Orbital Phase may be modulo 256, or modulo 360, and
+is sometimes referred to as mean anomaly when speaking of amateur radio
+satellites in elliptical orbits, such as the Phase 3 satellites.
+Orbital phase is zero at perigee.
+.SH Path Loss:
+The apparent attenuation a radio signal undergoes as it travels a given
+distance. This attenuation is the result of the dispersion radio waves
+experience as they propagate between transmitter and receiver using
+antennas of finite gain. Free space path loss is technically an
+oxymoron since free space is loss free.
+.SH Perigee:
+Point in a satellite's orbit when the satellite is at its closest
+distance to the earth's surface.
+.SH Nodal Period:
+A satellite orbital parameter specifying the time between successive
+ascending nodes.
+.SH Slant Range:
+The straight line distance between the ground station and the satellite
+at a given time.
+.SH Sub-Satellite Point:
+The latitude and longitude specifying the location on the Earth that
+is directly below the satellite.
+
+.SH ADDITIONAL INFORMATION
+Detailed information on the operation of \fBPREDICT's\fP UDP socket-based
+interface as well as sample code for writing your own client applications
+is available in the \fIpredict/clients/samples\fP subdirectory.  The latest
+news is available through the official \fBPREDICT\fP software web page
+located at: <http://www.qsl.net/kd2bd/predict.html>.
+.SH FILES
+.TP
+\fC~/.predict/predict.tle\fR
+Default database of orbital data
+.TP
+\fC~/.predict/predict.db\fR
+Satellite transponder database file
+.TP
+\fC~/.predict/predict.qth\fR
+Default ground station location information
+
+.SH AUTHORS
+\fBPREDICT\fP was written by John A. Magliacane, KD2BD <kd2bd@amsat.org>.
+The socket server code was contributed by Ivan Galysh, KD4HBO
+<galysh@juno.nrl.navy.mil>.  The PIC/TRACK serial port antenna
+rotator controller code was contributed by Vittorio Benvenuti, I3VFJ
+<benscosm@iol.it>.  SGP4/SDP4 code was derived from Pacsal routines
+written by Dr. T.S. Kelso, and converted to 'C' by Neoklis Kyriazis,
+5B4AZ.  See the CREDITS file for additional information.
+

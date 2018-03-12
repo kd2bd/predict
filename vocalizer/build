@@ -1,0 +1,6 @@
+#!/bin/sh
+# Script for manually compiling vocalizer.c
+#
+echo -n "Compiling vocalizer... "
+cc -Wall -O3 -s -fomit-frame-pointer vocalizer.c -o vocalizer
+echo "Done!"

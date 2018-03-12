@@ -1,0 +1,24 @@
+"kep_reload" is a simple utility that forces an immediate reload
+of PREDICT's Keplerian database through a socket connection while
+PREDICT is running in server mode.  It is especially useful in
+environments where PREDICT runs continuously, and periodic Keplerian
+element updates are made outside of PREDICT, such as through scripts
+run through a crontab.
+
+The "kepupdate" script found in this directory is an example of a
+Keplerian element update script that can be run on an automated
+basis through a crontab.  It is designed to be placed in your
+home directory under a subdirectory called "cronjobs".  It downloads
+Keplerian orbital data from www.celestrak.com using the HTTP protocol.
+(The "wget" utility, available from the Free Software Foundation, is
+required, and is included in many Linux distrubutions.)
+
+Type crontab -e to edit your crontab.  Simply add the following entry:
+
+        0 8 * * * kepupdate
+
+and your orbital database will update each morning at 8:00 AM
+(provided you have a network connection at that time).
+
+See the crontab man page for more information on editing your crontab.
+

@@ -1,0 +1,17 @@
+#!/bin/bash
+# Script to install kep_reload
+#
+if [ ! -x $PWD/kep_reload ]; then
+	$PWD/build
+fi
+
+whoami=`whoami`
+
+if [ $whoami != "root" ]; then
+	echo "Sorry, $whoami.  You need to be 'root' to install this program.  :-("
+	echo "Please su to root and re-run the 'install' script again."
+else
+		rm -f /usr/local/bin/kep_reload
+		ln -s $PWD/kep_reload /usr/local/bin/kep_reload
+fi
+

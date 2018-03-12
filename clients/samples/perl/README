@@ -1,0 +1,9 @@
+"demo.pl" is a Perl script written by Rich Parry, W9IF.  Although written
+to be compliant with earlier versions of PREDICT, it still extracts
+useful tracking data from PREDICT, and can serve as a template for
+writing your own PREDICT clients in Perl.
+
+"kenwood_d700.pl" is a Perl script written by Andrew Rich, VK4TEC
+in August 2005, that tunes a Kenwood D700 transceiver attached to
+/dev/ttyS0 in compensation for Doppler shift.
+

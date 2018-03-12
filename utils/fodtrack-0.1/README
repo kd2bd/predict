@@ -1,0 +1,12 @@
+How to install fodtrack:
+
+Login as root.
+
+cd to the directory where you did extract the files.
+
+call the install.sh script by invoking './install.sh'. This will compile and
+install the tool. For the documentation use the supplied manpages.
+
+---> man fodtrack / man fodtrack.conf
+
+If any problem occurs - you find any bug - feel free to mail me at luc@1409.org
