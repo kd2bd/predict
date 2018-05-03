@@ -6073,7 +6073,7 @@ char *string, *outputfile;
 
 					while (iel>=0)
 					{
-						fprintf(fd,"%.0f %s %4d %4d %4d %4d %4d %6ld %6ld %c %f\n",floor(86400.0*(3651.0+daynum)),Daynum2String(daynum),iel,iaz,ma256,isplat,isplong,irk,rv,findsun,doppler100);
+						fprintf(fd,"%.0f %s %4d %4d %4d %4d %4d %6ld %6ld %c\n",floor(86400.0*(3651.0+daynum)),Daynum2String(daynum),iel,iaz,ma256,isplat,isplong,irk,rv,findsun);
 						lastel=iel;
 						daynum+=cos((sat_ele-1.0)*deg2rad)*sqrt(sat_alt)/25000.0;
 						Calc();
@@ -6084,7 +6084,7 @@ char *string, *outputfile;
 					{
 						daynum=FindLOS();
 						Calc();
-						fprintf(fd,"%.0f %s %4d %4d %4d %4d %4d %6ld %6ld %c %f\n",floor(86400.0*(3651.0+daynum)),Daynum2String(daynum),iel,iaz,ma256,isplat,isplong,irk,rv,findsun,doppler100);
+						fprintf(fd,"%.0f %s %4d %4d %4d %4d %4d %6ld %6ld %c\n",floor(86400.0*(3651.0+daynum)),Daynum2String(daynum),iel,iaz,ma256,isplat,isplong,irk,rv,findsun);
 					}
 				}
 				break;
