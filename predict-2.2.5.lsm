@@ -1,7 +1,7 @@
 Begin4
 Title:		PREDICT
-Version:	2.2.4
-Entered-date:	2018-03-12
+Version:	2.2.5
+Entered-date:	2018-05-07
 Description:	PREDICT is an easy to use, ncurses-based satellite
 		tracking/orbital prediction program developed for the
 		Linux operating system.  PREDICT permits users to track
@@ -30,8 +30,7 @@ Author:		kd2bd@amsat.org (John A. Magliacane)
 		galysh@juno.nrl.navy.mil (Ivan Galysh) - (socket code)
 		benscosm@iol.it (Vittorio Benvenuti) - (PIC/TRACK code)
 Maintained-by:	kd2bd@amsat.org (John A. Magliacane)
-Primary-site:	http://www.qsl.net/kd2bd/
-		predict2.2.4.tar.gz
+Primary-site:	http://www.qsl.net/kd2bd/predict-2.2.5.tar.gz
 Platforms:	Linux/Unix
 Copying-policy:	GPL
 End

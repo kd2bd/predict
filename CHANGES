@@ -1,3 +1,18 @@
+Release 2.2.5:
+By John A. Magliacane <kd2bd@amsat.org> (05-May-2018):
+
+* Fixed coding bugs identified by GCC v8.1.0.
+
+* Re-arranged GCC arguments in installer.c for better
+  compatibility with more recent versions of GCC.
+
+* Added a -dp command-line option to PREDICT to
+  provide quick Doppler shift estimates in CSV format.
+  (Thanks Joeal Subash)
+
+* Updated the documentation to reflect the changes. 
+----------------------------------------------------------------------------
+
 Release 2.2.4:
 By John A. Magliacane <kd2bd@amsat.org> (12-Mar-2018):
 

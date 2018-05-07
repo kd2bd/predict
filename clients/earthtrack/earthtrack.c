@@ -12,7 +12,7 @@
 *                                                                           *
 *****************************************************************************
 *                                                                           *
-*           This code was last modified by KD2BD on 10-Sep-2005.            *
+*           This code was last modified by KD2BD on 04-May-2018.            *
 *                                                                           *
 *****************************************************************************
 *                                                                           *
@@ -218,6 +218,7 @@ double longitude;
 }
 
 char *vis2color(visibility)
+int visibility;
 {
 	/* This function generates a character string based on the
 	   visibility information returned by PREDICT.  It is used
@@ -350,7 +351,7 @@ int main(argc,argv)
 char argc, *argv[];
 {
 	int x, y, z, updateinterval, satnum=0, radius=50, sleeptime=20;
-	char buf[128], command[255], satlist[625], satname[26],
+	char buf[128], command[255], satlist[625], /* satname[26], */
 	     satnamelist[26][26], callsign[15], markerfile[50],
 	     greatarcfile[50], configfile[50], sat2track[30],
 	     hostname[50], color[35], xtra[50], xplanet=0,
@@ -542,10 +543,16 @@ char argc, *argv[];
 			   name.  It is ended with a '\n' character and may
 			   contain spaces. */
 
+
+			/**
 			for (x=0; buf[x]!='\n'; x++)
 				satname[x]=buf[x];
 
-			satname[x]=0;
+			satname[x]=0
+			**/
+
+			for (x=0; buf[x]!='\n'; x++);
+
 			x++;
 
 			/* The rest of the data from GET_SAT is numerical,

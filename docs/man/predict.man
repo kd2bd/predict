@@ -1,4 +1,4 @@
-.TH PREDICT 1 "12 March 2018" "KD2BD Software" "KD2BD Software"
+.TH PREDICT 1 "05 May 2018" "KD2BD Software" "KD2BD Software"
 .SH NAME
 predict \- Track and predict passes of satellites in Earth orbit
 
@@ -7,6 +7,7 @@ predict [-u \fItle_update_source\fP] [-t \fItlefile\fP]
 [-q \fIqthfile\fP] [-a \fIserial_port\fP] [-a1 \fIserial_port\fP]
 [-n \fInetwork_port\fP]
 [-f \fIsat_name starting_date/time ending_date/time\fP]
+[-dp \fIsat_name starting_date/time ending_date/time\fP]
 [-p \fIsat_name starting_date/time\fP]
 [-o \fIoutput_file\fP] [-s] [-east] [-west] [-north] [-south]
 
@@ -364,9 +365,9 @@ For example, the following script can be used to update \fBPREDICT's\fP
 orbital database via the Internet:
 
    \fC#!/bin/sh
-   wget -q www.celestrak.com/NORAD/elements/amateur.txt -O amateur.txt
-   wget -q www.celestrak.com/NORAD/elements/visual.txt -O visual.txt
-   wget -q www.celestrak.com/NORAD/elements/weather.txt -O weather.txt
+   wget -qr www.celestrak.com/NORAD/elements/amateur.txt -O amateur.txt
+   wget -qr www.celestrak.com/NORAD/elements/visual.txt -O visual.txt
+   wget -qr www.celestrak.com/NORAD/elements/weather.txt -O weather.txt
    /usr/local/bin/predict -u amateur.txt visual.txt weather.txt\fR
 
 To truly automate the process of updating your orbital database, save the
@@ -484,6 +485,52 @@ For example:
 \fR
 The output isn't annotated, but then again, it's meant to be read by
 other software.
+
+The \fI-dp\fP option produces a quick orbital prediction for the next
+pass of a specified satellite, including 100 MHz downlink Doppler shift
+information, in CSV format.  For example:
+
+	\fIpredict -dp ISS\fP
+
+produces:
+\fC
+
+1525500165,Sat 05May18 06:02:45,701.256856
+.br
+1525500169,Sat 05May18 06:02:49,678.755942
+.br
+1525500172,Sat 05May18 06:02:52,656.033048
+.br
+1525500176,Sat 05May18 06:02:56,633.093151
+.br
+1525500179,Sat 05May18 06:02:59,609.940999
+.br
+1525500183,Sat 05May18 06:03:03,586.582443
+.br
+1525500186,Sat 05May18 06:03:06,563.022553
+.br
+<... output trimmed ...>
+.br
+1525500367,Sat 05May18 06:06:07,-733.663728
+.br
+1525500370,Sat 05May18 06:06:10,-755.793182
+.br
+1525500374,Sat 05May18 06:06:14,-777.690366
+.br
+1525500377,Sat 05May18 06:06:17,-799.351435
+.br
+1525500381,Sat 05May18 06:06:21,-820.773340
+.br
+1525500384,Sat 05May18 06:06:24,-841.952820
+.br
+1525500388,Sat 05May18 06:06:28,-862.887147
+.br
+\fR
+
+where the Unix time is followed by the UTC date/time and
+100 MHz downlink-referenced Doppler shift.  The satellite
+name can be followed by a starting date/time and ending
+date/time much like the \fI-f\fP option.
 
 .SH SERVER MODE
 \fBPREDICT's\fP network socket interface allows the program to

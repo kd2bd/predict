@@ -10,7 +10,7 @@
 /**     generated and the installation directory      **/
 /**       specified (/usr/local/bin by default).      **/ 
 /**                                                   **/
-/**  Created: Oct 1999 -==- Last update: 19-Nov-2010  **/
+/**  Created: Oct 1999 -==- Last update: 04-May-2018  **/
 /*******************************************************/
 
 #include <curses.h>
@@ -29,7 +29,7 @@ void logo()
 	mvprintw(3,18,"                                           ");
 	mvprintw(4,18,"         --== PREDICT  v%s ==--         ",version);
 	mvprintw(5,18,"   Released by John A. Magliacane, KD2BD   ");
-	mvprintw(6,18,"                March 2018                 ");
+	mvprintw(6,18,"                  May 2018                 ");
 	mvprintw(7,18,"                                           ");
 }
 

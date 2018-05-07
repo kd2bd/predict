@@ -1,7 +1,7 @@
 /***************************************************************************\
 *          PREDICT: A satellite tracking/orbital prediction program         *
 *          Project started 26-May-1991 by John A. Magliacane, KD2BD         *
-*                        Last update: 12-Mar-2018                           *
+*                        Last update: 04-May-2018                           *
 *****************************************************************************
 *                                                                           *
 * This program is free software; you can redistribute it and/or modify it   *
@@ -172,7 +172,7 @@ double	tsince, jul_epoch, jul_utc, eclipse_depth=0,
 	moon_az, moon_el, moon_dx, moon_ra, moon_dec, moon_gha, moon_dv;
 
 char	qthfile[50], tlefile[50], dbfile[50], temp[80], output[25],
-	serial_port[15], resave=0, reload_tle=0, netport[6],
+	serial_port[15], resave=0, reload_tle=0, netport[7],
 	once_per_second=0, ephem[5], sat_sun_status, findsun,
 	calc_squint, database=0, xterm, io_lat='N', io_lon='W';
 
@@ -2347,7 +2347,7 @@ void Banner()
 	mvprintw(3,18,"                                           ");
 	mvprintw(4,18,"         --== PREDICT  v%s ==--         ",version);
 	mvprintw(5,18,"   Released by John A. Magliacane, KD2BD   ");
-	mvprintw(6,18,"                March 2018                 ");
+	mvprintw(6,18,"                  May 2018                 ");
 	mvprintw(7,18,"                                           ");
 }
 
@@ -4001,7 +4001,7 @@ char *string, mode;
 	/* This function buffers and displays orbital predictions
 	   and allows screens to be saved to a disk file. */
 
-	char type[20], spaces[80], head1[70], head2[70],
+	char type[20], spaces[80], head1[160], head2[70],
 	     head3[72], satellite_name[25];
 	int key, ans=0, l, x, t;
 	static char buffer[1450], lines, quit;
@@ -5665,7 +5665,7 @@ void Illumination()
 {
 	double startday, oneminute, sunpercent;
 	int eclipses, minutes, quit, breakout=0;
-	char string1[40], string[80], datestring[25], count;
+	char string1[365], string[725], datestring[25], count;
 
 	oneminute=1.0/(24.0*60.0);
 
@@ -6016,7 +6016,7 @@ char *string, *outputfile;
 {
 	int x, y, z, lastel=0;
 	long start, now;
-	double doppler100;
+	double doppler100=0.0;
 	char satname[50], startstr[20];
 	time_t t;
 	FILE *fd;
@@ -6073,18 +6073,17 @@ char *string, *outputfile;
 
 					while (iel>=0)
 					{
-						fprintf(fd,"%.0f %s %4d %4d %4d %4d %4d %6ld %6ld %c\n",floor(86400.0*(3651.0+daynum)),Daynum2String(daynum),iel,iaz,ma256,isplat,isplong,irk,rv,findsun);
+						fprintf(fd,"%.0f %s %4d %4d %4d %4d %4d %6ld %6ld %c %f\n",floor(86400.0*(3651.0+daynum)),Daynum2String(daynum),iel,iaz,ma256,isplat,isplong,irk,rv,findsun,doppler100);
 						lastel=iel;
 						daynum+=cos((sat_ele-1.0)*deg2rad)*sqrt(sat_alt)/25000.0;
 						Calc();
-
 					}
 
 					if (lastel!=0)
 					{
 						daynum=FindLOS();
 						Calc();
-						fprintf(fd,"%.0f %s %4d %4d %4d %4d %4d %6ld %6ld %c\n",floor(86400.0*(3651.0+daynum)),Daynum2String(daynum),iel,iaz,ma256,isplat,isplong,irk,rv,findsun);
+						fprintf(fd,"%.0f %s %4d %4d %4d %4d %4d %6ld %6ld %c %f\n",floor(86400.0*(3651.0+daynum)),Daynum2String(daynum),iel,iaz,ma256,isplat,isplong,irk,rv,findsun,doppler100);
 					}
 				}
 				break;
@@ -6099,10 +6098,12 @@ char *string, *outputfile;
 }
 
 int QuickDoppler100(string, outputfile)
-/* Do a quick predict of the doppler for non-geo sattelites, returns UTC epoch seconds, 
-UTC time and doppler normalized to 100MHz for every 5 seconds of satellite-pass as a CSV*/
 char *string, *outputfile;
 {
+
+	/* Do a quick predict of the doppler for non-geo sattelites, returns UTC epoch seconds, 
+	   UTC time and doppler normalized to 100MHz for every 5 seconds of satellite-pass as a CSV*/
+
 	int x, y, z, lastel=0;
 	long start, now;
 	double doppler100;
@@ -6189,13 +6190,12 @@ char *string, *outputfile;
 }
 
 
-
 int main(argc,argv)
 char argc, *argv[];
 {
 	int x, y, z, key=0;
-	char updatefile[80], quickfind=0, quickpredict=0,quickdoppler100=0,
-	     quickstring[40], outputfile[42],
+	char updatefile[80], quickfind=0, quickpredict=0,
+	     quickstring[40], outputfile[42], quickdoppler100=0,
 	     tle_cli[50], qth_cli[50], interactive=0;
 	struct termios oldtty, newtty;
 	pthread_t thread;
@@ -6262,7 +6262,7 @@ char argc, *argv[];
 			}
 			z--;
 		}
-		
+
 		if (strcmp(argv[x],"-dp")==0)
 		{
 			quickdoppler100=1;
@@ -6294,6 +6294,7 @@ char argc, *argv[];
 			}
 			z--;	
 		}
+
 
 		if (strcmp(argv[x],"-t")==0)
 		{
@@ -6365,12 +6366,14 @@ char argc, *argv[];
 	if (qth_cli[0]==0)
 		sprintf(qthfile,"%s/.predict/predict.qth",env);
 	else
-		sprintf(qthfile,"%s%c",qth_cli,0);
+		/* sprintf(qthfile,"%s%c",qth_cli,0); */
+		sprintf(qthfile,"%s",qth_cli);
 
 	if (tle_cli[0]==0)
 		sprintf(tlefile,"%s/.predict/predict.tle",env);
 	else
-		sprintf(tlefile,"%s%c",tle_cli,0);
+		/* sprintf(tlefile,"%s%c",tle_cli,0); */
+		sprintf(tlefile,"%s",tle_cli);
 
 	/* Test for interactive/non-interactive mode of operation
 	   based on command-line arguments given to PREDICT. */
@@ -6445,7 +6448,6 @@ char argc, *argv[];
 
 		if (quickdoppler100)  /* -dp was passed to PREDICT */
 			exit(QuickDoppler100(quickstring,outputfile));
-		
 	}
 
 	else

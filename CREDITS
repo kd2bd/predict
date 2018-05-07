@@ -35,6 +35,8 @@ for MTSAT-1R (HIMAWARI 6)), and others.
 Calculations for squint angle were adopted from trk-0.4.1 by Lapo
 Pieri, IK5NAX.
 
+Joeal Subash contributed code for the new "QuickDoppler" feature.
+
 PREDICT is also the product of many others who have contributed
 bug reports, bug fixes, helpful suggestions, and positive support.
 
@@ -43,5 +45,5 @@ bug reports, bug fixes, helpful suggestions, and positive support.
 John A. Magliacane, KD2BD
 Lead Developer
 kd2bd@amsat.org
-November 2005
+May 2018
 

@@ -1,7 +1,7 @@
 /***************************************************************************\
 *                  MoonTracker: A Moon AutoTracking Utility                 *
 *            Created by John A. Magliacane, KD2BD, on 29-Nov-2002           *
-*                          Last update: 06-Apr-2006                         *
+*                          Last update: 04-May-2018                         *
 *****************************************************************************
 *                                                                           *
 * This program is free software; you can redistribute it and/or modify it   *
@@ -27,7 +27,7 @@
 #include <termios.h>
 #include <signal.h>
 
-char	callsign[20], output[20];
+char	callsign[20], output[21];
 int	qthalt, pid;
 double	qthlat, qthlong, moon_az, moon_el, moonrise,
 	PI=3.141592653589793, TWOPI=6.28318530717958623,
@@ -58,9 +58,10 @@ double CurrentDaynum()
 	   of days since 31Dec79 00:00:00 UTC (daynum 0) */
 
 	struct timeval tptr;
-	int x;
+	/* int x; */
 
-	x=gettimeofday(&tptr,NULL);
+	/* x=gettimeofday(&tptr,NULL); */
+	gettimeofday(&tptr,NULL);
 
 	return ((((double)tptr.tv_sec+0.000001*(double)tptr.tv_usec)/86400.0)-3651.0);
 }
@@ -161,7 +162,7 @@ double daynum;
 
 	double	jd, s, t, t2, t3, d, f, l1, m, m1, ex, om, l,
 		b, w1, w2, bt, p, lm, h, ra, dec, z, ob, n,
-		e, el, az, teg, th;
+		el, az, teg, th;
 
 	jd=daynum+2444238.5;
 
@@ -295,7 +296,7 @@ double daynum;
 	/* dec = declination */
 
 	n=qthlat*deg2rad;    /* North latitude of tracking station */
-	e=-qthlong*deg2rad;  /* East longitude of tracking station */
+	/* e=-qthlong*deg2rad; */  /* East longitude of tracking station */
 
 	/* Find siderial time in radians */
 
