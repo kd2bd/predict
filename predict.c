@@ -6016,6 +6016,7 @@ char *string, *outputfile;
 {
 	int x, y, z, lastel=0;
 	long start, now;
+	double doppler100;
 	char satname[50], startstr[20];
 	time_t t;
 	FILE *fd;
@@ -6076,6 +6077,7 @@ char *string, *outputfile;
 						lastel=iel;
 						daynum+=cos((sat_ele-1.0)*deg2rad)*sqrt(sat_alt)/25000.0;
 						Calc();
+
 					}
 
 					if (lastel!=0)
@@ -6096,11 +6098,103 @@ char *string, *outputfile;
 	return 0;
 }
 
+int QuickDoppler100(string, outputfile)
+/* Do a quick predict of the doppler for non-geo sattelites, returns UTC epoch seconds, 
+UTC time and doppler normalized to 100MHz for every 5 seconds of satellite-pass as a CSV*/
+char *string, *outputfile;
+{
+	int x, y, z, lastel=0;
+	long start, now;
+	double doppler100;
+	char satname[50], startstr[20];
+	time_t t;
+	FILE *fd;
+
+	if (outputfile[0])
+		fd=fopen(outputfile,"w");
+	else
+		fd=stdout;
+
+	startstr[0]=0;
+
+	ReadDataFiles();
+
+	for (x=0; x<48 && string[x]!=0 && string[x]!='\n'; x++)
+		satname[x]=string[x];
+
+	satname[x]=0;
+	x++;
+
+	for (y=0; string[x+y]!=0 && string[x+y]!='\n'; y++)
+		startstr[y]=string[x+y];
+
+	startstr[y]=0;
+	y++;
+
+	/* Do a simple search for the matching satellite name */
+
+	for (z=0; z<24; z++)
+	{
+		if ((strcmp(sat[z].name,satname)==0) || (atol(satname)==sat[z].catnum))
+		{
+			start=atol(startstr);
+			indx=z;
+
+			t=time(NULL);
+			now=(long)t;
+
+			if (start==0)
+				start=now;
+
+			if ((start>=now-31557600) && (start<=now+31557600))
+			{
+				/* Start must within one year of now */
+				daynum=((start/86400.0)-3651.0);
+				PreCalc(indx);
+				Calc();
+
+				if (AosHappens(indx) && Geostationary(indx)==0 && Decayed(indx,daynum)==0)
+				{
+					/* Make Predictions */
+					daynum=FindAOS();
+
+					/* Display the pass */
+
+					while (iel>=0)
+					{
+						doppler100=-100.0e06*((sat_range_rate*1000.0)/299792458.0);
+						fprintf(fd,"%.0f,%s,%f\n",floor(86400.0*(3651.0+daynum)),Daynum2String(daynum),doppler100);
+						lastel=iel;
+						daynum+=cos((sat_ele-1.0)*deg2rad)*sqrt(sat_alt)/500000.0;
+						Calc();
+					}
+
+					if (lastel!=0)
+					{
+						doppler100=-100.0e06*((sat_range_rate*1000.0)/299792458.0);
+						daynum=FindLOS();
+						Calc();
+						fprintf(fd,"%.0f,%s,%f\n",floor(86400.0*(3651.0+daynum)),Daynum2String(daynum),doppler100);
+					}
+				}
+				break;
+			}
+		}
+	}
+
+	if (outputfile[0])
+		fclose(fd);
+
+	return 0;
+}
+
+
+
 int main(argc,argv)
 char argc, *argv[];
 {
 	int x, y, z, key=0;
-	char updatefile[80], quickfind=0, quickpredict=0,
+	char updatefile[80], quickfind=0, quickpredict=0,quickdoppler100=0,
 	     quickstring[40], outputfile[42],
 	     tle_cli[50], qth_cli[50], interactive=0;
 	struct termios oldtty, newtty;
@@ -6155,6 +6249,23 @@ char argc, *argv[];
 		if (strcmp(argv[x],"-p")==0)
 		{
 			quickpredict=1;
+			z=x+1;
+
+			while (z<=y && argv[z][0] && argv[z][0]!='-')
+			{
+				if ((strlen(quickstring)+strlen(argv[z]))<37)
+				{
+					strncat(quickstring,argv[z],15);
+					strcat(quickstring,"\n");
+					z++;
+				}
+			}
+			z--;
+		}
+		
+		if (strcmp(argv[x],"-dp")==0)
+		{
+			quickdoppler100=1;
 			z=x+1;
 
 			while (z<=y && argv[z][0] && argv[z][0]!='-')
@@ -6264,7 +6375,7 @@ char argc, *argv[];
 	/* Test for interactive/non-interactive mode of operation
 	   based on command-line arguments given to PREDICT. */
 
-	if (updatefile[0] || quickfind || quickpredict)
+	if (updatefile[0] || quickfind || quickpredict || quickdoppler100)
 		interactive=0;
 	else
 		interactive=1;
@@ -6331,6 +6442,10 @@ char argc, *argv[];
 
 		if (quickpredict)  /* -p was passed to PREDICT */
 			exit(QuickPredict(quickstring,outputfile));
+
+		if (quickdoppler100)  /* -dp was passed to PREDICT */
+			exit(QuickDoppler100(quickstring,outputfile));
+		
 	}
 
 	else
