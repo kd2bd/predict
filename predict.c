@@ -2199,9 +2199,7 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 	/* are vector_t structures returning ECI satellite position and */
 	/* velocity. Use Convert_Sat_State() to convert to km and km/s. */
 
-	int i;
-
-	static double edot, xndot, xhdot1, xgdot1, unmth2, unm5th,
+	static double edot, xndot, xmdot1, xhdot1, xgdot1, unmth2, unm5th,
 		      cosio2, sinio2, tthmun;
 
 	double a1, del1, ao, delo, b, po, pom2, temp, theta4, a3cof, pardt1,
@@ -2255,10 +2253,10 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 		pardt1=3.*ck2*pom2*deep_arg.xnodp;
 		pardt2=pardt1*ck2*pom2;
 		pardt4=1.25*ck4*pom2*pom2*deep_arg.xnodp;
-		deep_arg.xmdot=.5*pardt1*deep_arg.betao*tthmun;
+		xmdot1=.5*pardt1*deep_arg.betao*tthmun;
 		xgdot1=-.5*pardt1*unm5th;
 		xhdot1=-pardt1*deep_arg.cosio;
-		deep_arg.xmdot=deep_arg.xnodp+deep_arg.xmdot+
+		deep_arg.xmdot=deep_arg.xnodp+xmdot1+
 			.0625*pardt2*deep_arg.betao*(13.-78.*deep_arg.theta2+137.*theta4);
 		deep_arg.omgdot=xgdot1+
 			.0625*pardt2*(7.-114.*deep_arg.theta2+395.*theta4)+pardt4*(3.-36.*
@@ -2285,7 +2283,7 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 		c4=d1*d3*b2;
 		c5=d5*d4*b3;
 		xndot=c1*(
-			(2.+eta2*(2.+34.*deep_arg.eosq)+5.*eeta*(4.+eta2)+8.5*deep_arg.eosq)+
+			(2.+eta2*(3.+34.*deep_arg.eosq)+5.*eeta*(4.+eta2)+8.5*deep_arg.eosq)+
 			d1*d2*b1+c4*cos2g+c5*deep_arg.sing);
 		xndotn=xndot/deep_arg.xnodp;
 		edot=-tothrd*xndotn*(1.-tle->eo);
@@ -2306,14 +2304,13 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 	Deep(dpsec,tle,&deep_arg);
 	deep_arg.xn=deep_arg.xn+xndot*tsince;
 	deep_arg.em=deep_arg.em+edot*tsince;
-	deep_arg.xll=deep_arg.xll+z1+z7*deep_arg.xmdot;
+	deep_arg.xll=deep_arg.xll+z1+z7*xmdot1;
 	Deep(dpper,tle,&deep_arg);
 	deep_arg.xll=FMod2p(deep_arg.xll);
 
 	/* Solve Kepler's Equation */
 	zc2=deep_arg.xll+deep_arg.em*sin(deep_arg.xll)*(1.+deep_arg.em*cos(deep_arg.xll));
-	i=0;
-	do
+	for (int i = 1; i <= 10; i++)
 	{
 		sine=sin(zc2);
 		cose=cos(zc2);
@@ -2323,7 +2320,7 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 		if (fabs(cape-zc2)<=e6a)
 			break;
 		zc2=cape;
-	} while (i++<10);
+	}
 
 	/* Short period preliminary quantities */
 	am=pow(xke/deep_arg.xn,tothrd);
@@ -2355,7 +2352,7 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 	dr=g2*(unmth2*cs2f2g-3.*tthmun)-g4*snfg;
 	diwc=3.*g3*deep_arg.sinio*cs2f2g-g5*aynm;
 	di=diwc*deep_arg.cosio;
-	sini2=sin(.5*tle->xincl);
+	sini2=sin(.5*deep_arg.xinc);
 
 	/* Update for short periodics */
 	sni2du=sinio2*(
@@ -2369,7 +2366,7 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 	r=rm+dr;
 	rdot=deep_arg.xn*am*deep_arg.em*snf/beta+g14*(2.*g2*unmth2*sn2f2g+g4*csfg);
 	rvdot=deep_arg.xn*am*am*beta/rm+
-		g14*dr+am*g14*deep_arg.sinio*diwc;
+		g14*dr+am*g13*deep_arg.sinio*diwc;
 
 	/* Orientation vectors */
 	snlamb=sin(xlamb);
