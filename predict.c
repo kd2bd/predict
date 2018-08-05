@@ -2199,6 +2199,8 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 	/* are vector_t structures returning ECI satellite position and */
 	/* velocity. Use Convert_Sat_State() to convert to km and km/s. */
 
+        int    i;
+
 	static double edot, xndot, xmdot1, xhdot1, xgdot1, unmth2, unm5th,
 		      cosio2, sinio2, tthmun;
 
@@ -2310,7 +2312,7 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 
 	/* Solve Kepler's Equation */
 	zc2=deep_arg.xll+deep_arg.em*sin(deep_arg.xll)*(1.+deep_arg.em*cos(deep_arg.xll));
-	for (int i = 1; i <= 10; i++)
+	for (i = 0; i < 10; i++)
 	{
 		sine=sin(zc2);
 		cose=cos(zc2);
