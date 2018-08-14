@@ -771,7 +771,7 @@ void SGP(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 	       su, sin2u, cos2u, rk, uk, xnodek, xinck, sinuk, cosuk, sinnok,
 	       cosnok, sinik, cosik, xmx, xmy, ux, uy, uz, vx, vy, vz;
 
-	int itemp1, itemp3;
+	int i;
 
 
 	/* Initialization */
@@ -823,25 +823,23 @@ void SGP(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 
 	/* Solve Kepler's Equation */
 	u=FMod2p(xl-xnodes);
-	itemp3=0;
 	eo1=u;
 	temp5=1.;
-	for (;;)
+	i=0;
+
+	do
 	{
 		sineo1=sin(eo1);
 		coseo1=cos(eo1);
 		if (fabs(temp5) < e6a)
 			break;
-		if (itemp3 >= 10)
-			break;
-		itemp3=itemp1+1;
 		temp5=1.-coseo1*axnsl-sineo1*aynsl;
 		temp5=(u-aynsl*coseo1+axnsl*sineo1-eo1)/temp5;
 		temp2=fabs(temp5);
 		if (temp2 > 1.)
 			temp5=temp2/temp5;
 		eo1=eo1+temp5;
-	}
+	} while (i++<10);
 
 	/* Short period preliminary quantities */
 	ecose=axnsl*coseo1+aynsl*sineo1;
@@ -1361,6 +1359,7 @@ void SGP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 	/* Solve Kepler's Equation */
 	zc2=xmam+em*sin(xmam)*(1.+em*cos(xmam));
 	i=0;
+
 	do
 	{
 		sine=sin(zc2);
@@ -1369,7 +1368,7 @@ void SGP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 		cape=(xmam+em*sine-zc2)*zc5+zc2;
 		if (fabs(cape-zc2)<=e6a) break;
 		zc2=cape;
-	}	while (i++<10);
+	} while (i++<10);
 
 	/* Short period preliminary quantities */
 	am=pow(xke/xn,tothrd);
@@ -2312,7 +2311,9 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 
 	/* Solve Kepler's Equation */
 	zc2=deep_arg.xll+deep_arg.em*sin(deep_arg.xll)*(1.+deep_arg.em*cos(deep_arg.xll));
-	for (i = 0; i < 10; i++)
+	i=0;
+
+	do
 	{
 		sine=sin(zc2);
 		cose=cos(zc2);
@@ -2322,7 +2323,7 @@ void SDP8(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 		if (fabs(cape-zc2)<=e6a)
 			break;
 		zc2=cape;
-	}
+	} while (i++<10);
 
 	/* Short period preliminary quantities */
 	am=pow(xke/deep_arg.xn,tothrd);
