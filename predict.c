@@ -5434,7 +5434,11 @@ void MultiTrack()
 
 	mvprintw(2,21, "Current Date/Time: ");
 
-	mvprintw(5,0, " Satellite  Az   El %s  %s  Range  | Satellite  Az   El %s  %s  Range   ",(io_lat=='N'?"LatN":"LatS"),(io_lon=='W'?"LonW":"LonE"),(io_lat=='N'?"LatN":"LatS"),(io_lon=='W'?"LonW":"LonE"));
+	attrset(A_BOLD);
+
+	mvprintw(4,0, " Satellite                   Az   El %s  %s  Range",(io_lat=='N'?"LatN":"LatS"),(io_lon=='W'?"LonW":"LonE"));
+
+	attrset(COLOR_PAIR(2));
 
 	for (x=0; x<24; x++)
 	{
@@ -5453,12 +5457,12 @@ void MultiTrack()
 	{
 		for (z=0; z<24; z++)
 		{
-			y=z/2;
+			y=z;
 
 			if (z%2)
 			{
-				indx=y+12;
-				x=41;
+				indx=y;
+				x=1;
 			}
 
 			else
@@ -5496,7 +5500,7 @@ void MultiTrack()
 				else
 					sunstat='N';
 
-				mvprintw(y+6,x,"%-10s%3.0f  %+3.0f  %3.0f   %3.0f %6.0f %c", Abbreviate(sat[indx].name,9),sat_azi,sat_ele,(io_lat=='N'?+1:-1)*sat_lat,(io_lon=='W'?360.0-sat_lon:sat_lon),sat_range,sunstat);
+				mvprintw(y+5,x,"%-27s%3.0f  %+3.0f  %3.0f   %3.0f %6.0f %c", Abbreviate(sat[indx].name,29),sat_azi,sat_ele,(io_lat=='N'?+1:-1)*sat_lat,(io_lon=='W'?360.0-sat_lon:sat_lon),sat_range,sunstat);
 
 				if (socket_flag)
 				{
@@ -5525,20 +5529,20 @@ void MultiTrack()
 				}
 
 				attrset(COLOR_PAIR(4)|A_BOLD);
-				mvprintw(20,5,"   Sun   ");
-				mvprintw(21,5,"---------");
+				mvprintw(37,53,"   Sun   ");
+				mvprintw(38,53,"---------");
 				attrset(COLOR_PAIR(3)|A_BOLD);
-				mvprintw(22,5,"%-7.2fAz",sun_azi);
-				mvprintw(23,4,"%+-6.2f  El",sun_ele);
+				mvprintw(39,53,"%-7.2fAz",sun_azi);
+				mvprintw(40,52,"%+-6.2f  El",sun_ele);
 
 				FindMoon(daynum);
 
 				attrset(COLOR_PAIR(4)|A_BOLD);
-				mvprintw(20,65,"  Moon  ");
-				mvprintw(21,65,"---------");
+				mvprintw(32,53,"  Moon  ");
+				mvprintw(33,53,"---------");
 				attrset(COLOR_PAIR(3)|A_BOLD);
-				mvprintw(22,65,"%-7.2fAz",moon_az);
-				mvprintw(23,64,"%+-6.2f  El",moon_el);
+				mvprintw(34,53,"%-7.2fAz",moon_az);
+				mvprintw(35,52,"%+-6.2f  El",moon_el);
 
 				/* Calculate Next Event (AOS/LOS) Times */
 
@@ -5574,7 +5578,7 @@ void MultiTrack()
 			if (Decayed(indx,0.0))
 			{
 				attrset(COLOR_PAIR(2));
-				mvprintw(y+6,x,"%-10s---------- Decayed ---------", Abbreviate(sat[indx].name,9));
+				mvprintw(y+6,x,"%-30s---------- Decayed ---------", Abbreviate(sat[indx].name,9));
 
 				if (socket_flag)
 				{
@@ -5622,15 +5626,15 @@ void MultiTrack()
 			/* Display list of upcoming passes */
 
 			attrset(COLOR_PAIR(4)|A_BOLD);
-			mvprintw(19,31,"Upcoming Passes");
-			mvprintw(20,31,"---------------");
+			mvprintw(30,2,"Upcoming Passes");
+			mvprintw(31,2,"---------------");
 			attrset(COLOR_PAIR(3)|A_BOLD);
 
 			for (x=0, y=0, z=-1; x<21 && y!=10; x++) // dh changed x!=3 to 10
 			{
 				if (ok2predict[satindex[x]] && aos2[x]!=0.0)
 				{
-					mvprintw(y+21,19,"%10s on %s UTC",Abbreviate(sat[(int)satindex[x]].name,9),Daynum2String(aos2[x]));
+					mvprintw(y+32,2,"%-20s at %s UTC",Abbreviate(sat[(int)satindex[x]].name,19),Daynum2String(aos2[x]));
 
 					if (z==-1)
 						z=x;
