@@ -1,7 +1,7 @@
 #include <math.h>
 //#include <time.h>
 #include <sys/time.h>
-//#include <stdlib.h>
+#include <stdlib.h>
 //#include <string.h>
 //#include <ctype.h>
 //#include <pthread.h>
@@ -267,7 +267,12 @@ void FindMoon(double daynum, struct location qth)
 	printf("DX:  %f\n", moon_dx);
 }
 
-int main(){
+int main(int argc, char * argv[]){
+
+  if (argc != 4){
+		printf("Usage: moon LAT LONG ALT\n");
+		return 0;
+	}
 
   struct location home_qth;
 	double daynum;
@@ -276,9 +281,9 @@ int main(){
   int timezone_offset = 0;
 
   // Lat, Long and altitude in meters
-	home_qth.stnlat = 40;
-	home_qth.stnlong = 105.2;
-	home_qth.stnalt = 1700;
+	home_qth.stnlat = strtol(argv[1], NULL, 10);
+	home_qth.stnlong = strtol(argv[2], NULL, 10);
+	home_qth.stnalt = strtol(argv[3], NULL, 10);
 
   daynum = CurrentDaynum(timezone_offset);
 
