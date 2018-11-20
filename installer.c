@@ -19,7 +19,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
-#include <sys/soundcard.h>
+// #include <sys/soundcard.h>
 
 char version[10];
 
