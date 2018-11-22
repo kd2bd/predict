@@ -48,7 +48,7 @@
 #define e6a		1.0E-6
 #define tothrd		6.6666666666666666E-1	/* 2/3 */
 #define xj2		1.0826158E-3		/* J2 Harmonic (WGS '72) */
-#define xj3		-2.53881E-6		/* J3 Harmonic (WGS '72) */   
+#define xj3		-2.53881E-6		/* J3 Harmonic (WGS '72) */
 #define xj4		-1.65597E-6		/* J4 Harmonic (WGS '72) */
 #define xke		7.43669161E-2
 #define xkmper		6.378137E3		/* WGS 84 Earth radius km */
@@ -209,7 +209,7 @@ typedef struct	{
 			   xnodeo, eo, omegao, xmo, xno;
  		   int	   catnr, elset, revnum;
  		   char	   sat_name[25], idesg[9];
-		}  tle_t; 
+		}  tle_t;
 
 /* Geodetic position structure used by SGP4/SDP4 code. */
 
@@ -229,10 +229,10 @@ typedef struct	{
 		   	   /* Used by dpinit part of Deep() */
 		   double  eosq, sinio, cosio, betao, aodp, theta2,
 			   sing, cosg, betao2, xmdot, omgdot, xnodot, xnodp;
-	   
+
 			   /* Used by dpsec and dpper parts of Deep() */
 		   double  xll, omgadf, xnode, em, xinc, xn, t;
-    
+
 		 	   /* Used by thetg and Deep() */
 		   double  ds50;
 		}  deep_arg_t;
@@ -275,10 +275,10 @@ int Sign(double arg)
 
 	if (arg>0)
 		return 1;
-		
+
 	else if (arg<0)
 		return -1;
-		
+
 	else
 		return 0;
 }
@@ -358,7 +358,7 @@ void Scalar_Multiply(double k, vector_t *v1, vector_t *v2)
 }
 
 void Scale_Vector(double k, vector_t *v)
-{ 
+{
 	/* Multiplies the vector v1 by the scalar k */
 	v->x*=k;
 	v->y*=k;
@@ -479,7 +479,7 @@ double Int(double arg)
 void Convert_Sat_State(vector_t *pos, vector_t *vel)
 {
 	/* Converts the satellite's position and velocity  */
-	/* vectors from normalized values to km and km/sec */ 
+	/* vectors from normalized values to km and km/sec */
 	Scale_Vector(xkmper, pos);
 	Scale_Vector(xkmper*xmnpda/secday, vel);
 }
@@ -510,7 +510,7 @@ double Julian_Date_of_Year(double year)
 }
 
 double Julian_Date_of_Epoch(double epoch)
-{ 
+{
 	/* The function Julian_Date_of_Epoch returns the Julian Date of     */
 	/* an epoch specified in the format used in the NORAD two-line      */
 	/* element sets. It has been modified to support dates beyond       */
@@ -543,7 +543,7 @@ int DOY (int yr, int mo, int dy)
 	int i, day;
 
 	day=0;
-	
+
 	for (i=0; i<mo-1; i++ )
 	    day+=days[i];
 
@@ -603,7 +603,7 @@ double Delta_ET(double year)
 	/* This function is based on a least squares fit of data from 1950 */
 	/* to 1991 and will need to be updated periodically. */
 
-	/* Values determined using data from 1950-1991 in the 1990 
+	/* Values determined using data from 1950-1991 in the 1990
 	Astronomical Almanac.  See DELTA_ET.WQ1 for details. */
 
 	double delta_et;
@@ -759,7 +759,7 @@ void SGP4(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 	/* of near-earth (period < 225 minutes) satellites. tsince is   */
 	/* time since epoch in minutes, tle is a pointer to a tle_t     */
 	/* structure with Keplerian orbital elements and pos and vel    */
-	/* are vector_t structures returning ECI satellite position and */ 
+	/* are vector_t structures returning ECI satellite position and */
 	/* velocity. Use Convert_Sat_State() to convert to km and km/s. */
 
 	static double aodp, aycof, c1, c4, c5, cosio, d2, d3, d4, delmo,
@@ -891,7 +891,7 @@ void SGP4(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 	tempa=1-c1*tsince;
 	tempe=tle->bstar*c4*tsince;
 	templ=t2cof*tsq;
-    
+
 	if (isFlagClear(SIMPLE_FLAG))
 	{
 		delomg=omgcof*tsince;
@@ -934,10 +934,10 @@ void SGP4(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 		temp5=axn*cosepw;
 		temp6=ayn*sinepw;
 		epw=(capu-temp4+temp3-temp2)/(1-temp5-temp6)+temp2;
-	  
+
 		if (fabs(epw-temp2)<= e6a)
 			break;
-	      
+
 		temp2=epw;
 
 	} while (i++<10);
@@ -998,7 +998,7 @@ void SGP4(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 
 	/* Phase in radians */
 	phase=xlt-xnode-omgadf+twopi;
-    
+
 	if (phase<0.0)
 		phase+=twopi;
 
@@ -1046,7 +1046,7 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 
 		/* Initialize lunar solar terms */
 		day=deep_arg->ds50+18261.5;  /* Days since 1900 Jan 0.5 */
-	  
+
 		if (day!=preep)
 		{
 			preep=day;
@@ -1085,7 +1085,7 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 
 		  /* Loop breaks when Solar terms are done a second */
 		  /* time, after Lunar terms are initialized        */
-	  
+
 		for (;;)
 		{
 			/* Solar terms done again after Lunar terms are done */
@@ -1134,10 +1134,10 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 			sl=-zn*s3*(z1+z3-14-6*deep_arg->eosq);
 			sgh=s4*zn*(z31+z33-6);
 			sh=-zn*s2*(z21+z23);
-		
+
 			if (xqncl<5.2359877E-2)
 				sh=0;
-		    
+
 			ee2=2*s1*s6;
 			e3=2*s1*s7;
 			xi2=2*s2*z12;
@@ -1198,14 +1198,14 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 		{
 			if ((xnq<0.00826) || (xnq>0.00924))
 			    return;
-	
+
 			if (eq<0.5)
 			    return;
-	
+
 			SetFlag(RESONANCE_FLAG);
 			eoc=eq*deep_arg->eosq;
 			g201=-0.306-(eq-0.64)*0.440;
-		
+
 			if (eq<=0.65)
 			{
 				g211=3.616-13.247*eq+16.290*deep_arg->eosq;
@@ -1215,7 +1215,7 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 				g422=-146.407+841.880*eq-1629.014*deep_arg->eosq+1083.435 * eoc;
 				g520=-532.114+3017.977*eq-5740*deep_arg->eosq+3708.276*eoc;
 			}
-		
+
 			else
 			{
 				g211=-72.099+331.819*eq-508.738*deep_arg->eosq+266.724*eoc;
@@ -1223,10 +1223,10 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 				g322=-342.585+1554.908*eq-2366.899*deep_arg->eosq+1215.972*eoc;
 				g410=-1052.797+4758.686*eq-7193.992*deep_arg->eosq+3651.957*eoc;
 				g422=-3581.69+16178.11*eq-24462.77*deep_arg->eosq+12422.52*eoc;
-		      
+
 				if (eq<=0.715)
 					g520=1464.74-4664.75*eq+3763.64*deep_arg->eosq;
-			  
+
 				else
 					g520=-5149.66+29936.92*eq-54087.36*deep_arg->eosq+31324.56*eoc;
 			}
@@ -1237,7 +1237,7 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 				g521=-822.71072+4568.6173*eq-8491.4146*deep_arg->eosq+5337.524*eoc;
 				g532=-853.666+4690.25*eq-8624.77*deep_arg->eosq+5341.4*eoc;
 			}
-		
+
 			else
 			{
 				g533=-37995.78+161616.52*eq-229838.2*deep_arg->eosq+109377.94*eoc;
@@ -1281,12 +1281,12 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 			bfact=deep_arg->xmdot+deep_arg->xnodot+deep_arg->xnodot-thdt-thdt;
 			bfact=bfact+ssl+ssh+ssh;
 		}
-	
+
 		else
 		{
 			SetFlag(RESONANCE_FLAG);
 			SetFlag(SYNCHRONOUS_FLAG);
-	
+
 			/* Synchronous resonance terms initialization */
 			g200=1+deep_arg->eosq*(-2.5+0.8125*deep_arg->eosq);
 			g310=1+2*deep_arg->eosq;
@@ -1325,14 +1325,14 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 		deep_arg->xnode=deep_arg->xnode+ssh*deep_arg->t;
 		deep_arg->em=tle->eo+sse*deep_arg->t;
 		deep_arg->xinc=tle->xincl+ssi*deep_arg->t;
-	  
+
 		if (deep_arg->xinc<0)
 		{
 			deep_arg->xinc=-deep_arg->xinc;
 			deep_arg->xnode=deep_arg->xnode+pi;
 			deep_arg->omgadf=deep_arg->omgadf-pi;
 		}
-	
+
 		if (isFlagClear(RESONANCE_FLAG))
 		      return;
 
@@ -1362,7 +1362,7 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 						delt=stepn;
 				}
 			}
-	    
+
 			do
 			{
 				if (fabs(deep_arg->t-atime)>=stepp)
@@ -1370,7 +1370,7 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 					SetFlag(DO_LOOP_FLAG);
 					ClearFlag(EPOCH_RESTART_FLAG);
 				}
-		
+
 				else
 				{
 					ft=deep_arg->t-atime;
@@ -1393,7 +1393,7 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 					xndot=del1*sin(xli-fasx2)+del2*sin(2*(xli-fasx4))+del3*sin(3*(xli-fasx6));
 					xnddt=del1*cos(xli-fasx2)+2*del2*cos(2*(xli-fasx4))+3*del3*cos(3*(xli-fasx6));
 				}
-		
+
 				else
 				{
 					xomi=omegaq+deep_arg->omgdot*atime;
@@ -1472,7 +1472,7 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 			deep_arg->xnode=deep_arg->xnode+ph;
 			deep_arg->xll=deep_arg->xll+pl;
 		}
-	
+
 		else
 		{
 			/* Apply periodics with Lyddane modification */
@@ -1493,7 +1493,7 @@ void Deep(int ientry, tle_t * tle, deep_arg_t * deep_arg)
 
 			/* This is a patch to Lyddane modification */
 			/* suggested by Rob Matson. */
-		
+
 			if (fabs(xnoh-deep_arg->xnode)>pi)
 			{
 			      if (deep_arg->xnode<xnoh)
@@ -1542,7 +1542,7 @@ void SDP4(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 
 		/* Recover original mean motion (xnodp) and   */
 		/* semimajor axis (aodp) from input elements. */
-	  
+
 		a1=pow(xke/tle->xno,tothrd);
 		deep_arg.cosio=cos(tle->xincl);
 		deep_arg.theta2=deep_arg.cosio*deep_arg.cosio;
@@ -1558,18 +1558,18 @@ void SDP4(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 
 		/* For perigee below 156 km, the values */
 		/* of s and qoms2t are altered.         */
-	  
+
 		s4=s;
 		qoms24=qoms2t;
 		perigee=(deep_arg.aodp*(1-tle->eo)-ae)*xkmper;
-	  
+
 		if (perigee<156.0)
 		{
 			if (perigee<=98.0)
 				s4=20.0;
 			else
 				s4=perigee-78.0;
-	
+
 			qoms24=pow((120-s4)*ae/xkmper,4);
 			s4=s4/xkmper+ae;
 		}
@@ -1664,12 +1664,12 @@ void SDP4(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 		temp5=axn*cosepw;
 		temp6=ayn*sinepw;
 		epw=(capu-temp4+temp3-temp2)/(1-temp5-temp6)+temp2;
-	  
+
 		if (fabs(epw-temp2)<=e6a)
 			break;
 
 		temp2=epw;
-	  
+
 	} while (i++<10);
 
 	/* Short period preliminary quantities */
@@ -1740,10 +1740,10 @@ void SDP4(double tsince, tle_t * tle, vector_t * pos, vector_t * vel)
 		ay=cx*sin(xnodek)+cy*cos(xnodek);
 		az=cz;
 	}
-	
+
 	/* Phase in radians */
 	phase=xlt-deep_arg.xnode-deep_arg.omgadf+twopi;
-    
+
 	if (phase<0.0)
 		phase+=twopi;
 
@@ -1857,7 +1857,7 @@ void Calculate_Obs(double time, vector_t *pos, vector_t *vel, geodetic_t *geodet
 	top_z=cos_lat*cos_theta*range.x+cos_lat*sin_theta*range.y+sin_lat*range.z;
 	azim=atan(-top_e/top_s); /* Azimuth */
 
-	if (top_s>0.0) 
+	if (top_s>0.0)
 		azim=azim+pi;
 
 	if (azim<0.0)
@@ -1945,7 +1945,7 @@ char *string;
 	   the terminal, and displays an error message (string)
 	   when we need to bail out of the program in a hurry. */
 
-	beep();	
+	beep();
 	curs_set(1);
 	bkgdset(COLOR_PAIR(1));
 	clear();
@@ -1984,11 +1984,11 @@ int passivesock(char *service, char *protocol, int qlen)
 	struct protoent *ppe;
 	struct sockaddr_in sin;
 	int sd, type;
-	
+
 	memset((char *)&sin, 0, sizeof(struct sockaddr_in));
 	sin.sin_family=AF_INET;
 	sin.sin_addr.s_addr=INADDR_ANY;
-	
+
 	if ((pse=getservbyname(service,protocol)))
 		sin.sin_port=htons(ntohs((unsigned short)pse->s_port)+portbase);
 
@@ -1997,18 +1997,18 @@ int passivesock(char *service, char *protocol, int qlen)
 		bailout("Can't get service");
 		exit(-1);
 	}
-	
+
 	if ((ppe=getprotobyname(protocol))==0)
 	{
 		bailout("Can't get protocol");
 		exit(-1);
 	}
-	
+
 	if (strcmp(protocol,"udp")==0)
 		type=SOCK_DGRAM;
 	else
 		type=SOCK_STREAM;
-	
+
 	sd=socket(PF_INET,type, ppe->p_proto);
 
 	if (sd<0)
@@ -2016,13 +2016,13 @@ int passivesock(char *service, char *protocol, int qlen)
 		bailout("Can't open socket");
 		exit(-1);
 	}
-	
+
 	if (bind(sd,(struct sockaddr *)&sin,sizeof(sin))<0)
 	{
 		bailout("Can't bind");
 		exit(-1);
 	}
-	
+
 	if ((type=SOCK_STREAM && listen(s,qlen))<0)
 	{
 		bailout("Listen fail");
@@ -2052,14 +2052,14 @@ char *predict_name;
 
 	sock=passivesock(netport,"udp",10);
  	alen=sizeof(fsin);
-	
+
 	/* This is the main loop for monitoring the socket
 	   port and sending back replies to clients */
 
 	while (1)
 	{
 		/* Get datagram from socket port */
-		
+
 		if ((n=recvfrom(sock,buf,sizeof(buf),0,(struct sockaddr *)&fsin,&alen)) < 0)
 			exit (-1);
 
@@ -2333,7 +2333,7 @@ char *predict_name;
 
 		if (ok==0)
 			sendto(sock,"Huh?\n",5,0,(struct sockaddr *)&fsin,sizeof(fsin));
-	} 	
+	}
 }
 
 void Banner()
@@ -2536,7 +2536,7 @@ int x;
 	/* This function converts orbital data held in the numeric
 	   portion of the sat tle structure to ASCII TLE format,
 	   and places the result in ASCII portion of the structure. */
- 
+
 	int i;
 	char string[15], line1[70], line2[70];
 	unsigned sum;
@@ -2587,12 +2587,12 @@ int x;
 
 	sprintf(string,"%9.4f",sat[x].incl);
 	CopyString(string,line2,7,15);
-				
+
 	sprintf(string,"%9.4f",sat[x].raan);
 	CopyString(string,line2,16,24);
 
 	sprintf(string,"%13.12f",sat[x].eccn);
-	
+
 	/* Erase eccentricity's decimal point */
 
 	for (i=2; i<=9; string[i-2]=string[i], i++);
@@ -2639,7 +2639,7 @@ char *input;
 	   extra spaces found either leading, trailing, or
 	   embedded within the numbers expressed in the
 	   input string.  Decimal seconds are permitted. */
- 
+
 	char string[20];
 	double bearing=0.0, seconds;
 	int a, b, length, degrees, minutes;
@@ -2656,7 +2656,7 @@ char *input;
 		{
 			string[b]=input[a];
 			b++;
-		}	 
+		}
 	}
 
 	string[b]=0;
@@ -2711,7 +2711,7 @@ char ReadDataFiles()
 	char flag=0, match, name[80], line1[80], line2[80];
 
 	fd=fopen(qthfile,"r");
-	
+
 	if (fd!=NULL)
 	{
 		fgets(qth.callsign,16,fd);
@@ -2756,7 +2756,7 @@ char ReadDataFiles()
 				   with blanks.  The following lines cut
 				   out the blanks as well as the line feed
 				   character read by the fgets() function. */
- 
+
 				y=strlen(name);
 
 				while (name[y]==32 || name[y]==0 || name[y]==10 || name[y]==13 || y==0)
@@ -2764,7 +2764,7 @@ char ReadDataFiles()
 					name[y]=0;
 					y--;
 				}
-				
+
 				/* Copy TLE data into the sat data structure */
 
 				strncpy(sat[x].name,name,24);
@@ -2953,7 +2953,7 @@ void SaveQTH()
 {
 	/* This function saves QTH data to the QTH data file. */
 
-	FILE *fd;	
+	FILE *fd;
 
 	fd=fopen(qthfile,"w");
 
@@ -2982,7 +2982,7 @@ void SaveTLE()
 
 		/* Write name, line1, line2 to predict.tle */
 
-		fprintf(fd,"%s\n", sat[x].name);  
+		fprintf(fd,"%s\n", sat[x].name);
 		fprintf(fd,"%s\n", sat[x].line1);
 		fprintf(fd,"%s\n", sat[x].line2);
 	}
@@ -3061,7 +3061,7 @@ char *string;
 			fgets(str0,75,fd);
 			fgets(str1,75,fd);
 			fgets(str2,75,fd);
-		
+
 			do
 			{
 				if (KepCheck(str1,str2))
@@ -3133,18 +3133,18 @@ char *string;
 						}
 					}
 
-					 fgets(str0,75,fd);     	
+					 fgets(str0,75,fd);
 					 fgets(str1,75,fd);
 					 fgets(str2,75,fd);
 				}
 
 				else
 				{
-					strcpy(str0,str1);   
-					strcpy(str1,str2);   
+					strcpy(str0,str1);
+					strcpy(str1,str2);
 					fgets(str2,75,fd);
 				}
-			
+
 			} while (feof(fd)==0);
 
 			fclose(fd);
@@ -3179,7 +3179,7 @@ char *string;
 		{
 			noecho();
 
-			if (strlen(filename) && fd!=NULL) 
+			if (strlen(filename) && fd!=NULL)
 			{
 				attrset(COLOR_PAIR(4)|A_BOLD);
 				AnyKey();
@@ -3243,9 +3243,9 @@ int  m, d, y;
 	double mm, yy;
 
 	if (m<3)
-	{ 
-		y--; 
-		m+=12; 
+	{
+		y--;
+		m+=12;
 	}
 
 	if (y<57)
@@ -3320,7 +3320,7 @@ char mode;
 	   and returns the corresponding fractional day number.
 	   31Dec79 00:00:00 returns 0.  Default is NOW. */
 
-	int	x, hr, min, sec ,mm=0, dd=0, yy; 
+	int	x, hr, min, sec ,mm=0, dd=0, yy;
 	char	good, mon[5], line[30], string[30], bozo_count=0,
 		*month[12]= {"Jan", "Feb", "Mar", "Apr", "May",
 		"Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
@@ -3361,7 +3361,7 @@ char mode;
 		wgetnstr(stdscr,string,29);
 		curs_set(0);
 		noecho();
-		       
+
 		if (strlen(string)!=0)
 			strcpy(line,string);
 		else
@@ -3381,7 +3381,7 @@ char mode;
 			line[15]='0';
 			line[16]=0;
 		}
-			
+
 		/* Check Day */
 		good = (isdigit(line[0]) && isdigit(line[1])) ? 1 : 0;
 
@@ -3401,7 +3401,7 @@ char mode;
 		good = (good && isdigit(line[14]) && isdigit(line[15])) ? 1 : 0;
 
 	     	if (good)
-		{ 
+		{
 			/* Decode Day */
 			dd=10*(line[0]-'0')+line[1]-'0';
 
@@ -3418,7 +3418,7 @@ char mode;
 			for (mm=0; (mm<12 && strcmp(mon,month[mm])!=0); mm++);
 
 			mm++;
-	
+
 			good=(mm>12) ? 0 : 1;
 		}
 
@@ -3449,7 +3449,7 @@ char mode;
 	hr=10*(line[8]-'0')+line[9]-'0';
 	min=10*(line[11]-'0')+line[12]-'0';
 	sec=10*(line[14]-'0')+line[15]-'0';
-	
+
 	return ((double)DayNum(mm,dd,yy)+((hr/24.0)+(min/1440.0)+(sec/86400.0)));
 }
 
@@ -3479,7 +3479,7 @@ double daynum;
 	ff=11.250889+483202.0251*t-0.003211*t2-0.0000003*t3;
 	om=259.183275-1934.142*t+0.002078*t2+0.0000022*t3;
 	om=om*deg2rad;
-	
+
 	/* Additive terms */
 
 	l1=l1+0.000233*sin((51.2+20.2*t)*deg2rad);
@@ -3514,10 +3514,10 @@ double daynum;
 	l=l+0.058793*sin(2.0*d-2.0*m1)+ex*0.057212*sin(2.0*d-m-m1)+0.05332*sin(2.0*d+m1);
 	l=l+ex*0.045874*sin(2.0*d-m)+ex*0.041024*sin(m1-m)-0.034718*sin(d);
 	l=l-ex*0.030465*sin(m+m1)+0.015326*sin(2.0*d-2.0*ff)-0.012528*sin(2.0*ff+m1);
-	
+
 	l=l-0.01098*sin(2.0*ff-m1)+0.010674*sin(4.0*d-m1)+0.010034*sin(3.0*m1);
 	l=l+0.008548*sin(4.0*d-2.0*m1)-ex*0.00791*sin(m-m1+2.0*d)-ex*0.006783*sin(2.0*d+m);
-	
+
 	l=l+0.005162*sin(m1-d)+ex*0.005*sin(m+d)+ex*0.004049*sin(m1-m+2.0*d);
 	l=l+0.003996*sin(2.0*m1+2.0*d)+0.003862*sin(4.0*d)+0.003665*sin(2.0*d-3.0*m1);
 
@@ -3595,7 +3595,7 @@ double daynum;
 	ob=ob*deg2rad;
 	dec=asin(sin(b)*cos(ob)+cos(b)*sin(ob)*sin(lm));
 	ra=acos(cos(b)*cos(lm)/cos(dec));
-	
+
 	if (lm>pi)
 		ra=twopi-ra;
 
@@ -3668,7 +3668,7 @@ double daynum;
 
 	Calculate_Solar_Position(jul_utc, &solar_vector);
 	Calculate_Obs(jul_utc, &solar_vector, &zero_vector, &obs_geodetic, &solar_set);
-	sun_azi=Degrees(solar_set.x); 
+	sun_azi=Degrees(solar_set.x);
 	sun_ele=Degrees(solar_set.y);
 	sun_range=1.0+((solar_set.z-AU)/AU);
 	sun_range_rate=1000.0*solar_set.w;
@@ -3714,7 +3714,7 @@ int x;
 	}
 	else
 		calc_squint=0;
- 
+
 	/* Clear all flags */
 
 	ClearFlag(ALL_FLAGS);
@@ -3827,7 +3827,7 @@ void Calc()
 
 	rv=(long)floor((tle.xno*xmnpda/twopi+age*tle.bstar*ae)*age+tle.xmo/twopi)+tle.revnum;
 
-	sun_azi=Degrees(solar_set.x); 
+	sun_azi=Degrees(solar_set.x);
 	sun_ele=Degrees(solar_set.y);
 
 	irk=(long)rint(sat_range);
@@ -3903,7 +3903,7 @@ int x;
 	/* This function returns a 1 if the satellite pointed
 	   to by "x" appears to be in a geostationary orbit */
 
-	if (fabs(sat[x].meanmo-1.0027)<0.0002) 
+	if (fabs(sat[x].meanmo-1.0027)<0.0002)
 
 		return 1;
 	else
@@ -4030,7 +4030,7 @@ char *string, mode;
 			sprintf(head1,"\n                    %s's Orbit Calendar for the Sun",qth.callsign);
 			strncpy(satellite_name,"Sun\0",4);
 		}
-	
+
 		if (mode=='m' || mode=='o')
 
 			sprintf(head2,"\n\t   Date     Time    El   Az   RA     Dec    GHA     Vel   Range\n");
@@ -4114,7 +4114,7 @@ char *string, mode;
 					ans=1;
 					quit=0;
 				}
-			
+
 				if (key=='N' || key=='Q' || key==27)
 				{
 					key='N';
@@ -4221,7 +4221,7 @@ char *string;
 				/* Dump buffer to Print() line by line */
 
 				for (x=0, y=0; buffer[x]!=0 && quit==0; x++)
-				{	
+				{
 					line[y]=buffer[x];
 
 					if (line[y]=='\n')
@@ -4276,7 +4276,7 @@ char mode;
 		do
 		{
 			daynum=FindAOS();
-		
+
 			/* Display the pass */
 
 			while (iel>=0 && quit==0)
@@ -4556,7 +4556,7 @@ void ShowOrbitData()
 	/* This function permits displays a satellite's orbital
 	   data.  The age of the satellite data is also provided. */
 
-	int c, x, namelength, age;	
+	int c, x, namelength, age;
 	double an_period, no_period, sma, c1, e2, satepoch;
 	char days[5];
 
@@ -4571,7 +4571,7 @@ void ShowOrbitData()
 			sma=331.25*exp(log(1440.0/sat[x].meanmo)*(2.0/3.0));
 			an_period=1440.0/sat[x].meanmo;
 			c1=cos(sat[x].incl*deg2rad);
-			e2=1.0-(sat[x].eccn*sat[x].eccn); 
+			e2=1.0-(sat[x].eccn*sat[x].eccn);
 			no_period=(an_period*360.0)/(360.0+(4.97*pow((xkmper/sma),3.5)*((5.0*c1*c1)-1.0)/(e2*e2))/sat[x].meanmo);
 			satepoch=DayNum(1,0,sat[x].year)+sat[x].refepoch;
 			age=(int)rint(CurrentDaynum()-satepoch);
@@ -4587,7 +4587,7 @@ void ShowOrbitData()
 
 			for (c=41; c>namelength; c-=2)
 				printw(" ");
-	
+
 			printw("Orbital Data For %s / Catalog Number %ld\n",sat[x].name,sat[x].catnum);
 			attrset(COLOR_PAIR(3)|A_BOLD);
 			printw("\n\t\t  Issued %d %s ago on %s UTC\n\n",age,days,Daynum2String(satepoch));
@@ -4637,7 +4637,7 @@ void ShowOrbitData()
 
 		x=Select();
 	 };
-}	
+}
 
 void KepEdit()
 {
@@ -4668,7 +4668,7 @@ void KepEdit()
 			printw("\n\t\t\tMean Motion     :");
 			printw("\n\t\t\tDecay Rate      :");
 			printw("\n\t\t\tNddot/6         :");
-			printw("\n\t\t\tBstar Drag Term :");        
+			printw("\n\t\t\tBstar Drag Term :");
 			printw("\n\t\t\tOrbit Number    :");
 			printw("\n\t\t\tElement Set No. :");
 
@@ -4717,7 +4717,7 @@ void KepEdit()
 
 			if (KbEdit(43,12))
 				sscanf(temp,"%lf",&sat[x].incl);
-			    
+
 			sprintf(temp,"%4.4f",sat[x].raan);
 
 			if (KbEdit(43,13))
@@ -4727,12 +4727,12 @@ void KepEdit()
 
 			if (KbEdit(43,14))
 				sscanf(temp,"%lf",&sat[x].eccn);
-			    
+
 			sprintf(temp,"%4.4f",sat[x].argper);
 
 			if (KbEdit(43,15))
 				sscanf(temp,"%lf",&sat[x].argper);
-			    
+
 			sprintf(temp,"%4.4f",sat[x].meanan);
 
 			if (KbEdit(43,16))
@@ -4742,12 +4742,12 @@ void KepEdit()
 
 			if (KbEdit(43,17))
 				sscanf(temp,"%lf",&sat[x].meanmo);
-			    
+
 			sprintf(temp,"%g",sat[x].drag);
 
 			if (KbEdit(43,18))
 				sscanf(temp,"%lf",&sat[x].drag);
-			    
+
 			sprintf(temp,"%g",sat[x].nddot6);
 
 			if (KbEdit(43,19))
@@ -4767,7 +4767,7 @@ void KepEdit()
 
 			if (KbEdit(43,22))
 				sscanf(temp,"%ld",&sat[x].setnum);
-		  	
+
 			curs_set(0);
 		}
 
@@ -4778,7 +4778,7 @@ void KepEdit()
 		SaveTLE();
 		resave=0;
 	}
-}	
+}
 
 void QthEdit()
 {
@@ -4829,7 +4829,7 @@ void QthEdit()
 		mvprintw(18,12,"Enter your latitude in degrees NORTH  (south=negative) ");
 	else
 		mvprintw(18,12,"Enter your latitude in degrees SOUTH  (north=negative) ");
- 
+
 	mvprintw(19,12,"  Decimal (74.2467) or DMS (74 14 48) format allowed");
 
 	if (KbEdit(45,13))
@@ -4839,17 +4839,17 @@ void QthEdit()
 		else
 			qth.stnlat=-ReadBearing(temp);
 	}
- 
+
 	if (io_lon=='W')
 		sprintf(temp,"%g [DegW]",+qth.stnlong);
 	else
 		sprintf(temp,"%g [DegE]",-qth.stnlong);
- 
+
 	if (io_lon=='W')
 		mvprintw(18,12,"Enter your longitude in degrees WEST   (east=negative) ");
 	else
 		mvprintw(18,12,"Enter your longitude in degrees EAST   (west=negative) ");
- 
+
 	if (KbEdit(45,14))
 	{
 		if (io_lon=='W')
@@ -4857,7 +4857,7 @@ void QthEdit()
 		else
 			qth.stnlong=-ReadBearing(temp);
 	}
- 
+
 	move(19,12);
 	clrtoeol();
 	mvprintw(18,12,"    Enter your altitude above sea level (in meters)   ");
@@ -4937,7 +4937,7 @@ char speak;
 	decayed=Decayed(indx,0.0);
 
 	if (xterm)
-		fprintf(stderr,"\033]0;PREDICT: Tracking %-10s\007",sat[x].name); 
+		fprintf(stderr,"\033]0;PREDICT: Tracking %-10s\007",sat[x].name);
 	halfdelay(2);
 	curs_set(0);
 	bkgdset(COLOR_PAIR(3));
@@ -4945,10 +4945,13 @@ char speak;
 
 	attrset(COLOR_PAIR(6)|A_REVERSE|A_BOLD);
 
-	printw("                                                                                ");
-	printw("                     PREDICT Real-Time Satellite Tracking                        ");
-	printw("                 Tracking: %-10sOn                                       ",Abbreviate(sat[x].name,9));
-	printw("                                                                                 ");
+	mvprintw(0,23, "PREDICT Real-Time Satellite Tracking");
+
+	attrset(COLOR_PAIR(2));
+
+	mvprintw(2,30, "Tracking: %s",Abbreviate(sat[x].name,30));
+
+	mvprintw(4,21, "Current Date/Time: ");
 
 	attrset(COLOR_PAIR(4)|A_BOLD);
 
@@ -4973,9 +4976,9 @@ char speak;
 
 	do
 	{
-		attrset(COLOR_PAIR(6)|A_REVERSE|A_BOLD);
+		attrset(COLOR_PAIR(2)|A_BOLD);
 		daynum=CurrentDaynum();
-		mvprintw(2,41,"%s",Daynum2String(daynum));
+		mvprintw(4,41,"%s",Daynum2String(daynum));
 		attrset(COLOR_PAIR(2)|A_BOLD);
 		Calc();
 
@@ -5422,17 +5425,20 @@ void MultiTrack()
 		fprintf(stderr,"\033]0;PREDICT: Multi-Satellite Tracking Mode\007");
 
 	curs_set(0);
-	attrset(COLOR_PAIR(6)|A_REVERSE|A_BOLD);
+	attrset(COLOR_PAIR(6)|A_BOLD|A_REVERSE);
 	clear();
 
-	printw("                                                                                ");
-	printw("                     PREDICT Real-Time Multi-Tracking Mode                      ");
-	printw("                    Current Date/Time:                                          ");
-	printw("                                                                                ");
+	mvprintw(0,22, "PREDICT Real-Time Multi-Tracking Mode");
 
-	attrset(COLOR_PAIR(2)|A_REVERSE);
+	attrset(COLOR_PAIR(2));
 
-	printw(" Satellite  Az   El %s  %s  Range  | Satellite  Az   El %s  %s  Range   ",(io_lat=='N'?"LatN":"LatS"),(io_lon=='W'?"LonW":"LonE"),(io_lat=='N'?"LatN":"LatS"),(io_lon=='W'?"LonW":"LonE"));
+	mvprintw(2,21, "Current Date/Time: ");
+
+	attrset(A_BOLD);
+
+	mvprintw(4,0, " Satellite                   Az   El %s  %s  Range",(io_lat=='N'?"LatN":"LatS"),(io_lon=='W'?"LonW":"LonE"));
+
+	attrset(COLOR_PAIR(2));
 
 	for (x=0; x<24; x++)
 	{
@@ -5451,12 +5457,12 @@ void MultiTrack()
 	{
 		for (z=0; z<24; z++)
 		{
-			y=z/2;
+			y=z;
 
 			if (z%2)
 			{
-				indx=y+12;
-				x=41;
+				indx=y;
+				x=1;
 			}
 
 			else
@@ -5494,7 +5500,7 @@ void MultiTrack()
 				else
 					sunstat='N';
 
-				mvprintw(y+6,x,"%-10s%3.0f  %+3.0f  %3.0f   %3.0f %6.0f %c", Abbreviate(sat[indx].name,9),sat_azi,sat_ele,(io_lat=='N'?+1:-1)*sat_lat,(io_lon=='W'?360.0-sat_lon:sat_lon),sat_range,sunstat);
+				mvprintw(y+5,x,"%-27s%3.0f  %+3.0f  %3.0f   %3.0f %6.0f %c", Abbreviate(sat[indx].name,29),sat_azi,sat_ele,(io_lat=='N'?+1:-1)*sat_lat,(io_lon=='W'?360.0-sat_lon:sat_lon),sat_range,sunstat);
 
 				if (socket_flag)
 				{
@@ -5523,20 +5529,20 @@ void MultiTrack()
 				}
 
 				attrset(COLOR_PAIR(4)|A_BOLD);
-				mvprintw(20,5,"   Sun   ");
-				mvprintw(21,5,"---------");
+				mvprintw(37,53,"   Sun   ");
+				mvprintw(38,53,"---------");
 				attrset(COLOR_PAIR(3)|A_BOLD);
-				mvprintw(22,5,"%-7.2fAz",sun_azi);
-				mvprintw(23,4,"%+-6.2f  El",sun_ele);
+				mvprintw(39,53,"%-7.2fAz",sun_azi);
+				mvprintw(40,52,"%+-6.2f  El",sun_ele);
 
 				FindMoon(daynum);
 
 				attrset(COLOR_PAIR(4)|A_BOLD);
-				mvprintw(20,65,"  Moon  ");
-				mvprintw(21,65,"---------");
+				mvprintw(32,53,"  Moon  ");
+				mvprintw(33,53,"---------");
 				attrset(COLOR_PAIR(3)|A_BOLD);
-				mvprintw(22,65,"%-7.2fAz",moon_az);
-				mvprintw(23,64,"%+-6.2f  El",moon_el);
+				mvprintw(34,53,"%-7.2fAz",moon_az);
+				mvprintw(35,52,"%+-6.2f  El",moon_el);
 
 				/* Calculate Next Event (AOS/LOS) Times */
 
@@ -5572,7 +5578,7 @@ void MultiTrack()
 			if (Decayed(indx,0.0))
 			{
 				attrset(COLOR_PAIR(2));
-				mvprintw(y+6,x,"%-10s---------- Decayed ---------", Abbreviate(sat[indx].name,9));
+				mvprintw(y+6,x,"%-30s---------- Decayed ---------", Abbreviate(sat[indx].name,9));
 
 				if (socket_flag)
 				{
@@ -5595,10 +5601,10 @@ void MultiTrack()
 			}
  		}
 
-		attrset(COLOR_PAIR(6)|A_REVERSE|A_BOLD);
+		attrset(COLOR_PAIR(2)|A_BOLD);
 
 		daynum=CurrentDaynum();
-		mvprintw(2,39,"%s",Daynum2String(daynum));
+		mvprintw(2,40,"%s",Daynum2String(daynum));
 
 		if (daynum>nextcalctime)
 		{
@@ -5620,15 +5626,15 @@ void MultiTrack()
 			/* Display list of upcoming passes */
 
 			attrset(COLOR_PAIR(4)|A_BOLD);
-			mvprintw(19,31,"Upcoming Passes");
-			mvprintw(20,31,"---------------");
+			mvprintw(30,2,"Upcoming Passes");
+			mvprintw(31,2,"---------------");
 			attrset(COLOR_PAIR(3)|A_BOLD);
 
-			for (x=0, y=0, z=-1; x<21 && y!=3; x++)
+			for (x=0, y=0, z=-1; x<21 && y!=10; x++) // dh changed x!=3 to 10
 			{
 				if (ok2predict[satindex[x]] && aos2[x]!=0.0)
 				{
-					mvprintw(y+21,19,"%10s on %s UTC",Abbreviate(sat[(int)satindex[x]].name,9),Daynum2String(aos2[x]));
+					mvprintw(y+32,2,"%-20s at %s UTC",Abbreviate(sat[(int)satindex[x]].name,19),Daynum2String(aos2[x]));
 
 					if (z==-1)
 						z=x;
@@ -5791,7 +5797,7 @@ void MainMenu()
 	refresh();
 
 	if (xterm)
-		fprintf(stderr,"\033]0;PREDICT: Version %s\007",version); 
+		fprintf(stderr,"\033]0;PREDICT: Version %s\007",version);
 }
 
 void ProgramInfo()
@@ -5925,7 +5931,7 @@ char *string, *outputfile;
 		endstr[z]=string[x+y+z];
 
 	endstr[z]=0;
- 
+
 	/* Do a simple search for the matching satellite name */
 
 	for (z=0; z<24; z++)
@@ -5939,7 +5945,7 @@ char *string, *outputfile;
 				step=60;
 				endstr[strlen(endstr)-1]=0;
 			}
-			
+
 			if (endstr[0]=='+')
 				end=start+((long)step)*atol(endstr);
 			else
@@ -6101,7 +6107,7 @@ int QuickDoppler100(string, outputfile)
 char *string, *outputfile;
 {
 
-	/* Do a quick predict of the doppler for non-geo sattelites, returns UTC epoch seconds, 
+	/* Do a quick predict of the doppler for non-geo sattelites, returns UTC epoch seconds,
 	   UTC time and doppler normalized to 100MHz for every 5 seconds of satellite-pass as a CSV*/
 
 	int x, y, z, lastel=0;
@@ -6218,7 +6224,7 @@ char argc, *argv[];
 	netport[0]=0;
 	serial_port[0]=0;
 	once_per_second=0;
-		
+
 	y=argc-1;
 	antfd=-1;
 
@@ -6292,7 +6298,7 @@ char argc, *argv[];
 					z++;
 				}
 			}
-			z--;	
+			z--;
 		}
 
 
@@ -6481,7 +6487,7 @@ char argc, *argv[];
 		if (env!=NULL && strncmp(env,"xterm",5)==0)
 			xterm=1;
 		else
-			xterm=0; 
+			xterm=0;
 
 		/* Start ncurses */
 
@@ -6554,7 +6560,7 @@ char argc, *argv[];
 				exit(-1);
 			}
 		}
-	
+
 		/* Socket activated here.  Remember that
 		   the socket data is updated only when
 		   running in the real-time tracking modes. */
@@ -6569,7 +6575,7 @@ char argc, *argv[];
 		MainMenu();
 
 		do
-		{	
+		{
 			key=getch();
 
 			if (key!='T')
@@ -6665,7 +6671,7 @@ char argc, *argv[];
 			close(antfd);
 		}
 
-		curs_set(1);	
+		curs_set(1);
 		bkgdset(COLOR_PAIR(1));
 		clear();
 		refresh();
@@ -6674,4 +6680,3 @@ char argc, *argv[];
 
 	exit(0);
 }
-
