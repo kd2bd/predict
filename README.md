@@ -1,6 +1,6 @@
 
-PREDICT
-=======
+![PREDICT](https://qsl.net/kd2bd/predictlogo.jpg)
+=================================================
 
 PREDICT is an [open-source](http://www.opensource.org/), multi-user satellite
 tracking and orbital prediction program written under the [Linux operating
