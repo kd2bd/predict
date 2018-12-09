@@ -1,9 +1,10 @@
-			=========================
-			PREDICT QUICK START GUIDE
-			=========================
+
+PREDICT QUICK START GUIDE
+=========================
+
 
 SYSTEM REQUIREMENTS
-===================
+-------------------
 This program requires ncurses version 4.2 or higher.  Earlier versions have
 been known to cause segmentation faults and/or odd display colors with this
 program.  ncurses may be obtained via:
@@ -16,7 +17,7 @@ usually available in modern Linux distributions.
 
 
 UNPACKING
-=========
+---------
 The PREDICT archive can be unpacked in any directory for which read access
 is provided for all system users (such as /usr/src or /usr/local/src for
 Slackware Linux).  As root, move the tar file to such a directory and
@@ -28,7 +29,7 @@ to unpack the file.
 
 
 COMPILATION
-===========
+-----------
 PREDICT's compilation and installation procedure differs slightly from
 that of most software, but should easy enough to understand and follow.
 First, move (cd) into the predict directory and execute the included
@@ -47,11 +48,11 @@ directory as an argument on the command line:
 
 NOTE: "configure" may stall if the system soundcard is in use.  Some
 window managers (sometimes KDE) take control of the soundcard, and prevent
-the configure script from opening /dev/dsp and checking its existence. 
+the configure script from opening /dev/dsp and checking its existence.
 
 
 FIRST TIME USE
-==============
+--------------
 First time users will be asked to enter their groundstation latitude and
 longitude in decimal degrees or in degree, minute, second (DMS) format.
 Normally, PREDICT handles longitudes in decimal degrees WEST (0-360
@@ -66,7 +67,7 @@ http://www.space-track.org, and http://www.amsat.org/.
 
 
 FOR FURTHER INFORMATION
-=======================
+-----------------------
 Please consult the files under the "docs" subdirectory for more
 directions on the use and capabilities of PREDICT.
 
@@ -75,9 +76,8 @@ available at: http://www.qsl.net/kd2bd/predict.html.
 
 
 Happy Tracking!
- 
---
-John, KD2BD
-kd2bd@amsat.org
-March 2018
 
+--  
+John, KD2BD  
+kd2bd@amsat.org  
+March 2018
