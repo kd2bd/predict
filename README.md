@@ -1,7 +1,42 @@
 
-PREDICT QUICK START GUIDE
-=========================
+PREDICT
+=======
 
+PREDICT is an [open-source](http://www.opensource.org/), multi-user satellite
+tracking and orbital prediction program written under the [Linux operating
+system](https://qsl.net/kd2bd/linux.html) by [John A. Magliacane,
+KD2BD](https://qsl.net/kd2bd/index.html).  PREDICT is [free
+software](https://www.gnu.org/philosophy/free-sw.html).  Users may redistribute
+it and/or modify it under the terms of the [GNU General Public
+License](https://www.gnu.org/licenses/gpl.html) as published by the [Free
+Software Foundation](https://www.fsf.org/), either version 2 of the License or
+any later version.
+
+
+PREDICT Features
+----------------
+PREDICT provides real-time satellite tracking and orbital prediction information
+to users and client applications in a variety of ways:
+
+*	Through the system console
+*	Through the command line
+*	Through a network socket
+*	Through the generation of audio speech
+
+Data such as a spacecraft's sub-satellite point, azimuth and elevation headings,
+Doppler shift, path loss, slant range, orbital altitude, orbital velocity,
+footprint diameter, orbital phase (mean anomaly), squint angle, eclipse depth,
+the time and date of the next AOS (or LOS of the current pass), orbit number,
+and sunlight and visibility information are provided on a real-time basis.
+PREDICT can also track (or predict the position of) the Sun and Moon.  PREDICT
+also has the ability to control AZ/EL antenna rotators to maintain accurate
+orientation in the direction of communication satellites.  As an aid in locating
+and tracking satellites through optical means, PREDICT can articulate tracking
+coordinates and visibility information as plain speech.
+
+
+QUICK START GUIDE
+=========================
 
 SYSTEM REQUIREMENTS
 -------------------
