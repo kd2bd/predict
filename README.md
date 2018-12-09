@@ -1,17 +1,21 @@
 
-![PREDICT](https://qsl.net/kd2bd/predictlogo.jpg)
+![PREDICT]
 =================================================
 
-PREDICT is an [open-source](http://www.opensource.org/), multi-user satellite
-tracking and orbital prediction program written under the [Linux operating
-system](https://qsl.net/kd2bd/linux.html) by [John A. Magliacane,
-KD2BD](https://qsl.net/kd2bd/index.html).  PREDICT is [free
-software](https://www.gnu.org/philosophy/free-sw.html).  Users may redistribute
-it and/or modify it under the terms of the [GNU General Public
-License](https://www.gnu.org/licenses/gpl.html) as published by the [Free
-Software Foundation](https://www.fsf.org/), either version 2 of the License or
+PREDICT is an [open-source], multi-user satellite tracking and orbital
+prediction program written under the [Linux operating system] by [John A.
+Magliacane, KD2BD].  PREDICT is [free software].  Users may redistribute it
+and/or modify it under the terms of the [GNU General Public License] as
+published by the [Free Software Foundation], either version 2 of the License or
 any later version.
 
+[PREDICT]: https://qsl.net/kd2bd/predictlogo.jpg
+[open-source]: http://www.opensource.org/
+[Linux operating system]: https://qsl.net/kd2bd/linux.html
+[John A. Magliacane, KD2BD]: https://qsl.net/kd2bd/index.html
+[free software]: https://www.gnu.org/philosophy/free-sw.html
+[GNU General Public License]: https://www.gnu.org/licenses/gpl.html
+[Free Software Foundation]: https://www.fsf.org/
 
 PREDICT Features
 ----------------
