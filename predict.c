@@ -5134,7 +5134,11 @@ char argc, *argv[];
 			if (serial_port[x-1]=='/')
 				serial_port[x-1]=0;
 
+#ifdef _WIN32
+			antfd=open(serial_port, O_RDWR);
+#else
 			antfd=open(serial_port, O_RDWR|O_NOCTTY);
+#endif
 
 			if (antfd!=-1)
 			{
