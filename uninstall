@@ -1,5 +1,0 @@
-#!/bin/bash
-# Script to uninstall PREDICT by breaking symlinks
-# between the installation and destination directories
-#
-rm -f /usr/local/bin/predict /usr/local/bin/xpredict /usr/local/bin/kep_update /usr/local/bin/earthtrack /usr/local/bin/earthtrack2 /usr/local/bin/geosat /usr/local/bin/map /usr/local/man/man1/predict.1

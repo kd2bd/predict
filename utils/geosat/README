@@ -1,7 +1,0 @@
-This directory contains the source code for "geosat.c", a simple
-program for determining the "look angles" for geostationary satellites
-based on their longitude.  Groundstation location information for this
-program is obtained from PREDICT's data files.
-
-See the INSTALL file for installation instructions.
-

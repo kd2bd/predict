@@ -1,7 +1,0 @@
-#!/bin/bash
-# Script to compile earthtrack
-#
-echo -n "Compiling earthtrack... "
-cc -Wall -O3 -s -fomit-frame-pointer -lm earthtrack.c -o earthtrack
-echo "Done!"
-
