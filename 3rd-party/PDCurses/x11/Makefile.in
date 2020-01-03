@@ -1,0 +1,754 @@
+# Makefile for PDCurses library for X11
+
+SHELL    = @SHELL@
+
+@SET_MAKE@
+
+# srcdir is set to .../PDCurses/x11 by configure
+srcdir = @srcdir@
+basedir = $(srcdir)/..
+abs_basedir = @abs_srcdir@/..
+exec_prefix = @exec_prefix@
+prefix = @prefix@
+libdir = @libdir@
+bindir = @bindir@
+includedir = @includedir@
+
+x11dir = $(srcdir)
+pdcursesdir = $(basedir)/pdcurses
+demodir = $(basedir)/demos
+
+PDCURSES_CONFIG_H =./config.h
+PDCURSES_CURSES_H =$(basedir)/curses.h
+PDCURSES_CURSPRIV_H  =$(basedir)/curspriv.h
+PDCURSES_HEADERS  =$(PDCURSES_CONFIG_H) $(PDCURSES_CURSES_H) \
+$(PDCURSES_CURSPRIV_H)
+PDCURSES_X11_H    =$(x11dir)/pdcx11.h
+
+INSTALL = $(x11dir)/install-sh
+RANLIB = @RANLIB@
+SHLPRE = @SHLPRE@
+SHLPST = @SHLPST@
+SHLFILE = XCurses
+SHL_TARGETS =      @SHL_TARGETS@
+OTHER_INSTALLS =   @OTHER_INSTALLS@
+BASE_INSTALL =     @BASE_INSTALL@
+BASE_BINARY =      @BASE_BINARY@
+CAN_USE_ABI =      @CAN_USE_ABI@
+RPMTOPDIR   =      @RPMTOPDIR@
+MYDISTRO =         @MYDISTRO@
+MACH_ARCH =        @MACH_ARCH@
+LN_S =             @LN_S@ -f
+
+include $(basedir)/version.mif
+
+PDC_DIR=PDCurses-$(VERDOT)
+
+ZIPFILE = pdcurs$(VER).zip
+TARBALL = $(PDC_DIR).tar.gz
+
+LD_RXLIB1   = @LD_RXLIB1@
+LD_RXLIB2   = @MH_XLIBS@ @MH_EXTRA_LIBS@ -lc
+
+CFLAGS      = @CFLAGS@
+
+CPPFLAGS = @DEFS@ -DXCURSES @SYS_DEFS@ -I$(basedir) -I.
+
+BUILD    = @CC@ -c $(CFLAGS) $(CPPFLAGS) @MH_XINC_DIR@
+DYN_BUILD   = @O2SAVE@ $(BUILD) @DYN_COMP@ @CC2O@
+
+LINK     = @PURIFY@ @CC@
+#LDFLAGS = $(LIB_DEPS) @LDFLAGS@ @LIBS@ @MH_XLIBS@ @MH_EXTRA_LIBS@
+LDFLAGS     = $(LIBCURSES) @LDFLAGS@ @LIBS@ @MH_XLIBS@ @MH_EXTRA_LIBS@
+
+LIBCURSES   = libXCurses.a
+
+LIB_DEPS        = -L. -lXCurses
+
+PDCLIBS     = $(LIBCURSES) @SHL_TARGETS@
+
+DEMOS    = firework ozdemo newtest ptest rain testcurs tuidemo worm xmas
+DEMOOBJS = firework.o ozdemo.o newtest.o ptest.o rain.o testcurs.o tui.o \
+tuidemo.o worm.o xmas.o
+
+SHLFILE     = XCurses
+
+all: $(PDCLIBS) $(DEMOS)
+
+install: $(BASE_INSTALL) $(OTHER_INSTALLS)
+
+# base install; for builds with ABI .so or non ABI .so
+installbase: all
+	$(INSTALL) -d -m 755 $(DESTDIR)$(libdir)
+	$(INSTALL) -d -m 755 $(DESTDIR)$(bindir)
+	$(INSTALL) -d -m 755 $(DESTDIR)$(includedir)
+	$(INSTALL) -d -m 755 $(DESTDIR)$(includedir)/xcurses
+	$(INSTALL) -c -m 644 $(basedir)/curses.h $(DESTDIR)$(includedir)/xcurses.h
+	$(INSTALL) -c -m 644 $(basedir)/curses.h $(DESTDIR)$(includedir)/xcurses/curses.h
+	sed -e 's/#include <curses.h>/#include <xcurses.h>/' < $(basedir)/panel.h > ./xpanel.h
+	$(INSTALL) -m 644 ./xpanel.h $(DESTDIR)$(includedir)/xpanel.h
+	$(INSTALL) -c -m 644 $(basedir)/panel.h $(DESTDIR)$(includedir)/xcurses/panel.h
+	$(INSTALL) -c -m 644 $(basedir)/term.h $(DESTDIR)$(includedir)/xcurses/term.h
+	$(INSTALL) -c -m 644 ./libXCurses.a $(DESTDIR)$(libdir)/libXCurses.a
+	-$(RANLIB) $(DESTDIR)$(libdir)/libXCurses.a
+	(cd $(DESTDIR)$(libdir); $(LN_S) libXCurses.a libXpanel.a)
+	-$(RANLIB) $(DESTDIR)$(libdir)/libXpanel.a
+	$(INSTALL) -c -m 755 ./xcurses-config $(DESTDIR)$(bindir)/xcurses-config
+
+installlib:
+	-$(INSTALL) -c -m 755 ./$(SHLPRE)$(SHLFILE)$(SHLPST) $(DESTDIR)$(libdir)/$(SHLPRE)$(SHLFILE)$(SHLPST)
+	(cd $(DESTDIR)$(libdir); $(LN_S) $(SHLPRE)$(SHLFILE)$(SHLPST) $(libdir)/$(SHLPRE)Xpanel$(SHLPST))
+
+installabilib:
+	-$(INSTALL) -c -m 755 ./$(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI) $(DESTDIR)$(libdir)/$(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI)
+	(cd $(DESTDIR)$(libdir); $(LN_S) $(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI) $(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI_MAJOR))
+	(cd $(DESTDIR)$(libdir); $(LN_S) $(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI_MAJOR) $(SHLPRE)$(SHLFILE)$(SHLPST))
+	(cd $(DESTDIR)$(libdir); $(LN_S) $(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI) $(SHLPRE)Xpanel$(SHLPST).$(ABI))
+	(cd $(DESTDIR)$(libdir); $(LN_S) $(SHLPRE)Xpanel$(SHLPST).$(ABI) $(SHLPRE)Xpanel$(SHLPST).$(ABI_MAJOR))
+	(cd $(DESTDIR)$(libdir); $(LN_S) $(SHLPRE)Xpanel$(SHLPST).$(ABI_MAJOR) $(SHLPRE)Xpanel$(SHLPST))
+
+uninstall:
+	-rm -f  $(DESTDIR)$(includedir)/xcurses.h
+	-rm -f  $(DESTDIR)$(includedir)/xpanel.h
+	-rm -fr $(DESTDIR)$(includedir)/xcurses/
+	-rm -f  $(DESTDIR)$(libdir)/libXCurses.a
+	-rm -f  $(DESTDIR)$(libdir)/libXpanel.a
+	-rm -f  $(DESTDIR)$(bindir)/xcurses-config
+	-rm -f  $(DESTDIR)$(libdir)/$(SHLPRE)$(SHLFILE)$(SHLPST)
+	-rm -f  $(DESTDIR)$(libdir)/$(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI)
+	-rm -f  $(DESTDIR)$(libdir)/$(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI_MAJOR)
+	-rm -f  $(DESTDIR)$(libdir)/$(SHLPRE)Xpanel$(SHLPST)
+	-rm -f  $(DESTDIR)$(libdir)/$(SHLPRE)Xpanel$(SHLPST).$(ABI)
+	-rm -f  $(DESTDIR)$(libdir)/$(SHLPRE)Xpanel$(SHLPST).$(ABI_MAJOR)
+
+
+oldinstall:
+	$(INSTALL) -d -m 755 $(libdir)
+	$(INSTALL) -d -m 755 $(bindir)
+	$(INSTALL) -d -m 755 $(includedir)
+	$(INSTALL) -d -m 755 $(includedir)/xcurses
+	$(INSTALL) -c -m 644 $(basedir)/curses.h $(includedir)/xcurses.h
+	$(INSTALL) -c -m 644 $(basedir)/curses.h $(includedir)/xcurses/curses.h
+	sed -e 's/#include <curses.h>/#include <xcurses.h>/' \
+		< $(basedir)/panel.h > ./xpanel.h
+	$(INSTALL) -m 644 ./xpanel.h $(includedir)/xpanel.h
+	$(INSTALL) -c -m 644 $(basedir)/panel.h $(includedir)/xcurses/panel.h
+	$(INSTALL) -c -m 644 $(basedir)/term.h $(includedir)/xcurses/term.h
+	$(INSTALL) -c -m 644 ./libXCurses.a $(libdir)/libXCurses.a
+	-$(RANLIB) $(libdir)/libXCurses.a
+	-$(INSTALL) -c -m 755 ./$(SHLPRE)$(SHLFILE)$(SHLPST) \
+		$(libdir)/$(SHLPRE)$(SHLFILE)$(SHLPST)
+	ln -f -s $(libdir)/$(SHLPRE)$(SHLFILE)$(SHLPST) \
+		$(libdir)/$(SHLPRE)Xpanel$(SHLPST)
+	ln -f -s $(libdir)/libXCurses.a $(libdir)/libXpanel.a
+	-$(RANLIB) $(libdir)/libXpanel.a
+	$(INSTALL) -c -m 755 ./xcurses-config $(bindir)/xcurses-config
+
+clean:
+	-rm -rf *.o *.sho trace $(PDCLIBS) $(DEMOS) config.log \
+		config.cache config.status
+
+demos: $(DEMOS)
+
+distclean: clean
+	-rm -f Makefile config.h xcurses-config
+
+mostlyclean: clean
+
+realclean: distclean
+
+LIBOBJS = addch.o addchstr.o addstr.o attr.o beep.o bkgd.o border.o \
+clear.o color.o delch.o deleteln.o deprec.o getch.o getstr.o getyx.o \
+inch.o inchstr.o initscr.o inopts.o insch.o insstr.o instr.o kernel.o \
+keyname.o mouse.o move.o outopts.o overlay.o pad.o panel.o printw.o \
+refresh.o scanw.o scr_dump.o scroll.o slk.o termattr.o terminfo.o \
+touch.o util.o window.o debug.o
+
+PDCOBJS = pdcclip.o pdcdisp.o pdcgetsc.o pdckbd.o pdcscrn.o pdcsetsc.o \
+pdcutil.o pdcx11.o x11.o sb.o ScrollBox.o
+
+LIBSHOBJS = $(LIBOBJS:.o=.sho)
+PDCSHOBJS = $(PDCOBJS:.o=.sho)
+
+SHOFILES = $(LIBSHOBJS) $(PDCSHOBJS)
+
+$(LIBCURSES) : $(LIBOBJS) $(PDCOBJS)
+	ar rv $@ $?
+	-$(RANLIB) $@
+
+$(SHLPRE)$(SHLFILE)$(SHLPST) : $(SHOFILES)
+	$(LD_RXLIB1) -o $@ $(SHOFILES) $(LD_RXLIB2)
+
+$(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI): $(SHOFILES)
+	$(LD_RXLIB1) -o $@ $(SHOFILES) $(LD_RXLIB2)
+	-rm -f $(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI_MAJOR)
+	-rm -f $(SHLPRE)$(SHLFILE)$(SHLPST)
+	-$(LN_S) $(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI) $(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI_MAJOR)
+	-$(LN_S) $(SHLPRE)$(SHLFILE)$(SHLPST).$(ABI_MAJOR) $(SHLPRE)$(SHLFILE)$(SHLPST)
+
+$(LIBOBJS) $(PDCOBJS) $(SHOFILES) : $(PDCURSES_HEADERS)
+$(PDCOBJS) $(PDCSHOBJS) : $(PDCURSES_X11_H)
+$(DEMOOBJS) : $(PDCURSES_CURSES_H)
+$(DEMOS) : $(LIBCURSES)
+terminfo.o terminfo.sho: $(TERM_HEADER)
+
+addch.o: $(pdcursesdir)/addch.c
+	$(BUILD) $(pdcursesdir)/addch.c
+
+addchstr.o: $(pdcursesdir)/addchstr.c
+	$(BUILD) $(pdcursesdir)/addchstr.c
+
+addstr.o: $(pdcursesdir)/addstr.c
+	$(BUILD) $(pdcursesdir)/addstr.c
+
+attr.o: $(pdcursesdir)/attr.c
+	$(BUILD) $(pdcursesdir)/attr.c
+
+beep.o: $(pdcursesdir)/beep.c
+	$(BUILD) $(pdcursesdir)/beep.c
+
+bkgd.o: $(pdcursesdir)/bkgd.c
+	$(BUILD) $(pdcursesdir)/bkgd.c
+
+border.o: $(pdcursesdir)/border.c
+	$(BUILD) $(pdcursesdir)/border.c
+
+clear.o: $(pdcursesdir)/clear.c
+	$(BUILD) $(pdcursesdir)/clear.c
+
+color.o: $(pdcursesdir)/color.c
+	$(BUILD) $(pdcursesdir)/color.c
+
+delch.o: $(pdcursesdir)/delch.c
+	$(BUILD) $(pdcursesdir)/delch.c
+
+deleteln.o: $(pdcursesdir)/deleteln.c
+	$(BUILD) $(pdcursesdir)/deleteln.c
+
+deprec.o: $(pdcursesdir)/deprec.c
+	$(BUILD) $(pdcursesdir)/deprec.c
+
+getch.o: $(pdcursesdir)/getch.c
+	$(BUILD) $(pdcursesdir)/getch.c
+
+getstr.o: $(pdcursesdir)/getstr.c
+	$(BUILD) $(pdcursesdir)/getstr.c
+
+getyx.o: $(pdcursesdir)/getyx.c
+	$(BUILD) $(pdcursesdir)/getyx.c
+
+inch.o: $(pdcursesdir)/inch.c
+	$(BUILD) $(pdcursesdir)/inch.c
+
+inchstr.o: $(pdcursesdir)/inchstr.c
+	$(BUILD) $(pdcursesdir)/inchstr.c
+
+initscr.o: $(pdcursesdir)/initscr.c
+	$(BUILD) $(pdcursesdir)/initscr.c
+
+inopts.o: $(pdcursesdir)/inopts.c
+	$(BUILD) $(pdcursesdir)/inopts.c
+
+insch.o: $(pdcursesdir)/insch.c
+	$(BUILD) $(pdcursesdir)/insch.c
+
+insstr.o: $(pdcursesdir)/insstr.c
+	$(BUILD) $(pdcursesdir)/insstr.c
+
+instr.o: $(pdcursesdir)/instr.c
+	$(BUILD) $(pdcursesdir)/instr.c
+
+kernel.o: $(pdcursesdir)/kernel.c
+	$(BUILD) $(pdcursesdir)/kernel.c
+
+keyname.o: $(pdcursesdir)/keyname.c
+	$(BUILD) $(pdcursesdir)/keyname.c
+
+mouse.o: $(pdcursesdir)/mouse.c
+	$(BUILD) $(pdcursesdir)/mouse.c
+
+move.o: $(pdcursesdir)/move.c
+	$(BUILD) $(pdcursesdir)/move.c
+
+outopts.o: $(pdcursesdir)/outopts.c
+	$(BUILD) $(pdcursesdir)/outopts.c
+
+overlay.o: $(pdcursesdir)/overlay.c
+	$(BUILD) $(pdcursesdir)/overlay.c
+
+pad.o: $(pdcursesdir)/pad.c
+	$(BUILD) $(pdcursesdir)/pad.c
+
+panel.o: $(pdcursesdir)/panel.c $(basedir)/panel.h
+	$(BUILD) $(pdcursesdir)/panel.c
+
+printw.o: $(pdcursesdir)/printw.c
+	$(BUILD) $(pdcursesdir)/printw.c
+
+refresh.o: $(pdcursesdir)/refresh.c
+	$(BUILD) $(pdcursesdir)/refresh.c
+
+scanw.o: $(pdcursesdir)/scanw.c
+	$(BUILD) $(pdcursesdir)/scanw.c
+
+scr_dump.o: $(pdcursesdir)/scr_dump.c
+	$(BUILD) $(pdcursesdir)/scr_dump.c
+
+scroll.o: $(pdcursesdir)/scroll.c
+	$(BUILD) $(pdcursesdir)/scroll.c
+
+slk.o: $(pdcursesdir)/slk.c
+	$(BUILD) $(pdcursesdir)/slk.c
+
+termattr.o: $(pdcursesdir)/termattr.c
+	$(BUILD) $(pdcursesdir)/termattr.c
+
+terminfo.o: $(pdcursesdir)/terminfo.c
+	$(BUILD) $(pdcursesdir)/terminfo.c
+
+touch.o: $(pdcursesdir)/touch.c
+	$(BUILD) $(pdcursesdir)/touch.c
+
+util.o: $(pdcursesdir)/util.c
+	$(BUILD) $(pdcursesdir)/util.c
+
+window.o: $(pdcursesdir)/window.c
+	$(BUILD) $(pdcursesdir)/window.c
+
+debug.o: $(pdcursesdir)/debug.c
+	$(BUILD) $(pdcursesdir)/debug.c
+
+pdcclip.o: $(x11dir)/pdcclip.c
+	$(BUILD) $(x11dir)/pdcclip.c
+
+pdcdisp.o: $(x11dir)/pdcdisp.c
+	$(BUILD) $(x11dir)/pdcdisp.c
+
+pdcgetsc.o: $(x11dir)/pdcgetsc.c
+	$(BUILD) $(x11dir)/pdcgetsc.c
+
+pdckbd.o: $(x11dir)/pdckbd.c
+	$(BUILD) $(x11dir)/pdckbd.c
+
+pdcscrn.o: $(x11dir)/pdcscrn.c
+	$(BUILD) $(x11dir)/pdcscrn.c
+
+pdcsetsc.o: $(x11dir)/pdcsetsc.c
+	$(BUILD) $(x11dir)/pdcsetsc.c
+
+pdcutil.o: $(x11dir)/pdcutil.c
+	$(BUILD) $(x11dir)/pdcutil.c
+
+pdcx11.o: $(x11dir)/pdcx11.c
+	$(BUILD) $(x11dir)/pdcx11.c
+
+ScrollBox.o: $(x11dir)/ScrollBox.c
+	$(BUILD) $(x11dir)/ScrollBox.c
+
+sb.o: $(x11dir)/sb.c
+	$(BUILD) $(x11dir)/sb.c
+
+x11.o: $(x11dir)/x11.c
+	$(BUILD) $(x11dir)/x11.c
+
+addch.sho: $(pdcursesdir)/addch.c
+	$(DYN_BUILD) $(pdcursesdir)/addch.c
+	@SAVE2O@
+
+addchstr.sho: $(pdcursesdir)/addchstr.c
+	$(DYN_BUILD) $(pdcursesdir)/addchstr.c
+	@SAVE2O@
+
+addstr.sho: $(pdcursesdir)/addstr.c
+	$(DYN_BUILD) $(pdcursesdir)/addstr.c
+	@SAVE2O@
+
+attr.sho: $(pdcursesdir)/attr.c
+	$(DYN_BUILD) $(pdcursesdir)/attr.c
+	@SAVE2O@
+
+beep.sho: $(pdcursesdir)/beep.c
+	$(DYN_BUILD) $(pdcursesdir)/beep.c
+	@SAVE2O@
+
+bkgd.sho: $(pdcursesdir)/bkgd.c
+	$(DYN_BUILD) $(pdcursesdir)/bkgd.c
+	@SAVE2O@
+
+border.sho: $(pdcursesdir)/border.c
+	$(DYN_BUILD) $(pdcursesdir)/border.c
+	@SAVE2O@
+
+clear.sho: $(pdcursesdir)/clear.c
+	$(DYN_BUILD) $(pdcursesdir)/clear.c
+	@SAVE2O@
+
+color.sho: $(pdcursesdir)/color.c
+	$(DYN_BUILD) $(pdcursesdir)/color.c
+	@SAVE2O@
+
+delch.sho: $(pdcursesdir)/delch.c
+	$(DYN_BUILD) $(pdcursesdir)/delch.c
+	@SAVE2O@
+
+deleteln.sho: $(pdcursesdir)/deleteln.c
+	$(DYN_BUILD) $(pdcursesdir)/deleteln.c
+	@SAVE2O@
+
+deprec.sho: $(pdcursesdir)/deprec.c
+	$(DYN_BUILD) $(pdcursesdir)/deprec.c
+	@SAVE2O@
+
+getch.sho: $(pdcursesdir)/getch.c
+	$(DYN_BUILD) $(pdcursesdir)/getch.c
+	@SAVE2O@
+
+getstr.sho: $(pdcursesdir)/getstr.c
+	$(DYN_BUILD) $(pdcursesdir)/getstr.c
+	@SAVE2O@
+
+getyx.sho: $(pdcursesdir)/getyx.c
+	$(DYN_BUILD) $(pdcursesdir)/getyx.c
+	@SAVE2O@
+
+inch.sho: $(pdcursesdir)/inch.c
+	$(DYN_BUILD) $(pdcursesdir)/inch.c
+	@SAVE2O@
+
+inchstr.sho: $(pdcursesdir)/inchstr.c
+	$(DYN_BUILD) $(pdcursesdir)/inchstr.c
+	@SAVE2O@
+
+initscr.sho: $(pdcursesdir)/initscr.c
+	$(DYN_BUILD) $(pdcursesdir)/initscr.c
+	@SAVE2O@
+
+inopts.sho: $(pdcursesdir)/inopts.c
+	$(DYN_BUILD) $(pdcursesdir)/inopts.c
+	@SAVE2O@
+
+insch.sho: $(pdcursesdir)/insch.c
+	$(DYN_BUILD) $(pdcursesdir)/insch.c
+	@SAVE2O@
+
+insstr.sho: $(pdcursesdir)/insstr.c
+	$(DYN_BUILD) $(pdcursesdir)/insstr.c
+	@SAVE2O@
+
+instr.sho: $(pdcursesdir)/instr.c
+	$(DYN_BUILD) $(pdcursesdir)/instr.c
+	@SAVE2O@
+
+kernel.sho: $(pdcursesdir)/kernel.c
+	$(DYN_BUILD) $(pdcursesdir)/kernel.c
+	@SAVE2O@
+
+keyname.sho: $(pdcursesdir)/keyname.c
+	$(DYN_BUILD) $(pdcursesdir)/keyname.c
+	@SAVE2O@
+
+mouse.sho: $(pdcursesdir)/mouse.c
+	$(DYN_BUILD) $(pdcursesdir)/mouse.c
+	@SAVE2O@
+
+move.sho: $(pdcursesdir)/move.c
+	$(DYN_BUILD) $(pdcursesdir)/move.c
+	@SAVE2O@
+
+outopts.sho: $(pdcursesdir)/outopts.c
+	$(DYN_BUILD) $(pdcursesdir)/outopts.c
+	@SAVE2O@
+
+overlay.sho: $(pdcursesdir)/overlay.c
+	$(DYN_BUILD) $(pdcursesdir)/overlay.c
+	@SAVE2O@
+
+pad.sho: $(pdcursesdir)/pad.c
+	$(DYN_BUILD) $(pdcursesdir)/pad.c
+	@SAVE2O@
+
+panel.sho: $(pdcursesdir)/panel.c $(basedir)/panel.h
+	$(DYN_BUILD) $(pdcursesdir)/panel.c
+	@SAVE2O@
+
+printw.sho: $(pdcursesdir)/printw.c
+	$(DYN_BUILD) $(pdcursesdir)/printw.c
+	@SAVE2O@
+
+refresh.sho: $(pdcursesdir)/refresh.c
+	$(DYN_BUILD) $(pdcursesdir)/refresh.c
+	@SAVE2O@
+
+scanw.sho: $(pdcursesdir)/scanw.c
+	$(DYN_BUILD) $(pdcursesdir)/scanw.c
+	@SAVE2O@
+
+scr_dump.sho: $(pdcursesdir)/scr_dump.c
+	$(DYN_BUILD) $(pdcursesdir)/scr_dump.c
+	@SAVE2O@
+
+scroll.sho: $(pdcursesdir)/scroll.c
+	$(DYN_BUILD) $(pdcursesdir)/scroll.c
+	@SAVE2O@
+
+slk.sho: $(pdcursesdir)/slk.c
+	$(DYN_BUILD) $(pdcursesdir)/slk.c
+	@SAVE2O@
+
+termattr.sho: $(pdcursesdir)/termattr.c
+	$(DYN_BUILD) $(pdcursesdir)/termattr.c
+	@SAVE2O@
+
+terminfo.sho: $(pdcursesdir)/terminfo.c
+	$(DYN_BUILD) $(pdcursesdir)/terminfo.c
+	@SAVE2O@
+
+touch.sho: $(pdcursesdir)/touch.c
+	$(DYN_BUILD) $(pdcursesdir)/touch.c
+	@SAVE2O@
+
+util.sho: $(pdcursesdir)/util.c
+	$(DYN_BUILD) $(pdcursesdir)/util.c
+	@SAVE2O@
+
+window.sho: $(pdcursesdir)/window.c
+	$(DYN_BUILD) $(pdcursesdir)/window.c
+	@SAVE2O@
+
+debug.sho: $(pdcursesdir)/debug.c
+	$(DYN_BUILD) $(pdcursesdir)/debug.c
+	@SAVE2O@
+
+pdcclip.sho: $(x11dir)/pdcclip.c
+	$(DYN_BUILD) $(x11dir)/pdcclip.c
+	@SAVE2O@
+
+pdcdisp.sho: $(x11dir)/pdcdisp.c
+	$(DYN_BUILD) $(x11dir)/pdcdisp.c
+	@SAVE2O@
+
+pdcgetsc.sho: $(x11dir)/pdcgetsc.c
+	$(DYN_BUILD) $(x11dir)/pdcgetsc.c
+	@SAVE2O@
+
+pdckbd.sho: $(x11dir)/pdckbd.c
+	$(DYN_BUILD) $(x11dir)/pdckbd.c
+	@SAVE2O@
+
+pdcscrn.sho: $(x11dir)/pdcscrn.c
+	$(DYN_BUILD) $(x11dir)/pdcscrn.c
+	@SAVE2O@
+
+pdcsetsc.sho: $(x11dir)/pdcsetsc.c
+	$(DYN_BUILD) $(x11dir)/pdcsetsc.c
+	@SAVE2O@
+
+pdcutil.sho: $(x11dir)/pdcutil.c
+	$(DYN_BUILD) $(x11dir)/pdcutil.c
+	@SAVE2O@
+
+pdcx11.sho: $(x11dir)/pdcx11.c
+	$(DYN_BUILD) $(x11dir)/pdcx11.c
+	@SAVE2O@
+
+ScrollBox.sho: $(x11dir)/ScrollBox.c
+	$(DYN_BUILD) $(x11dir)/ScrollBox.c
+	@SAVE2O@
+
+sb.sho: $(x11dir)/sb.c
+	$(DYN_BUILD) $(x11dir)/sb.c
+	@SAVE2O@
+
+x11.sho: $(x11dir)/x11.c
+	$(DYN_BUILD) $(x11dir)/x11.c
+	@SAVE2O@
+
+firework: firework.o
+	$(LINK) firework.o -o $@ $(LDFLAGS)
+
+ozdemo: ozdemo.o
+	$(LINK) ozdemo.o -o $@ $(LDFLAGS)
+
+newtest: newtest.o
+	$(LINK) newtest.o -o $@ $(LDFLAGS)
+
+ptest: ptest.o
+	$(LINK) ptest.o -o $@ $(LDFLAGS)
+
+rain: rain.o
+	$(LINK) rain.o -o $@ $(LDFLAGS)
+
+testcurs: testcurs.o
+	$(LINK) testcurs.o -o $@ $(LDFLAGS)
+
+tuidemo: tuidemo.o tui.o
+	$(LINK) tui.o tuidemo.o -o $@ $(LDFLAGS)
+
+worm: worm.o
+	$(LINK) worm.o -o $@ $(LDFLAGS)
+
+xmas: xmas.o
+	$(LINK) xmas.o -o $@ $(LDFLAGS)
+
+firework.o: $(demodir)/firework.c
+	$(BUILD) $(demodir)/firework.c
+
+ozdemo.o: $(demodir)/ozdemo.c
+	$(BUILD) $(demodir)/ozdemo.c
+
+newtest.o: $(demodir)/newtest.c
+	$(BUILD) $(demodir)/newtest.c
+
+ptest.o: $(demodir)/ptest.c $(basedir)/panel.h
+	$(BUILD) $(demodir)/ptest.c
+
+rain.o: $(demodir)/rain.c
+	$(BUILD) $(demodir)/rain.c
+
+testcurs.o: $(demodir)/testcurs.c
+	$(BUILD) $(demodir)/testcurs.c
+
+tui.o: $(demodir)/tui.c $(demodir)/tui.h
+	$(BUILD) $(demodir)/tui.c
+
+tuidemo.o: $(demodir)/tuidemo.c
+	$(BUILD) $(demodir)/tuidemo.c
+
+worm.o: $(demodir)/worm.c
+	$(BUILD) $(demodir)/worm.c
+
+xmas.o: $(demodir)/xmas.c
+	$(BUILD) $(demodir)/xmas.c
+
+# This section provides for compiling and linking the
+# ncurses test programs.
+
+ncurses_testdir = $(HOME)/ncurses-5.6/test
+
+NCURSES_TESTS= bs gdc hanoi knight tclock ncurses
+
+ncurses_tests: $(NCURSES_TESTS)
+
+ncurses_clean:
+	-rm -f *.o trace $(NCURSES_TESTS)
+
+NCFLAGS		= -I. -I$(ncurses_testdir)
+
+bs: bs.o $(LIBCURSES)
+	$(LINK) bs.o -o $@ $(LDFLAGS)
+
+gdc: gdc.o $(LIBCURSES)
+	$(LINK) gdc.o -o $@ $(LDFLAGS)
+
+hanoi: hanoi.o $(LIBCURSES)
+	$(LINK) hanoi.o -o $@ $(LDFLAGS)
+
+knight: knight.o $(LIBCURSES)
+	$(LINK) knight.o -o $@ $(LDFLAGS)
+
+tclock: tclock.o $(LIBCURSES)
+	$(LINK) tclock.o -o $@ $(LDFLAGS) -lm
+
+view: view.o $(LIBCURSES)
+	$(LINK) view.o -o $@ $(LDFLAGS)
+
+ncurses: ncurses.o $(LIBCURSES)
+	$(LINK) ncurses.o -o $@ $(LDFLAGS)
+
+bs.o: $(ncurses_testdir)/bs.c $(PDCURSES_CURSES_H)
+	$(BUILD) $(NCFLAGS) $(ncurses_testdir)/bs.c
+
+gdc.o: $(ncurses_testdir)/gdc.c $(PDCURSES_CURSES_H)
+	$(BUILD) $(NCFLAGS) $(ncurses_testdir)/gdc.c
+
+hanoi.o: $(ncurses_testdir)/hanoi.c $(PDCURSES_CURSES_H)
+	$(BUILD) $(NCFLAGS) $(ncurses_testdir)/hanoi.c
+
+knight.o: $(ncurses_testdir)/knight.c $(PDCURSES_CURSES_H)
+	$(BUILD) $(NCFLAGS) $(ncurses_testdir)/knight.c
+
+tclock.o: $(ncurses_testdir)/tclock.c $(PDCURSES_CURSES_H)
+	$(BUILD) $(NCFLAGS) $(ncurses_testdir)/tclock.c
+
+view.o: $(ncurses_testdir)/view.c $(PDCURSES_CURSES_H)
+	$(BUILD) $(NCFLAGS) $(ncurses_testdir)/view.c
+
+ncurses.o: $(ncurses_testdir)/ncurses.c $(PDCURSES_CURSES_H)
+	$(BUILD) $(NCFLAGS) $(ncurses_testdir)/ncurses.c
+
+manual:
+	cd doc; $(MAKE) $(MFLAGS) $@
+
+$(ZIPFILE):
+	(cd $(basedir); \
+	zip -9y $(ZIPFILE) README.md HISTORY.md IMPLEMNT *.spec *.mif *.def \
+	curses.h curspriv.h panel.h term.h pdcurses/README.md \
+	pdcurses/*.c \
+	demos/README.md demos/*.c demos/*.h \
+	dos/README.md dos/*.c dos/*.h dos/*.mak dos/*.lrf \
+	os2/README.md os2/*.c os2/*.h os2/*.mak os2/*.lrf \
+	sdl1/README.md sdl1/*.c sdl1/*.h sdl1/Make* \
+	win32/README.md win32/*.c win32/*.h win32/*.mak win32/*.ico win32/*.rc \
+	wingui/README.md wingui/*.c wingui/*.h wingui/*.mak wingui/*.ico wingui/*.rc \
+	x11/README.md x11/*.c x11/*.h x11/Makefile.* x11/*.xbm \
+	x11/Makefile.in x11/config.h.in x11/configure x11/configure.ac x11/config.guess \
+	x11/config.sub x11/xcurses-config.in x11/install-sh x11/aclocal.m4 \
+	doc/*.txt doc/manext.c doc/Makefile)
+
+zip: $(ZIPFILE)
+
+tar:
+	(cd $(basedir)/..;rm -f $(PDC_DIR))
+	(cd $(basedir)/..;ln -sf $(abs_basedir) $(PDC_DIR))
+	(cd $(basedir)/..; `pwd`;ls -l $(PDC_DIR);tar cvf - \
+	$(PDC_DIR)/README.md $(PDC_DIR)/HISTORY.md \
+	$(PDC_DIR)/IMPLEMNT $(PDC_DIR)/*.spec $(PDC_DIR)/*.mif \
+	$(PDC_DIR)/*.def $(PDC_DIR)/x11/Makefile.in $(PDC_DIR)/x11/aclocal.m4 \
+	$(PDC_DIR)/x11/config.h.in $(PDC_DIR)/x11/configure \
+	$(PDC_DIR)/x11/config.guess $(PDC_DIR)/x11/xcurses-config.in \
+	$(PDC_DIR)/x11/config.sub $(PDC_DIR)/x11/configure.ac \
+	$(PDC_DIR)/x11/install-sh $(PDC_DIR)/curses.h $(PDC_DIR)/curspriv.h \
+	$(PDC_DIR)/panel.h $(PDC_DIR)/term.h \
+	$(PDC_DIR)/pdcurses/README.md $(PDC_DIR)/pdcurses/*.c \
+	$(PDC_DIR)/demos/README.md $(PDC_DIR)/demos/*.c $(PDC_DIR)/demos/*.h \
+	$(PDC_DIR)/doc/*.txt $(PDC_DIR)/dos/README.md $(PDC_DIR)/dos/*.c \
+	$(PDC_DIR)/doc/manext.c $(PDC_DIR)/doc/Makefile \
+	$(PDC_DIR)/dos/*.h $(PDC_DIR)/dos/*.mak $(PDC_DIR)/dos/*.lrf \
+	$(PDC_DIR)/os2/README.md $(PDC_DIR)/os2/*.c $(PDC_DIR)/os2/*.h $(PDC_DIR)/os2/*.mak $(PDC_DIR)/os2/*.lrf \
+	$(PDC_DIR)/sdl1/README.md $(PDC_DIR)/sdl1/*.c $(PDC_DIR)/sdl1/*.h $(PDC_DIR)/sdl1/Make* \
+	$(PDC_DIR)/win32/README.md $(PDC_DIR)/win32/*.c $(PDC_DIR)/win32/*.h $(PDC_DIR)/win32/*.mak $(PDC_DIR)/win32/*.ico $(PDC_DIR)/win32/*.rc \
+	$(PDC_DIR)/wingui/README.md $(PDC_DIR)/wingui/*.c $(PDC_DIR)/wingui/*.h $(PDC_DIR)/wingui/*.mak $(PDC_DIR)/wingui/*.ico $(PDC_DIR)/wingui/*.rc \
+	$(PDC_DIR)/x11/README.md $(PDC_DIR)/x11/*.c $(PDC_DIR)/x11/*.xbm $(PDC_DIR)/x11/*.h $(PDC_DIR)/x11/Makefile.* \
+	$(PDC_DIR)/x11/debian/rules $(PDC_DIR)/x11/debian/changelog $(PDC_DIR)/x11/debian/compat $(PDC_DIR)/x11/debian/control $(PDC_DIR)/x11/debian/copyright $(PDC_DIR)/x11/debian/rules \
+	| gzip -9 > $(TARBALL))
+	(cd $(basedir)/..;rm -f $(PDC_DIR))
+
+dist: tar
+
+rpm: tar $(x11dir)/PDCurses.spec
+	cp $(basedir)/../$(PDC_DIR).tar.gz $(RPMTOPDIR)/SOURCES
+	-rm $(RPMTOPDIR)/RPMS/*/PDCurses-$(VERDOT)*.rpm
+	-rm $(RPMTOPDIR)/RPMS/*/PDCurses-devel-$(VERDOT)*.rpm
+	rpmbuild -ba --clean --define "myversion $(VERDOT)" $(x11dir)/PDCurses.spec
+	mv $(RPMTOPDIR)/RPMS/*/PDCurses-$(VERDOT)-[0-9]*.rpm `dirname $(RPMTOPDIR)/RPMS/*/PDCurses-$(VERDOT)-[0-9]*.rpm`/`basename $(RPMTOPDIR)/RPMS/*/PDCurses-$(VERDOT)-[0-9]*.rpm .rpm`-$(MYDISTRO).rpm
+	mv $(RPMTOPDIR)/RPMS/*/PDCurses-devel-$(VERDOT)-[0-9]*.rpm `dirname $(RPMTOPDIR)/RPMS/*/PDCurses-devel-$(VERDOT)-[0-9]*.rpm`/`basename $(RPMTOPDIR)/RPMS/*/PDCurses-devel-$(VERDOT)-[0-9]*.rpm .rpm`-$(MYDISTRO).rpm
+	ls -l $(RPMTOPDIR)/RPMS/*/PDCurses*.rpm
+
+rpminstall:
+	rpm -Uv  $(RPMTOPDIR)/RPMS/*/PDCurses-$(VERDOT)-[0-9]*-$(MYDISTRO).rpm
+	rpm -Uv  $(RPMTOPDIR)/RPMS/*/PDCurses-devel-$(VERDOT)-[0-9]*-$(MYDISTRO).rpm
+
+deb: tar
+	-rm -fr tmp
+	-mkdir tmp
+	(cd tmp; \
+	tar zxvf $(abs_basedir)/../$(PDC_DIR).tar.gz; \
+	cd $(PDC_DIR)/x11; \
+	dpkg-buildpackage -rfakeroot; \
+	cd ..; \
+	mv pdcurses_$(VERDOT)*.deb `basename pdcurses_$(VERDOT)*.deb .deb`-$(MYDISTRO).deb; \
+	ls -l )
+
+debinstall:
+	(cd tmp; \
+	dpkg -i pdcurses_$(VERDOT)*-$(MYDISTRO).deb; )
