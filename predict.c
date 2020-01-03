@@ -28,6 +28,7 @@
 #include <termios.h>
 #ifdef _WIN32
 #include <termiWin.h>
+#define bzero(b,len) (memset((b), '\0', (len)), (void) 0)
 #endif
 
 /* Constants used by SGP4/SDP4 code */
