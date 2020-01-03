@@ -26,6 +26,9 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <termios.h>
+#ifdef _WIN32
+#include <termiWin.h>
+#endif
 
 /* Constants used by SGP4/SDP4 code */
 
