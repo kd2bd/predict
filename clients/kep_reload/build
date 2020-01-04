@@ -1,7 +1,0 @@
-#!/bin/bash
-# Script to compile kep_reload
-#
-echo -n "Compiling kep_reload... "
-cc -Wall -O3 -s -fomit-frame-pointer kep_reload.c -o kep_reload
-echo "Done!"
-

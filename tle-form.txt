@@ -1,0 +1,58 @@
+NORAD Two-Line Element Set Format
+=================================
+Data for each satellite consists of three lines in the following format:
+
+AAAAAAAAAAAAAAAAAAAAAAAA
+1 NNNNNU NNNNNAAA NNNNN.NNNNNNNN +.NNNNNNNN +NNNNN-N +NNNNN-N N NNNNN
+2 NNNNN NNN.NNNN NNN.NNNN NNNNNNN NNN.NNNN NNN.NNNN NN.NNNNNNNNNNNNNN
+
+For example:
+
+HUBBLE
+1 20580U 90037B   99272.06768183  .00002365  00000-0  23382-3 0 02374
+2 20580 028.4670 111.0359 0013971 225.3844 134.5606 14.88312749317309
+
+Line 0 is a twenty-four character name (to be consistent with the name
+length in the NORAD SATCAT).
+
+Lines 1 and 2 are the standard Two-Line Orbital Element Set Format
+identical to that used by NORAD and NASA.  The format description is
+as follows:
+
+Line 1:
+
+Column		Description
+------		-----------
+01		Line Number of Element Data
+03-07		Satellite Number
+08		Classification (U=Unclassified)
+10-11		International Designator (Last two digits of launch year)
+12-14		International Designator (Launch number of the year)
+15-17		International Designator (Piece of the launch)
+19-20		Epoch Year (Last two digits of year)
+21-32		Epoch (Day of the year and fractional portion of the day)
+34-43		First Time Derivative of the Mean Motion
+45-52		Second Time Derivative of Mean Motion (decimal point assumed)
+54-61		BSTAR drag term (decimal point assumed)
+63		Ephemeris type
+65-68		Element number
+69		Checksum (modulo 10)
+		(Letters, blanks, periods, plus signs=0; minus signs=1)
+
+Line 2:
+
+Column		Description
+------		-----------
+01		Line Number of Element Data
+03-07		Satellite Number
+09-16		Inclination (degrees)
+18-25		Right Ascension of the Ascending Node (degrees)
+27-33		Eccentricity (decimal point assumed)
+35-42		Argument of Perigee (degrees)
+44-51		Mean Anomaly (degrees)
+53-63		Mean Motion (perigees per day)
+64-68		Revolution number at epoch (revs)
+69		Checksum (modulo 10)
+
+All other columns are blank or fixed.
+

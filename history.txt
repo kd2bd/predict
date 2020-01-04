@@ -1,0 +1,31 @@
+
+			**********************
+			The History of PREDICT
+			**********************
+
+Work on PREDICT started on May 26, 1991 with the purpose of creating
+a replacement for QUIKTRAK software that ran on the Commodore 64 home
+computer.  PREDICT was originally written in C and compiled using a
+"Super C" compiler.  After the program was completed and found to be
+useful, PREDICT was then ported to several Unix machines and then to
+DOS using a Borland Turbo C++ compiler.  The DOS version was completed
+in May 1994 and was the first version of PREDICT released to the public.
+PREDICT was later ported to the Linux operating system in 1995 and
+released as freeware as a pre-compiled a.out dynamically linked
+binary in 1996.
+
+Through years of daily use by many users, PREDICT was found to be
+reliable, accurate, and easy to use.  Only minor changes were made
+to the program until 1999 when major portions were re-written from
+scratch and many new features were added.
+
+PREDICT Version 2 for DOS represents the second major release of the
+program, and is designed to serve as a replacement for the original
+DOS version of PREDICT released in 1994.  Although similar to the Linux
+version of the program, the DOS version of PREDICT does not include
+all the features of the Linux version.
+
+The latest news and information regarding PREDICT software may be
+found via the Internet at the following URL:
+
+	http://www.qsl.net/kd2bd/predict.html

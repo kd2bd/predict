@@ -1,8 +1,0 @@
-"map" is a graphical satellite tracking application written by Ivan Galysh,
-KD4HBO <galysh@juno.nrl.navy.mil>, that makes use of the socket-based
-interface in PREDICT to obtain real-time satellite tracking data.  "map"
-requires the XForms libraries to compile and run.  The entire XForms
-distribution plus the latest XForms news and information is available at:
-
-	http://world.std.com/~xforms
-

@@ -1,0 +1,39 @@
+What is Amateur Radio?
+
+The Federal Communications Commission defines the Amateur Radio Service
+as a radiocommunication service for the purpose of self-training,
+intercommunication and technical investigations carried out by amateurs,
+that is, duly authorized persons interested in radio technique solely with
+a personal aim and without pecuniary interest.  The Amateur Satellite Service
+is a radiocommunication service using space stations on earth satellites
+for the same purposes as those of the amateur service.
+
+In the United States, amateur radio operators are licensed by the Federal
+Communications Commission.  There are at present three classes of operator
+licenses in the United States: Technician, General, and Extra Class.
+An operator license authorizes the holder to be the control operator
+of a station with the privileges of the operator class specified on
+the license.  A Technician Class license or higher is required to
+communicate on frequencies used by amateur satellites.
+
+An Amateur Radio License may be obtained after successfully passing
+a multiple choice written exam covering FCC rules and regulations,
+communication electronics theory, and radio operating practices.  All
+classes of license except Technician also require successful passing
+a Morse Code Proficiency exam.
+
+Study material to help those interested in gaining the knowledge necessary
+for becoming a licensed Amateur Radio Operator is available in written
+(book) form, as computer software, and on videotape.  Study guides are
+also available at Radio Shack stores.
+
+Practice exams for any class of Amateur Radio License are available on the
+World Wide Web at: http://www.biochem.mcw.edu/Postdocs/Simon/radio/exam.html.
+A list of examination schedules and locations are also available on the
+World Wide Web at: http://www.arrl.org/arrlvec/examsearch.phtml.
+
+Further information on the fascinating world of Amateur satellite
+communications, and the Amateur Satellite Program as a whole, is
+available through AMSAT-NA, the Amateur Satellite Corporation of
+North America, at: http://www.amsat.org/.
+

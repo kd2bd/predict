@@ -1,0 +1,632 @@
+PREDICT (2.2.1d)                                 PREDICT (2.2.1d)
+
+
+
+NAME
+       predict  - Track and predict passes of satellites in Earth
+       orbit
+
+SYNOPSIS
+       predict [-u tle_update_source] [-t tlefile]  [-q  qthfile]
+       [-a  serial_port]  [-a1  serial_port]  [-f sat_name start-
+       ing_date/time  ending_date/time]   [-p   sat_name   start-
+       ing_date/time] [-o output_file]
+
+LICENSING
+       PREDICT  is  an easy-to-use satellite tracking and orbital
+       prediction program written and created by John A.  Maglia-
+       cane, KD2BD.
+
+       PREDICT  is  free software. You can redistribute it and/or
+       modify it under  the  terms  of  the  GNU  General  Public
+       License  as  published  by  the  Free Software Foundation,
+       either version 2 of the License or any later version.
+
+       PREDICT is distributed in the hope that it will be useful,
+       but  WITHOUT  ANY  WARRANTY, without even the implied war-
+       ranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR  PUR-
+       POSE. See the GNU General Public License for more details.
+
+DESCRIPTION
+       The DOS version of PREDICT is a derivative  of  the  full-
+       featured  Linux  version  PREDICT.   It was compiled under
+       Caldera's DR-DOS 7.02 operating  system  using  the  DJGPP
+       version  2.03  32-bit  protected mode software development
+       environment (gcc 3.2, PDCurses 2.4).
+
+       PREDICT is 32-bit protected mode  software,  and  as  such
+       requires  a  32-bit  processor (80386 or better).  Numeric
+       co-processor emulation is available for environments lack-
+       ing  a  co-processor,  but  the  emulation may not provide
+       results as accurate as those possible when a physical  co-
+       processor is present.
+
+       The protected mode driver (CWSDPMI.EXE) packaged with this
+       software is required for proper operation of PREDICT,  and
+       needs  to  be  installed  either  in  your current working
+       directory, or in a subdirectory  within  your  OSs  search
+       path.   (Type  "path" on your command line to inspect your
+       search path.)  Users of Windows 9.x and later versions  do
+       not  need  to  install  the protected mode driver included
+       with this software.
+
+FIRST TIME USE
+       PREDICT tracks and predicts passes of satellites based  on
+       the  geographical location of the ground station, the cur-
+       rent date and time as provided by  the  computer  system's
+       clock,  and  Keplerian  orbital data for the satellites of
+       interest to the ground station. First time users  of  PRE-
+       DICT  are  provided  default  ground  station location and
+       orbital data information files. These files are managed by
+       the  program,  and  are  normally  located under PREDICT's
+       installation directory.  First time users must supply PRE-
+       DICT with their geographical location (the same as select-
+       ing option [G] from the program's  main  menu)  the  first
+       time  the  program  is run. Latitude is entered in decimal
+       degrees north. Latitudes south of the equator are  entered
+       as  negative  values.  Longitude  is  entered  as  decimal
+       degrees west.  Eastern longitudes may be entered as  nega-
+       tive  values. Station altitude is entered as the number of
+       meters the ground station is located above sea level. This
+       parameter is not very critical.  If unsure, make a realis-
+       tic guess or simply enter 0.
+
+       Users of PREDICT  need  Keplerian  orbital  data  for  the
+       satellites  they wish to track that is preferably no older
+       than one month. The default orbital data supplied with the
+       program  is liable to be quite old, and so must be brought
+       up to date if accurate results are to  be  expected.  This
+       may be accomplished by selecting option [E] from PREDICT's
+       main menu and manually entering Keplerian  data  for  each
+       satellite  in  the  program's  database,  or  by selecting
+       option [U] and specifying a file containing recent  2-line
+       Keplerian  element data sets that correspond to the satel-
+       lites in the program's database.  Keplerian  orbital  data
+       is   available   from  a  variety  of  sources,  including
+       http://www.celestrak.com/ and http://www.amsat.org/.
+
+PROGRAM OPERATION
+       The start-up screen of PREDICT lists  the  program's  main
+       functions.   Several tracking and orbital prediction modes
+       are available, as well as several utilities to manage  the
+       program's orbital database.
+
+PREDICTING SATELLITE PASSES
+       Orbital  predictions are useful for determining in advance
+       when a satellite is expected to come  within  range  of  a
+       ground station. They can also be used to look back to pre-
+       vious passes to help to confirm or identify past  observa-
+       tions.
+
+       PREDICT  includes  two orbital prediction modes to predict
+       any pass above a ground station (main menu option [P]), or
+       list  only  those passes that might be visible to a ground
+       station through optical means (main menu option [V]).   In
+       either  mode,  the  user is asked to select a satellite of
+       interest from a menu, and then asked to enter the date and
+       time  (in  UTC)  at  which  prediction calculations should
+       start.
+
+       The current date and time may be selected  by  default  by
+       entering  nothing  and  hitting  simply the ENTER key when
+       prompted to enter the starting date and time.
+
+       Otherwise, the starting date and time should be entered in
+       the form:
+
+            DDMonYY HH:MM:SS
+
+       Entering the time is optional.  If it is omitted, midnight
+       (00:00:00) is assumed.  Once  complete,  orbital  calcula-
+       tions  are started and prediction information is displayed
+       on the screen.
+
+       The date and time in UTC, along with the satellite's  ele-
+       vation  above  ground, azimuth heading, modulo 256 orbital
+       phase, sub-satellite point latitude and  longitude,  slant
+       range  between  the  ground station and the satellite, and
+       the satellite's orbit number are all displayed.  If space-
+       craft  attitude  parameters  (ALAT,  ALON) are included in
+       PREDICT's  transponder  database  file,  then   spacecraft
+       antenna  squint angles are displayed instead of orbit num-
+       bers in the orbital prediction output.
+
+       An asterisk (*) displayed to the right of the orbit number
+       or  squint angle means the satellite is in sunlight at the
+       date and time listed on the line. A plus symbol (+)  means
+       the  satellite  is in sunlight while the ground station is
+       under the cover of darkness at the time and  date  listed.
+       Under  good  viewing  conditions, large satellites such as
+       the International Space Station (ISS), the US Space  Shut-
+       tles, and Hubble Space Telescope, and the Upper Atmosphere
+       Research Satellite (UARS) are visible to the naked eye. If
+       no  symbol  appears  to  the  right of each line, then the
+       satellite is in the Earth's shadow at the  time  and  date
+       listed,  and  is  not  receiving any illumination from the
+       sun.
+
+       Pressing the ENTER key, the 'Y'  key,  or  the  space  bar
+       advances  the  orbital predictions to a screen listing the
+       next available passes.  Pressing the 'L'  key  allows  the
+       currently  displayed screen plus any subsequent screens to
+       be logged to a text file in your  current  working  direc-
+       tory.  The  name  given  to  this  file is the name of the
+       satellite plus a ".txt" extension.  Any slashes or  spaces
+       appearing in the satellite name are replaced by the under-
+       score (_) symbol. The logging feature may  be  toggled  on
+       and  off  at any time by pressing the 'L' key. Exiting the
+       orbital prediction mode by pressing  'N'  or  hitting  the
+       ESCape key will also close the log file. The log file will
+       be appended with additional information if additional pre-
+       dictions  are  conducted  for  the same satellite with the
+       logging feature turned on.
+
+       Selecting [V] from  PREDICT's  main  menu  will  permit  a
+       ground  station to only predict passes for satellites that
+       are potentially visible through optical means.  Since  all
+       other passes are filtered out in this mode, and since some
+       satellites may never arrive over  a  ground  station  when
+       optical  viewing conditions are possible, the program pro-
+       vides the option of breaking out of visual orbital predic-
+       tion mode by pressing the [ESC]ape key as calculations are
+       made. A prompt is displayed at the bottom of the screen to
+       alert the user of this option.
+
+       In either orbital prediction mode, predictions will not be
+       attempted for satellites that can  never  rise  above  the
+       ground station's horizon, or for satellites in geostation-
+       ary orbits. If a satellite is in  range  at  the  starting
+       date  and time specified, PREDICT will adjust the starting
+       date back in time until the point of AOS so that the  pre-
+       diction  screen  displays  the  first pass in its entirety
+       from start to finish.
+
+SINGLE SATELLITE TRACKING MODE
+       In addition to predicting satellite passes, PREDICT allows
+       satellites to be tracked in real-time using PREDICT's Sin-
+       gle Satellite Tracking Mode (main  menu  option  [T]),  or
+       simultaneously as a group of 24 using the program's Multi-
+       Satellite Tracking Mode (main menu option [M]).  The posi-
+       tions of the Sun and Moon are also displayed when tracking
+       satellites in real-time.
+
+       Selecting option [T] from PREDICT's main menu  places  the
+       program  in  Single Satellite Tracking Mode. The user will
+       be prompted to select the  satellite  of  interest,  after
+       which  a screen will appear and display tracking positions
+       for the satellite selected.
+
+       In Single Satellite Tracking Mode, a wealth of information
+       related to tracking a spacecraft and communicating through
+       its transponder is displayed.  The current date  and  time
+       is  displayed  along  with  the  satellite's sub-satellite
+       point, its orbital altitude in both kilometers and statute
+       miles, the slant range distance between the ground station
+       and the satellite in both kilometers  and  statute  miles,
+       the  current  azimuth  and  elevation  headings toward the
+       satellite, the orbital velocity of the satellite  in  both
+       kilometers  per hour and statute miles per hour, the foot-
+       print of the satellite  in  both  kilometers  and  statute
+       miles,  the modulo 256 orbital phase of the satellite, the
+       eclipse depth, the spacecraft antenna  squint  angle,  and
+       orbital  model in use, as well as the current orbit number
+       are also displayed.  The date and time for the next AOS is
+       also provided.
+
+       Additionally,  if  the  satellite is currently in range of
+       the ground station, the amount of  Doppler  shift  experi-
+       enced on uplink and downlink frequencies, path loss, prop-
+       agation delay, and echo times  are  also  displayed.   The
+       expected time of LOS is also provided.
+
+       Uplink  and  downlink  frequencies  are  held in PREDICT's
+       transponder database file predict.db.  A default  file  is
+       provided with PREDICT.
+
+       Transponders  may  be  selected by pressing the SPACE BAR.
+       The passband of the transponder may  be  tuned  in  1  kHz
+       increments by pressing the < and > keys.  100 Hz tuning is
+       possible using the , and . keys.  (These are simply the  <
+       and > keys without the SHIFT key.)
+
+       If  no transponder information is available, the data dis-
+       played on the tracking screen is abbreviated.
+
+       The features available in the  Single  Satellite  Tracking
+       Mode  make  it possible to accurately determine the proper
+       uplink frequency to yield a given downlink  frequency,  or
+       vice  versa.   For  example,  if one wishes to communicate
+       with a station heard on  435.85200  MHz  via  FO-29,  then
+       435.85200  MHz  can  be selected via the keyboard as an RX
+       frequency using the tuning keys while tracking FO-29,  and
+       the  corresponding groundstation TX frequency will be dis-
+       played by PREDICT.
+
+       Obviously, an accurate system clock and up-to-date orbital
+       data are required for the best tuning accuracy.
+
+MULTI-SATELLITE TRACKING MODE
+       Selecting  [M] from PREDICT's main menu places the program
+       in a real-time  multi-satellite  tracking  mode.  In  this
+       mode,  all  24  satellites  in  the program's database are
+       tracked simultaneously along with the positions of the Sun
+       and Moon. Tracking data for the satellites is displayed in
+       two columns of 12 satellites each. The name, azimuth head-
+       ing,  elevation,  sub-satellite point latitude (in degrees
+       North) and longitude (in degrees West) positions are  pro-
+       vided,  along  with  the  slant range distance between the
+       satellite and the ground station (in kilometers).
+
+       A letter displayed to the right of the slant  range  indi-
+       cates  the satellite's sunlight and eclipse conditions. If
+       the satellite is experiencing an eclipse period, an  N  is
+       displayed.  If the satellite is in sunlight and the ground
+       station is under the cover of darkness, a V  is  displayed
+       to  indicate the possibility that the satellite is visible
+       under the current conditions. If the satellite is in  sun-
+       light  while conditions at the ground station do not allow
+       the satellite to be seen, a D is displayed.  Satellites in
+       range  of the ground station are displayed in BOLD letter-
+       ing. The AOS dates and times for the next three satellites
+       predicted  to  come into range are displayed on the bottom
+       of the screen between the tracking coordinates of the  Sun
+       and Moon.  Predictions are not made for satellites in geo-
+       stationary orbits or for satellites so low in  inclination
+       and/or altitude that they can never rise above the horizon
+       of the ground station.
+
+SOLAR ILLUMINATION PREDICTIONS
+       Selecting [S] from PREDICT's main menu  will  allow  solar
+       illumination  predictions  to  be made.  These predictions
+       indicate how much sunlight  a  particular  satellite  will
+       receive  in  a  24 hour period.  This information is espe-
+       cially valuable  to  spacecraft  designers  and  satellite
+       groundstation  controllers  who  must  monitor  spacecraft
+       power budgets or thermal conditions on-board their  space-
+       craft due to sunlight and eclipse periods.  It can even be
+       used to predict the optimum times for astronauts  to  per-
+       form  extra-vehicular activities in space. Solar illumina-
+       tion predictions may be logged to a file in the same  man-
+       ner  that  orbital  predictions may be logged (by pressing
+       L).
+
+COMMAND LINE ARGUMENTS
+       By default, PREDICT  reads  ground  station  location  and
+       orbital  data  information from a pair of files located in
+       the current working directory.   Ground  station  location
+       information  is  held  in  a file named predict.qth, while
+       orbital data information for 24 satellites is  held  in  a
+       file  named predict.tle.  If orbital data for more than 24
+       satellites exists in predict.tle, then only the  first  24
+       satellites are read by PREDICT.
+
+       If  we  wish  to  run  PREDICT  using  data from alternate
+       sources instead of these default files, the names of  such
+       files  may  be  passed to PREDICT on the command line when
+       the program is started. For example, if we  wish  to  read
+       the  TLE  file  visual.tle  and  the  QTH file holiday.qth
+       rather than the default files, we could start PREDICT  and
+       pass  the names of these alternate files to the program in
+       the following manner:
+
+            predict -t visual.tle -q holiday.qth
+
+       or
+
+            predict -q holiday.qth -t visual.tle
+
+       If the files specified are  not  located  in  the  current
+       working  directory,  then their relative or absolute paths
+       should also be specified along with their  names  (predict
+       -t c:\keps\visual.tle).
+
+       It  is  also  possible  to specify only one alternate file
+       while using the default for the other. For example,
+
+            predict -t visual.tle
+
+       reads QTH information from the default  predict.qth  file,
+       and TLE information from visual.tle, while
+
+            predict -q bobs.qth
+
+       reads  QTH  information  from bobs.qth and TLE information
+       from the default predict.tle location.
+
+QUIET ORBITAL DATABASE UPDATES
+       It is also possible to update PREDICT's satellite  orbital
+       database  using  another  command line option that updates
+       the database from a NASA two-line element data  set.  PRE-
+       DICT then quietly exits without displaying anything to the
+       screen, thereby eliminating the need for entering the pro-
+       gram  and  selecting  the  appropriate  menu options. This
+       option is invoked using the -u command line switch as fol-
+       lows:
+
+            predict -u orbs248.tle
+
+       This  example  updates  PREDICT's default orbital database
+       with the Keplerian elements found in the file orbs248.tle.
+       PREDICT may be updated from a list of files as well:
+
+            predict -u amateur.tle visual.tle weather.tle
+
+       If an alternate datafile requires updating, it may also be
+       specified on the command line using the -t switch as  fol-
+       lows:
+
+            predict -t oscar.tle -u amateur.tle
+
+       This  example  updates the oscar.tle orbital database with
+       the two-line element data contained in amateur.tle.
+
+       These options permit the  automatic  update  of  PREDICT's
+       orbital  data  files using Keplerian orbital data obtained
+       through automatic means  such  as  FTP,  HTTP,  or  pacsat
+       satellite download.
+
+AUTOMATIC ANTENNA TRACKING
+       PREDICT  is  compatible  with  serial port antenna rotator
+       interfaces conforming to the EasyComm 2 protocol standard.
+       This includes the PIC/TRACK interface developed by Vicenzo
+       Mezzalira,  IW3FOL   <http://digilander.iol.it/iw3fol/pic-
+       track.html>,  TAPR's EasyTrak Jr.  (currently under devel-
+       opment), and Suding Associates  Incorporated's  Dish  Con-
+       trollers         <http://www.ultimatecharger.com/Dish_Con-
+       trollers.html>.  Using any of these  hardware  interfaces,
+       PREDICT  can  automatically  control the position of AZ/EL
+       antenna rotators, and  keep  antennas  accurately  pointed
+       toward  a  satellite  being tracked by PREDICT.  In opera-
+       tion, tracking data from PREDICT is directed to the speci-
+       fied  serial  port  using the -a command line option.  For
+       example:
+
+            predict -a com1
+
+       will send AZ/EL tracking data to  the  first  serial  port
+       when  the  program  is  tracking a satellite in the Single
+       Satellite Tracking Mode.  The data sent to the serial port
+       is  of  the  form:  AZ241.0 EL26.0 using 9600 baud, 8-data
+       bits, 1-stop bit, no parity, and no handshaking.  Data  is
+       sent to the interface if the azimuth or elevation headings
+       change by one degree or more.   For  interfaces  requiring
+       keepalive  updates  at  least  once per second whether the
+       AZ/EL headings have changed or not (such as  the  ones  by
+       SAI), the -a1 option may be used:
+
+            predict -a1 com1
+
+       (Note:  The  DOS  version  of  PREDICT lacks a serial port
+       driver that more likely than not will prevent PREDICT from
+       successfully  sending  data  to  the  serial port tracking
+       interfaces described here.)
+
+ADDITIONAL OPTIONS
+       The -f command-line option, when followed by  a  satellite
+       name  or object number and starting date/time, allows PRE-
+       DICT to respond  with  satellite  positional  information.
+       This  feature  allows  PREDICT  to be invoked within other
+       applications that need to  determine  the  location  of  a
+       satellite at a particular point in time, such as the loca-
+       tion of where a CCD camera image was  taken  by  a  Pacsat
+       satellite based on its timestamp.
+
+       The  information  produced  includes the date/time in Unix
+       format (the number of seconds since midnight UTC  on  Jan-
+       uary 1, 1970), the date/time in ASCII (UTC), the elevation
+       of the satellite in degrees, the azimuth  heading  of  the
+       satellite,  the  orbital  phase (modulo 256), the latitude
+       (N) and longitude (W)  of  the  satellite's  sub-satellite
+       point at the time specified, the slant range to the satel-
+       lite in kilometers with respect to  the  ground  station's
+       location,  the orbit number, and the spacecraft's sunlight
+       visibility information.
+
+       The date/time must be specified in Unix format (number  of
+       seconds  since  midnight  UTC  on January 1, 1970).  If no
+       starting  or  ending  time  is  specified,   the   current
+       date/time  is  assumed and a single line of output is pro-
+       duced.  If a starting and ending  time  are  specified,  a
+       list  of  coordinates  beginning at the starting time/date
+       and ending with the ending time/date will be  returned  by
+       the program with a one second resolution.  If the letter m
+       is  appended  to  the  ending  time/date,  then  the  data
+       returned by the program will have a one minute resolution.
+       The -o option allows the program to write  the  calculated
+       data  to  an  output  file rather than directing it to the
+       standard output device if desired.
+
+       The proper syntax for this option is as follows:
+
+            predict -f ISS 977446390 977446400 -o datafile
+
+       A list of coordinates starting at  the  current  date/time
+       and ending 10 seconds later may be produced by the follow-
+       ing command:
+
+            predict -f ISS +10
+
+       If a list of coordinates specifying the  position  of  the
+       satellite every minute for the next 10 minutes is desired,
+       the following command may be used:
+
+            predict -f ISS +10m
+
+       If a satellite name contains spaces, then the entire  name
+       must be enclosed by "quotes".
+
+       The -p option allows orbital predictions for a single pass
+       to be generated by  PREDICT  via  the  command-line.   For
+       example:
+
+            predict -p OSCAR-11 1003536767
+
+       starts  predictions  for  the OSCAR-11 satellite at a Unix
+       time of 1003536767 (Sat 20Oct01  00:12:47  UTC).   If  the
+       starting  date/time  is  omitted, the current date/time is
+       used.  If a pass is already in progress  at  the  starting
+       date/time specified, orbital predictions are moved back to
+       the beginning of AOS of the current pass, and data for the
+       entire pass from AOS to LOS is provided.
+
+       When  either  the  -f or -p options are used, PREDICT pro-
+       duces an output consisting of the date/time in  Unix  for-
+       mat,  the  date  and time in ASCII (UTC), the elevation of
+       the satellite in degrees, the azimuth of the satellite  in
+       degrees,  the orbital phase (modulo 256), the latitude (N)
+       and longitude (W) of the satellite's sub-satellite  point,
+       the  slant  range  to  the  satellite (in kilometers), the
+       orbit number, and  the  spacecraft's  sunlight  visibility
+       information.  For example:
+
+       1003611710  Sat  20Oct01 21:01:50   11    6  164   51   72
+       1389  16669 *
+
+       The output isn't annotated, but then again, it's meant  to
+       be read by other software.
+
+ADDING SATELLITES
+       One  of  the most frequently asked questions is how satel-
+       lites in PREDICT's orbital database may  be  added,  modi-
+       fied,  or  replaced.   As  it turns out, there are several
+       ways in which this can be done.  Probably the  easiest  is
+       to  manually  edit  your  predict.tle file, and replace an
+       existing satellite's entry with 2-line Keplerian data  for
+       the  new  satellite.   If  this method is chosen, however,
+       just make sure to include ONLY  the  two  line  data,  and
+       nothing else.
+
+       Another  way is to is select the Keyboard Edit option from
+       the program's Main Menu, select a satellite  you  wish  to
+       replace.   Edit  the name and object number (replacing the
+       old information  with  the  new  information).   Just  hit
+       ENTER,  and accept all the other orbital parameters shown.
+       Get back to PREDICT's Main Menu.  Select Auto Update,  and
+       then enter the filename containing the 2-line element data
+       for your favorite new satellite.  The new  satellite  data
+       should  be  detected  by PREDICT, and the orbital data for
+       the old satellite will be overwritten by the new data.
+
+GLOSSARY OF TERMS
+       The following terms are  frequently  used  in  association
+       with satellite communications and space technology:
+
+AOS:
+       Acquisition of Signal - the time at which a ground station
+       first acquires radio signals  from  a  satellite.  PREDICT
+       defines  AOS  as the time when the satellite being tracked
+       comes within  +/-  0.03  degrees  of  the  local  horizon,
+       although  it may have to rise higher than this before sig-
+       nals are first heard.
+
+Apogee:
+       Point in a satellite's orbit when the satellite is at  its
+       farthest distance from the earth's surface.
+
+Anomalistic Period:
+       A  satellite orbital parameter specifying the time between
+       successive perigees.
+
+Ascending Node:
+       Point in a satellite's orbit when its sub-satellite  point
+       crosses the equator moving south to north.
+
+Azimuth:
+       The  compass direction measured clockwise from true north.
+       North = 0 degrees, East = 90 degrees, South = 180 degrees,
+       and West = 270 degrees.
+
+Descending Node:
+       Point  in a satellite's orbit when its sub-satellite point
+       crosses the equator moving north to south.
+
+Doppler Shift:
+       The motion of a satellite in its orbit around  the  earth,
+       and  in  many  cases  the  rotational  motion of the earth
+       itself, causes radio signals generated by satellites to be
+       received  on  Earth at frequencies slightly different than
+       those upon which they were transmitted. PREDICT calculates
+       what  effect  these  motions have upon radio communication
+       links with satellites when they are within  range  of  the
+       groundstation.
+
+Elevation:
+       The  angle  between  the local horizon and the position of
+       the satellite. A satellite that appears directly  above  a
+       particular  location is said to be located at an elevation
+       of 90 degrees. A satellite located on  the  horizon  of  a
+       particular  location is said to be located at an elevation
+       of 0 degrees.  A satellite with an elevation of less  than
+       zero is positioned below the local horizon, and radio com-
+       munication with a satellite in such a position is not pos-
+       sible under normal circumstances.
+
+Footprint:
+       Diameter  of the Earth's surface visible from a satellite.
+       The higher the satellite's orbital altitude,  the  greater
+       the  footprint,  and  the wider the satellite's communica-
+       tions coverage.
+
+LOS:
+       Loss of Signal - the time at which a ground station  loses
+       radio contact with a satellite. PREDICT defines LOS as the
+       time when the satellite being  tracked  comes  within  +/-
+       0.03 degrees of the local horizon.
+
+Orbital Phase:
+       An  orbital  "clock"  that describes a satellite's orbital
+       position with respect to perigee.  Orbital  Phase  may  be
+       modulo 256, or modulo 360, and is sometimes referred to as
+       mean anomaly when speaking of amateur radio satellites  in
+       elliptical   orbits,  such  as  the  Phase  3  satellites.
+       Orbital phase is zero at perigee.
+
+Path Loss:
+       The apparent attenuation a radio signal  undergoes  as  it
+       travels  a  given distance. This attenuation is the result
+       of the dispersion radio waves experience as they propagate
+       between  transmitter and receiver using antennas of finite
+       gain. Free space path  loss  is  technically  an  oxymoron
+       since free space is loss free.
+
+Perigee:
+       Point  in a satellite's orbit when the satellite is at its
+       closest distance to the earth's surface.
+
+Nodal Period:
+       A satellite orbital parameter specifying the time  between
+       successive ascending nodes.
+
+Slant Range:
+       The  straight line distance between the ground station and
+       the satellite at a given time.
+
+Sub-Satellite Point:
+       The latitude and longitude specifying the location on  the
+       Earth that is directly below the satellite.
+
+ADDITIONAL INFORMATION
+       The  latest news is available through the official PREDICT
+       software        web        page        located         at:
+       <http://www.qsl.net/kd2bd/predict.html>.
+
+FILES
+       predict.tle
+              Default  database of Keplerian orbital data in NASA
+              2-line format
+
+       predict.db
+              Satellite transponder database file
+
+       predict.qth
+              Default ground station location information
+
+AUTHORS
+       PREDICT  was  written  by  John   A.   Magliacane,   KD2BD
+       <kd2bd@amsat.org>.  PIC/TRACK code was written by Vittorio
+       Benvenuti, I3VFJ <benscosm@iol.it>.
+
+
+
+
+KD2BD Software           02 November 2002        PREDICT (2.2.1d)

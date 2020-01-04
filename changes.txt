@@ -1,0 +1,134 @@
+Release 2.2.1d:
+by John A. Magliacane <kd2bd@amsat.org> (04-Nov-2002):
+
+* PREDICT's orbital model has been replaced by more precise
+  SGP4/SDP4 algorithms for increased tracking and orbital
+  prediction accuracy. 
+
+* The Single Satellite Tracking Mode has been re-written to permit
+  support for a transponder database.  It is now possible to select
+  precise Doppler-corrected uplink and/or downlink frequencies
+  interactively when tracking satellites in real-time.  (No more
+  hunting around the transponder to find your downlink!)
+
+* Numeric co-processor emulation linked during the compilation phase
+  to permit operation on older machines lacking a co-processor (such
+  as 80486SX and 80386-based PCs). 
+
+* Several new command-line options added to permit simplified satellite
+  location and orbital prediction to be conducted either via the
+  command-line, or from within other programs.  This makes it possible,
+  for example, for another program to invoke PREDICT to calculate the
+  location of a satellite when the timestamp of a CCD image is determined.
+
+* The -u command-line switch has been modified to allow multiple file
+  names to be used when updating PREDICT's orbital database from the
+  command-line.
+
+* Solar eclipse angle depths, propagation delay, and echo duration are
+  now provided by PREDICT.  If ALAT/ALON coordinates are known, squint
+  angles are also provided in both the Single Satellite Tracking mode
+  and orbital prediction output screens.
+
+* Added serial-port rotator control support for the PIC/TRACK,
+  EasyTrak Jr., or other EasyComm2-compatible rotator controllers.
+  (A suitable DOS serial port driver is still lacking, however.)
+
+* Main Menu option [I] now provides information on the files loaded
+  by PREDICT, the status of the AutoTracking function, the COM port
+  used by the tracking interface, etc.
+
+* Compilation was performed with an updated compiler (gcc 3.2).
+
+* The documentation was updated, and many other coding changes were
+  made.  See the NEWS.TXT file for additional information.
+
+
+Release 2.0.5d:
+by John A. Magliacane <kd2bd@amsat.org> (18-Nov-2001):
+
+* Modified the AosHappens() function to prevent a division-by-zero
+  error that would occur if used on a satellite containing no valid
+  TLE data.  This error caused the MultiTracking mode to crash if
+  the predict.tle orbital database contained less than 24 satellites.
+
+* Real-time tracking is no longer performed for satellites that
+  appear to have decayed from orbit.
+
+* Fixed an array overflow problem in the Solar Illumination
+  Prediction Mode.
+
+* Updated documentation.  Added PDF and HTML versions.
+
+* Some other minor coding changes were made.
+
+
+Release 2.0.4d:
+by John A. Magliacane <kd2bd@amsat.org> (04-Jan-2001):
+
+* Fixed several small math errors.  One goes back to some very old
+  (and widely used) satellite tracking code!  Thanks to Jordi Mas
+  for pointing them out and providing corrections.  Thanks also to
+  Andreas Trotschel for pointing out an error in the size of the
+  global output[] array.
+
+* Portions of the MultiTrack() and SingleTrack() functions were
+  re-coded for greater simplicity.
+
+* A bug in parsing the command-line options was fixed.
+
+
+Release 2.0.3d:
+by John A. Magliacane <kd2bd@amsat.org> (17-Jun-2000):
+
+* Several small bugs in the KepCheck() and SaveTLE() functions of predict.c
+  were identified and repaired.  The problems centered on the fact that
+  unsigned chars were used to accumulate TLE checksums.  Occasionally,
+  the checksums exceeded the capacity of an unsigned char, and rolled
+  over through zero as a result.  These variables were changed to
+  unsigned integers.
+
+* A small problem in the AutoUpdate() function in predict.c was identified
+  and fixed.  Occasionally, Keplerian data for a satellite would not
+  update if it had the same reference epoch as that in PREDICT's
+  orbital database.  This problem was the result of extremely small
+  rounding errors introduced by the complier that caused intermittent
+  logic errors when trying to compare two double precision floats for
+  equality.  This problem was solved by changing these variables from
+  doubles to floats.
+
+* The Keplerian "torture test" was a bit too brutal for some element sets.
+  The check for a '-' on position 59 of TLE line 1 was eliminated since
+  some element sets have a '+' in that position.
+
+
+Release 2.0.2d:
+by John A. Magliacane <kd2bd@amsat.org> (01-Apr-2000):
+
+* A solar illumination feature was added to predict the percentage
+  of time a satellite spends in sunlight per day.
+
+* Orbital predictions for satellites that appear to have decayed
+  since the last Keplerian orbital update are no longer attempted
+  by the program.
+
+* Date and time used to start orbital predictions may now be
+  abbreviated to Day/Month/Year only (00:00:00 is assumed).
+  The default remains the current date and time.
+
+* System clock/calendar is now read to millisecond precision,
+  permitting more "lively" real-time tracking mode displays.
+
+* The UTC timezone offset now may be set correctly for users living
+  in half hour timezones.
+
+* Internal timezone calculations are no longer confused by environmental
+  variable TZ.  If TZ is properly set to a timezone name (as required
+  by some other satellite tracking programs), the TZ setting is used by
+  PREDICT instead of the UTC timezone offset specified in the predict.qth
+  file.
+
+* The command-line parsing code was modified to prevent segmentation
+  faults from occurring if command-line options are incorrectly issued.
+
+* Some other minor coding changes were made.

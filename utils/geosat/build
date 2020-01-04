@@ -1,7 +1,0 @@
-#!/bin/bash
-# Script to compile geosat
-#
-echo -n "Compiling geosat... "
-cc -Wall -O3 -s -fomit-frame-pointer -lm geosat.c -o geosat
-echo "Done!"
-

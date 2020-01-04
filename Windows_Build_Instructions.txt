@@ -1,0 +1,72 @@
+WINDOWS BUILD INSTRUCTIONS
+
+The detailed instructions below build the software on C: volume, under the directory "C:\tmpbuild". 
+Note that the directory will be quietly deleted,  if it exists.
+
+The instructions below assume your Windows 64-bit system does NOT have a working MinGW compiler.
+Following the steps below will provide you with a working recent (2018) MinGW compiler.
+Windows PATH variable is not set therefore you must point your 'command prompt' to the correct location each time.
+
+Compiler/version/platform: MinGW Build 7.3.0 (64-bit)
+Compiler (zipped directory) dowload URL: 	https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/7.3.0/threads-posix/seh/x86_64-7.3.0-release-posix-seh-rt_v5-rev0.7z/download
+Compiler installation (unzip) instructions:
+	step 1: download ZIPped compiler archive from the URL above.
+	step 2: unzip it to a location on your system (e.g.: "C:\dev\compilers\" ).
+	step 3: open a new command prompt window and add compiler's path (to the current command prompt window only) with, e.g.: SET PATH=%PATH%;C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\
+	step 4: test it with: x86_64-w64-mingw32-gcc.exe --version
+	Note: for a permanent PATH change, see instructions in your favorite search engine.
+	Note: with the above instructions, you should end up with EXE files at the following full paths:
+		"C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\mingw32-make.exe"
+		"C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\x86_64-w64-mingw32-gcc.exe"
+		"C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\x86_64-w64-mingw32-gcc-ar.exe"
+
+####################
+C: && CD \ && RD /Q /S tmpbuild & MKDIR tmpbuild && CD tmpbuild
+git clone --single-branch --branch windows https://github.com/gdinit/predict.git
+CD predict
+####################
+CD 3rd-party\termiWin
+RD /Q /S build & MKDIR build
+set CC=
+set LIBEXE=
+SET PATH=%PATH%;C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\
+"C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\x86_64-w64-mingw32-gcc.exe" -D TERMIWIN_DONOTREDEFINE -Wall -g -c termiWin.c -o build\termiWin.o
+DIR build
+CD ..\..\
+####################
+CD 3rd-party\PDCurses\wincon
+# compile using manually supplied make & gcc
+# first, unset vars (otherwise Makefile might activate an older mingw installation. linker might fail due to version mismatch)
+set CC=
+set LIBEXE=
+set AR=
+set PREFIX=
+# set vars (to point to the compiler & utils we would like to use)
+set CC="C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\x86_64-w64-mingw32-gcc.exe"
+set LIBEXE="C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\x86_64-w64-mingw32-gcc-ar.exe"
+set AR="C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\x86_64-w64-mingw32-gcc-ar.exe"
+set PREFIX=x86_64-w64-mingw32-
+####################
+//Makefile.mng -- Modification #1:
+add a new line as line #140, as detailed below:
+original line #140 -->				$(LIBCURSES) : $(LIBDEPS)
+the new line #140 we're inserting -->		LIBEXE = "C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\x86_64-w64-mingw32-gcc-ar.exe"
+####################
+//Makefile.mng -- Modification #2:
+original tui demo exe section (about line 161): (NOTE THAT THIS IS TUIDEMO.EXE and not TUIDEMO.O)
+	tuidemo.exe: tuidemo.o tui.o
+		$(LINK) $(LDFLAGS) -o$@ tuidemo.o tui.o $(LIBCURSES) $(EXELIBS)
+new tui demo exe section: (NOTE THAT THIS IS TUIDEMO.EXE and not TUIDEMO.O)
+	tuidemo.exe: tuidemo.o tui.o
+		$(CC) $(LDFLAGS) -o$@ tuidemo.o tui.o $(LIBCURSES) $(EXELIBS)
+####################
+"C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\mingw32-make.exe" CC="C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\x86_64-w64-mingw32-gcc.exe" -f Makefile.mng
+# this last step is just to test & confirm PDcurses is working fine
+#press ALT+X to exit demo.
+tuidemo
+CD ..\..\..\
+####################
+COPY 3rd-party\PDCurses\wincon\pdcurses.a 3rd-party\PDCurses\wincon\libpdcurses.a
+"C:\dev\compilers\mingw.x86_64.7.3.0-release-posix-seh-rt_v5-rev0\bin\x86_64-w64-mingw32-gcc.exe" -o predict.exe predict.c 3rd-party\termiWin\build\termiWin.o -I3rd-party\termiWin -I3rd-party/PDCurses -I3rd-party/PDCurses/wincon -L3rd-party/PDCurses/wincon -lpdcurses
+predict
+####################
