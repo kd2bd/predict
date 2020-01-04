@@ -1,24 +1,15 @@
 OSCAR-7
 7530
-No alat/alon
+No alat, alon
 Mode A Transponder
 145.850, 145.950
 29.500, 29.400
 No weekly schedule
 No orbital schedule
 end
-OSCAR-10
-14129
-No alat/alon
-Mode B Transponder
-435.030, 435.180
-145.975, 145.825
-No weekly schedule
-No orbital schedule
-end
 OSCAR-11
 14781
-No alat/alon
+No alat, alon
 VHF-FM General Beacon
 0.0, 0.0
 145.825, 145.825
@@ -35,18 +26,9 @@ UHF-FM Engineering Beacon
 No weekly schedule
 No orbital schedule
 end
-OSCAR-14
-20437
-No alat/alon
-Mode J FM Transponder
-145.975, 145.975
-435.065, 435.065
-No weekly schedule
-No orbital schedule
-end
 PACSAT
 20439
-No alat/alon
+No alat, alon
 Mode JD 1200 bps BPSK Channel A
 145.900, 145.900
 437.025, 437.025
@@ -70,7 +52,7 @@ No orbital schedule
 end
 LUSAT
 20442
-No alat/alon
+No alat, alon
 Mode JD 1200 bps BPSK Channel A
 145.840, 145.840
 437.150, 437.150
@@ -97,69 +79,9 @@ No orbital schedule
 No weekly schedule
 No orbital schedule
 end
-OSCAR-20
-20480
-No alat/alon
-Mode JA Transponder
-145.900, 146.000
-435.900, 435.800
-No weekly schedule
-No orbital schedule
-end
-OSCAR-22
-21575
-No alat/alon
-Mode JD 9600 bps FSK
-145.900, 145.900
-435.120, 435.120
-No weekly schedule
-No orbital schedule
-end
-OSCAR-23
-22077
-No alat/alon
-Mode JD 9600 bps FSK
-145.900, 145.900
-435.175, 435.175
-No weekly schedule
-No orbital schedule
-end
-OSCAR-25
-22828
-No alat/alon
-Mode JD 9600 bps FSK
-145.980, 145.980
-436.500, 436.500
-No weekly schedule
-No orbital schedule
-end
-ITAMSAT
-22826
-No alat/alon
-Mode JD 1200 bps BPSK Channel A
-145.875, 145.875
-435.822, 435.822
-No weekly schedule
-No orbital schedule
-Mode JD 1200 bps BPSK Channel B
-145.900, 145.900
-435.822, 435.822
-No weekly schedule
-No orbital schedule
-Mode JD 1200 bps BPSK Channel C
-145.925, 145.925
-435.822, 435.822
-No weekly schedule
-No orbital schedule
-Mode JD 1200 bps BPSK Channel D
-145.950, 145.950
-435.822, 435.822
-No weekly schedule
-No orbital schedule
-end
 OSCAR-27
 22825
-No alat/alon
+No alat, alon
 Mode J FM Transponder
 145.850, 145.850
 436.795, 436.795
@@ -168,7 +90,7 @@ No orbital schedule
 end
 OSCAR-29
 24278
-No alat/alon
+No alat, alon
 Mode JA Transponder
 145.900, 146.000
 435.900, 435.800
@@ -190,108 +112,80 @@ Mode JD Channel C
 No weekly schedule
 No orbital schedule
 end
-OSCAR-36
-25693
-No alat/alon
-Mode JD - Downlink 1
-145.960, 145.960
-437.025, 437.025
-No weekly schedule
-No orbital schedule
-Mode JD - Downlink 2
-145.960, 145.960
-437.400, 437.400
-No weekly schedule
-No orbital schedule
-end
-OSCAR-40
-26609
-4.0, 350.0
-Mode V/S2 Transponder
-145.840, 145.990
-2401.475, 2401.225
-No weekly schedule
-No orbital schedule
-Mode U/S2 Transponder
-435.550, 435.800
-2401.475, 2401.225
-No weekly schedule
-No orbital schedule
-Mode L1/S2 Transponder
-1269.250, 1269.500
-2401.475, 2401.225
-No weekly schedule
-No orbital schedule
-Mode L2/S2 Transponder
-1268.325, 1268.575
-2401.475, 2401.225
-No weekly schedule
-No orbital schedule
-end
-SO-41
-26545
-No alat/alon
-Mode J FM Transponder
-145.850, 145.850
-436.775, 436.775
-No weekly schedule
-No orbital schedule
-end
-RS-12/13
-21089
-No alat/alon
-RS-12 Mode K Transponder
-21.210, 21.250
-29.410, 29.450
-No weekly schedule
-No orbital schedule
-RS-12 Mode A Transponder
-145.910, 145.950
-29.410, 29.450
-No weekly schedule
-No orbital schedule
-RS-12 Mode T Transponder
-21.210, 21.250
-145.910, 145.950
-No weekly schedule
-No orbital schedule
-RS-13 Mode T Transponder
-21.260, 21.300
-145.860, 145.900
-No weekly schedule
-No orbital schedule
-RS-13 Mode A Transponder
-145.860, 145.900
-29.460, 29.500
-No weekly schedule
-No orbital schedule
-RS-13 Mode K Transponder
-21.260, 21.300
-29.460, 29.500
-No weekly schedule
-No orbital schedule
-end
 RS-15
 23439
-No alat/alon
+No alat, alon
 Mode A Transponder
 145.858, 145.898
 29.354, 29.394
 No weekly schedule
 No orbital schedule
 end
-NOAA-12
-21263
-No alat/alon
-HRPT Downlink
+CUTE-1
+27844
+No alat, alon
+CW Downlink (100 mW)
 0.0, 0.0
-1698.0, 1698.0
+436.8375, 436.8375
+No weekly schedule
+No orbital schedule
+Digital Downlink 1200 bps AX.25 or SRLL data (350 mW)
+0.0, 0.0
+437.4700, 437.4700
 No weekly schedule
 No orbital schedule
 end
+GO-32
+25397
+No alat, alon
+9600 bps FSK Digital Transponder - Channel 1
+145.850, 145.850
+435.225, 435.225
+No weekly schedule
+No orbital schedule
+9600 bps FSK Digital Transponder - Channel 2
+145.890, 145.890
+435.225, 435.225
+No weekly schedule
+No orbital schedule
+9600 bps FSK Digital Transponder - Channel 3
+145.930, 145.930
+435.225, 435.225
+No weekly schedule
+No orbital schedule
+9600 bps FSK Digital Transponder - Channel 4
+1269.700, 1269.700
+435.225, 435.225
+No weekly schedule
+No orbital schedule
+9600 bps FSK Digital Transponder - Channel 5
+1269.800, 1269.800
+435.225, 435.225
+No weekly schedule
+No orbital schedule
+end
+HAMSAT
+28650
+No alat, alon
+Mode U/V Linear Transponder
+435.230, 435.280
+145.870, 145.930
+No weekly schedule
+No orbital schedule
+Beacon - Unmodulated Carrier
+0.0, 0.0
+145.936, 145.936
+No weekly schedule
+No orbital schedule
+Telemetry Downlink
+0.0, 0.0
+145.860, 145.860
+No weekly schedule
+no orbital schedule
+end
 NOAA-14
 23455
-No alat/alon
+No alat, alon
 APT Downlink
 0.0, 0.0
 137.620, 137.620
@@ -305,7 +199,7 @@ No orbital schedule
 end
 NOAA-15
 25338
-No alat/alon
+No alat, alon
 APT Downlink
 0.0, 0.0
 137.500, 137.500
@@ -319,7 +213,7 @@ No orbital schedule
 end
 NOAA-17
 27453
-No alat/alon
+No alat, alon
 APT Downlink
 0.0, 0.0
 137.620, 137.620
@@ -333,7 +227,7 @@ No orbital schedule
 end
 UARS
 21701
-No alat/alon
+No alat, alon
 No transponder name
 0.0, 0.0
 0.0, 0.0
@@ -342,7 +236,7 @@ No orbital schedule
 end
 HUBBLE
 20580
-No alat/alon
+No alat, alon
 No transponder name
 0.0, 0.0
 0.0, 0.0
@@ -351,19 +245,29 @@ No orbital schedule
 end
 ISS
 25544
-No alat/alon
-ARISS Packet Radio Mailbox
+No alat, alon
+ARISS VHF Packet Radio Mailbox
 145.990, 145.990
 145.800, 145.800
 No weekly schedule
 No orbital schedule
-Region 2/3 ARISS FM Voice
+Region 2/3 ARISS VHF-FM Voice
 144.490, 144.490
 145.800, 145.800
 No weekly schedule
 No orbital schedule
-Region 1 ARISS FM Voice
+Region 1 ARISS VHF-FM Voice
 145.200, 145.200
+145.800, 145.800
+No weekly schedule
+No orbital schedule
+ARISS UHF-FM Voice
+437.500, 437.500
+437.500, 437.500
+No weekly schedule
+No orbital schedule
+Crossband Repeater
+437.800, 437.800
 145.800, 145.800
 No weekly schedule
 No orbital schedule
@@ -375,19 +279,119 @@ No orbital schedule
 end
 PCSAT
 26931
-No alat/alon
-PCSAT-1 1200 baud AFSK Packet Radio
+No alat, alon
+1200 baud AFSK APRS Digipeater (PCSAT-1)
 145.827, 145.827
 145.827, 145.827
 No weekly schedule
 No orbital schedule
 end
-STARSHINE 3
-26929
-No alat/alon
-No transponder name
-0.0, 0,0
+OSCAR-50
+27607
+No alat, alon
+Mode V/U FM Repeater (67 Hz PL)
+145.850, 145.850
+436.800, 436.800
+No weekly schedule
+No orbital schedule
+end
+RS-20
+27560
+No alat, alon
+VHF CW Beacon
 0.0, 0.0
+145.828, 145.828
+No weekly schedule
+No orbital schedule
+UHF CW Beacon
+0.0, 0.0
+435.319,435.319
+No weekly schedule
+No orbital schedule
+end
+RS-22
+27939
+No alat, alon
+UHF CW Beacon
+0.0, 0.0
+435.3520, 435.3520
+No weekly schedule
+No orbital schedule
+end
+ECHO
+28375
+No alat, alon
+Mode V/U FM Repeater (67 Hz PL)
+145.920, 145.920
+435.300, 435.300
+No weekly schedule
+No orbital schedule
+Mode U/S FM Repeater (67 Hz PL)
+145.920, 145.920
+2401.200, 2401.200
+No weekly schedule
+No orbital schedule
+Mode V/U FM Repeater (QRP - No PL)
+145.880, 145.880
+435.300, 435.300
+No weekly schedule
+No orbital schedule
+Mode L/U FM Repeater (67 Hz PL)
+1268.700, 1268.700
+435.300, 435.300
+No weekly schedule
+No orbital schedule
+Mode L/S FM Repeater (67 Hz PL)
+1268.700, 1268.700
+2401.200, 2401.200
+No weekly schedule
+No orbital schedule
+Mode V/U 9600 bps AX.25 Mailbox
+145.860, 145.860
+435.150, 435.150
+No weekly schedule
+No orbital schedule
+Mode V/S 38.4 kbps AX.25 Mailbox
+145.860, 145.860
+2401.200, 2401.200
+No weekly schedule
+No orbital schedule
+Mode L/U 9600 bps AX.25 Mailbox
+1268.700, 1268.700
+435.150, 435.150
+No weekly schedule
+No orbital schedule
+Mode L/S 38.4 kbps AX.25 Mailbox
+1268.700, 1268.700
+2401.200, 2401.200
+No weekly schedule
+No orbital schedule
+end
+OSCAR-57
+27848
+No alat, alon
+Mode U CW Beacon
+0.0, 0.0
+436.8475, 436.8475
+No weekly schedule
+No orbital schedule
+Mode U Telemetry Beacon (1200 BPS, AFSK)
+0.0, 0.0
+437.4900, 437.4900
+No weekly schedule
+No orbital schedule
+end
+OSCAR-58
+28895
+No alat, alon
+Mode U CW Beacon
+0.0, 0.0
+437.4650, 437.4650
+No weekly schedule
+No orbital schedule
+Mode U Telemetry Beacon (1200 BPS, AFSK)
+0.0, 0.0
+437.3450, 437.3450
 No weekly schedule
 No orbital schedule
 end
