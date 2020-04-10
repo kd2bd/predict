@@ -3903,7 +3903,7 @@ int x;
 	/* This function returns a 1 if the satellite pointed
 	   to by "x" appears to be in a geostationary orbit */
 
-	if (fabs(sat[x].meanmo-1.0027)<0.0002) 
+	if (fabs(sat[x].meanmo-1.0027)<0.015) /* relaxed the tolerance to include geosatellites with meanmo ~1.000 (INMARSAT 3-F1, etc) */ 
 
 		return 1;
 	else
